@@ -1,242 +1,79 @@
-# BMW ETK (Electronic Parts Catalogue) Analysis
+# etkx
 
-## Overview
+BMW ETK (Electronic Parts Catalog) data extraction and analysis tools.
 
-**Version:** ETK 02/2013, Client v2.0.95
-**Database:** Transbase (proprietary SQL database by Transaction Software GmbH)
-**Architecture:** Java client + embedded Tomcat + Transbase DB
+## Database Access
 
-## Directory Structure
+### Credentials
+- **User:** `tbadmin`
+- **Password:** `altabe`
+- **Port:** 2024
+- **Databases:** `etk_publ`, `etk_nutzer`, `etk_preise`
 
-```
-etk/
-├── javaclient/           # Java application
-│   ├── ETK.exe           # JVM launcher (C wrapper)
-│   ├── ETK.exe.c         # Ghidra decompilation
-│   ├── classes/
-│   │   ├── javaclient.jar     # Main client app (5MB)
-│   │   ├── zubclient.jar      # Accessories module (3MB)
-│   │   └── javaclient.properties
-│   ├── libs/
-│   │   └── tbjdbc.jar         # Transbase JDBC driver
-│   └── tomcat/           # Embedded servlet container
-├── transbase/            # Database engine + config
-│   ├── etk_nutzer/       # User/config database
-│   ├── etk_preise/       # Pricing database
-│   ├── etk_publ/         # Publication data (main catalog)
-│   ├── tbker32.dll       # Transbase kernel
-│   ├── tbjdbc.jar        # JDBC driver
-│   └── webretknutzer_tb.sql  # User DB schema
-├── roms/                 # Main data files
-│   ├── rfile000.000      # Cluster 0 (~2GB)
-│   ├── rfile001.000      # Cluster 1 (~900MB)
-│   └── *.sql             # Update scripts
-├── admintool/            # Admin application
-└── migration/            # DMS migration tools
-```
+### Remote Connection
+ETK Transbase on Windows XP must be running. Default IP: `192.168.101.150`
 
-## Databases
+## Export Tools
 
-### 1. etk_publ (Publication Data - Main Catalog)
-- **Location:** `transbase/etk_publ/` + `roms/rfile*.000`
-- **Size:** ~3GB total
-- **Content:** Part numbers, descriptions, images, vehicle mappings
-- **Volume ID:** `TB_ETK_0213`
+### Prerequisites
+- Java 11+ (OpenJDK)
+- Transbase JDBC driver (`lib/tbjdbc.jar`)
 
-Configuration (`etk_publ/dbconf.ini`):
-- Page size: 4096 bytes
-- ROM size: 1.5GB
-- Disk size: 100MB
-- Codepage: UTF-8
-- 2 clusters (CD_1: rfile000, CD_2: rfile001)
+### Quick Start
 
-### 2. etk_nutzer (User Data)
-- **Tables:** w_firma, w_filiale, w_user, w_konfig, w_teileliste, etc.
-- **Purpose:** User settings, shopping carts, orders
+```bash
+cd /tmp/etk-export
 
-### 3. etk_preise (Pricing)
-- **Table:** w_preise
-- **Fields:** sachnr (7-char part#), evpreis, rabattschluessel, mwst, etc.
+# Compile
+/usr/local/opt/openjdk/bin/javac -cp tbjdbc.jar EtkExport.java
 
-## Key Entities
+# Run export (foreground)
+/usr/local/opt/openjdk/bin/java -Xmx1g -cp .:tbjdbc.jar EtkExport ./etk_data
 
-### Part Number (Sachnummer/Teilenummer)
-- 7-digit format (compact) or 11-digit format (full)
-- Examples: `1234567` or `12 34 5 678 901`
+# Run export (background)
+nohup /usr/local/opt/openjdk/bin/java -Xmx1g -cp .:tbjdbc.jar EtkExport ./etk_data > export.log 2>&1 &
 
-### Brand (Marke)
-- BMW, MINI, Rolls-Royce
-
-### Vehicle Identification
-- VIN (Fahrgestellnummer): 7-20 characters
-- Used for exact part matching
-
-## Java Application Structure
-
-Main package: `webetk.*`
-
-```
-webetk/
-├── app/              # UI modules
-│   ├── fzgsuche/     # Vehicle search
-│   ├── teileinfo/    # Part info
-│   ├── teileersetzung/  # Part replacement
-│   ├── bteanzeige/   # Assembly display
-│   ├── visualisierungteil/  # Part visualization
-│   └── zub/          # Accessories
-├── db/               # Database access
-│   ├── dbaccess.class    # Main DB access class
-│   ├── teilesuchefzg/    # Vehicle part search
-│   └── teilevwdgfzg/     # Vehicle part usage
-├── communication/    # Client-server comm
-├── javaclient/       # Client bootstrap
-└── interfaces/       # External interfaces
+# Monitor progress
+tail -f export.log
 ```
 
-Main class: `webetk.javaclient.Starter`
-
-## Configuration
-
-**java_config.ini:**
-```ini
-MainClass=webetk.javaclient.Starter
-JavaMaxMemory=576
-JDBCURL=jdbc:transbase://localhost/etk_nutzer
-JavaHome=..\\java\\jre
+### Output Structure
+```
+etk_data/
+├── csv/                    # All tables as CSV
+│   ├── etk_publ_w_teil.csv
+│   ├── etk_publ_w_bildtaf.csv
+│   └── ...
+└── blobs/                  # Binary data (images from w_grafik)
+    ├── w_grafik_GRAFIK_0.bin
+    └── ...
 ```
 
-**javaclient.properties:**
-```properties
-server.URL=http://localhost:1033/javaserver/ClientService
-standalone=1
-tomcat.port=1033
-language=en
+### Configuration
+
+Edit `scripts/export.java` to change:
+```java
+static String URL = "jdbc:transbase://192.168.101.150:2024/";  // ETK host
+static String USER = "tbadmin";
+static String PASS = "altabe";
 ```
 
-## Database Connection
+## Documentation
 
-- **JDBC URL:** `jdbc:transbase://localhost/<database>`
-- **Port:** 2024-2025 (Transbase service)
-- **Driver:** `transbase.jdbc.Driver` (tbjdbc.jar)
+- `docs/SCHEMA.md` - Database schema (116 tables)
+- `src/decompiled/` - Decompiled Java sources with SQL queries
 
-## User Tables Schema (etk_nutzer)
+## Key Tables
 
-```sql
--- Company
-CREATE TABLE w_firma (
-    firma_id VARCHAR(10) NOT NULL KEY,
-    firma_bezeichnung VARCHAR(40) NOT NULL,
-    firma_verzeichnis VARCHAR(256)
-);
+| Table | Description | ~Rows |
+|-------|-------------|-------|
+| `w_teil` | Parts master | 553K |
+| `w_bildtaf` | Diagrams | 48K |
+| `w_btzeilen` | Parts in diagrams | 1.7M |
+| `w_grafik` | Images (BLOBs) | ~48K |
+| `w_publben` | Multilingual names | ~2M |
+| `w_fztyp` | Vehicle types | ~10K |
 
--- User
-CREATE TABLE w_user (
-    user_firma_id VARCHAR(10) NOT NULL,
-    user_id VARCHAR(10) NOT NULL,
-    user_name VARCHAR(20) NOT NULL,
-    user_passwort VARCHAR(20) NOT NULL,
-    user_default_filiale_id VARCHAR(4) NOT NULL,
-    KEY IS user_firma_id, user_id
-);
+## License
 
--- Shopping Cart (Teileliste)
-CREATE TABLE w_teileliste (
-    teileliste_firma_id VARCHAR(10) NOT NULL,
-    teileliste_filiale_id VARCHAR(4) NOT NULL,
-    teileliste_user_id VARCHAR(10) NOT NULL,
-    teileliste_id VARCHAR(20) NOT NULL,
-    teileliste_marke VARCHAR(11) NOT NULL,
-    teileliste_vin CHAR(7),
-    -- ... more fields
-    KEY IS teileliste_firma_id, teileliste_filiale_id, 
-           teileliste_user_id, teileliste_id
-);
-
--- Cart Items (Teilelistepos)
-CREATE TABLE w_teilelistepos (
-    teilelistepos_firma_id VARCHAR(10) NOT NULL,
-    teilelistepos_filiale_id VARCHAR(4) NOT NULL,
-    teilelistepos_user_id VARCHAR(10) NOT NULL,
-    teilelistepos_teileliste_id VARCHAR(20) NOT NULL,
-    teilelistepos_position INTEGER NOT NULL,
-    teilelistepos_sachnr CHAR(7) NOT NULL,
-    teilelistepos_benennung VARCHAR(40),
-    teilelistepos_menge NUMERIC(7,2),
-    teilelistepos_preis NUMERIC(11,2),
-    -- ... more fields
-);
-
--- Pricing
-CREATE TABLE w_preise (
-    preise_firma VARCHAR(10) NOT NULL,
-    preise_sachnr CHAR(7) NOT NULL,
-    preise_evpreis NUMERIC(11,2),
-    preise_rabattschluessel VARCHAR(3),
-    preise_mwst NUMERIC(4,2),
-    KEY IS preise_firma, preise_sachnr
-);
-```
-
-## Discovered Tables (from Java bytecode analysis)
-
-### Publication Tables (etk_publ)
-| Table | Description |
-|-------|-------------|
-| `w_fztyp` | Vehicle types (Fahrzeugtyp) |
-| `w_markt_produkt_br` | Market/Product/Baureihe mapping |
-| `w_btzeilen_verbauung` | Assembly lines with vehicle usage |
-| `w_btzeilenzub_verbauung` | Accessory assembly lines with vehicle usage |
-| `w_btzeilenzubugb` | Accessory HG/UG assembly lines |
-| `w_bildtaf*` | Image tables (Bildtafel) |
-| `w_dealer_type` | Dealer types per market |
-
-### Column naming convention (from SQL analysis)
-| Prefix | Meaning | Example |
-|--------|---------|---------|
-| `fztyp_` | Vehicle type | `fztyp_mospid` |
-| `btzeilenzv_` | Assembly line ZUB verbauung | `btzeilenzv_btnr`, `btzeilenzv_pos`, `btzeilenzv_mospid` |
-| `btzeilenuz_` | Assembly line ZUB UGB | `btzeilenuz_btnr`, `btzeilenuz_pos`, `btzeilenuz_elementart` |
-| `marktprod_` | Market product | `marktprod_btnr`, `marktprod_systemid`, `marktprod_marktid` |
-| `bildtaf_` | Image table | `bildtaf_btnr` |
-
-### Key IDs discovered
-- `btnr` - Bildtafel number (image/diagram ID)
-- `mospid` - Model/Series/Production ID
-- `marktid` - Market ID
-- `systemid` - System ID (=1 for BMW)
-- `elementart` - Element type (e.g., 'HP_PAKET' for accessory packages)
-
-## Next Steps for Data Extraction
-
-1. **Start Transbase server** on Windows (needs Windows Node)
-   - Run `tbkern32.exe` or `transbase.exe`
-   - Connect via JDBC
-
-2. **Query etk_publ schema:**
-   ```sql
-   SELECT * FROM @@systable;  -- List all tables
-   SELECT * FROM @@syscolumn; -- List all columns
-   ```
-
-3. **Key publication tables to find:**
-   - Parts master (Teilestamm)
-   - Vehicle models (Fahrzeugmodelle)
-   - Assemblies (Baugruppen)
-   - Part-vehicle mappings
-   - Images/graphics
-
-4. **Alternative: Direct ROM file analysis**
-   - Transbase ROM files have documented structure
-   - Could reverse-engineer without running server
-
-## Tools Needed
-
-- **Java Runtime** - to decompile and run ETK
-- **Transbase client** - to query databases
-- **Windows environment** - ETK is Windows-only
-
-## Notes
-
-- Transbase is still maintained: https://www.transaction.de/
-- ETK has been replaced by ETK Online (web-based)
-- Data structure likely similar to ISTA/Rheingold
+Private repository - BMW ETK data is proprietary.
