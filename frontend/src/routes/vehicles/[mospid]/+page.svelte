@@ -61,6 +61,10 @@
       </div>
     </dl>
   </section>
+
+  <div class="actions">
+    <a class="button" href={`/vehicles/${mospid}/groups?produktart=P`}>Browse catalog</a>
+  </div>
 {/if}
 
 <style>
@@ -86,6 +90,22 @@
   dd {
     margin: 0.2rem 0 0;
     color: #334155;
+  }
+
+  .actions {
+    margin-top: 1.5rem;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1rem;
+    border-radius: 999px;
+    background: #0f172a;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
   }
 
   .error {

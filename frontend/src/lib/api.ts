@@ -40,6 +40,32 @@ export type Vehicle = {
   transmission: string | null;
 };
 
+export type MainGroup = {
+  hg: string;
+  name: string | null;
+  iconUrl: string | null;
+};
+
+export type SubGroup = {
+  fg: string;
+  name: string | null;
+  thumbnailUrl: string | null;
+  diagramNumber: string | null;
+};
+
+export type DiagramPart = {
+  pos: string | null;
+  sachnr: string | null;
+  quantity: number | null;
+  name: string | null;
+};
+
+export type Diagram = {
+  btnr: string;
+  name: string | null;
+  parts: DiagramPart[];
+};
+
 const defaultFetcher = (...args: Parameters<typeof fetch>) => fetch(...args);
 
 export async function searchParts(
@@ -139,6 +165,48 @@ export async function decodeVin(
   const response = await fetcher(`/api/vehicles/vin/${encodeURIComponent(vin)}`);
   if (!response.ok) {
     throw new Error('Failed to decode VIN');
+  }
+  return response.json();
+}
+
+export async function getMainGroups(
+  produktart: string,
+  fetcher: typeof fetch = defaultFetcher
+): Promise<MainGroup[]> {
+  const params = new URLSearchParams();
+  if (produktart) params.set('produktart', produktart);
+
+  const response = await fetcher(`/api/catalog/groups?${params.toString()}`);
+  if (!response.ok) {
+    throw new Error('Failed to load main groups');
+  }
+  return response.json();
+}
+
+export async function getSubGroups(
+  hg: string,
+  produktart: string,
+  fetcher: typeof fetch = defaultFetcher
+): Promise<SubGroup[]> {
+  const params = new URLSearchParams();
+  if (produktart) params.set('produktart', produktart);
+
+  const response = await fetcher(
+    `/api/catalog/groups/${encodeURIComponent(hg)}/subgroups?${params.toString()}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to load sub groups');
+  }
+  return response.json();
+}
+
+export async function getDiagram(
+  btnr: string,
+  fetcher: typeof fetch = defaultFetcher
+): Promise<Diagram> {
+  const response = await fetcher(`/api/catalog/diagrams/${encodeURIComponent(btnr)}`);
+  if (!response.ok) {
+    throw new Error('Failed to load diagram');
   }
   return response.json();
 }
