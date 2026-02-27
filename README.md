@@ -2,6 +2,36 @@
 
 BMW ETK (Electronic Parts Catalog) data extraction and analysis tools.
 
+## Deployment
+
+### Docker Compose
+
+```bash
+# build + run
+mkdir -p data
+
+docker compose up --build
+```
+
+Backend is available at `http://localhost:8080` and frontend at `http://localhost:3000`.
+
+### Kubernetes (production)
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secret.yaml
+kubectl apply -f k8s/pvc.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl apply -f k8s/ingress.yaml
+kubectl apply -f k8s/oauth2-proxy.yaml
+```
+
+Notes:
+- Replace placeholders in `k8s/secret.yaml` before applying.
+- Ingress is configured for `etkx.bimmerz.app` with cert-manager TLS.
+
 ## Database Access
 
 ### Credentials
