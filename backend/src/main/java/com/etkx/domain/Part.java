@@ -21,20 +21,20 @@ public class Part {
 
     @Id
     @Column(name = "teil_sachnr", length = 7, columnDefinition = "CHAR(7)")
-    private String partNumber;
+    private String teilSachnr;
 
     @Column(name = "teil_hauptgr", length = 2, columnDefinition = "CHAR(2)")
-    private String mainGroup;
+    private String teilHauptgr;
 
     @Column(name = "teil_untergrup", length = 2, columnDefinition = "CHAR(2)")
-    private String subGroup;
+    private String teilUntergrup;
 
     @Column(name = "teil_textcode")
-    private Integer textCode;
+    private Integer teilTextcode;
 
     @Column(name = "teil_benennzus", length = 30)
-    private String descriptionSuffix;
+    private String teilBenennzus;
 
     @Column(name = "teil_art", length = 1, columnDefinition = "CHAR(1)")
-    private String partType;
+    private String teilArt;
 }
