@@ -1,0 +1,40 @@
+package com.etkx.domain;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "w_fztyp")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class VehicleType {
+
+    @Id
+    @Column(name = "fztyp_mospid")
+    private Integer mospId;
+
+    @Column(name = "fztyp_baureihe", length = 4)
+    private String series;
+
+    @Column(name = "fztyp_motor", length = 5)
+    private String engine;
+
+    @Column(name = "fztyp_karosserie", length = 10)
+    private String body;
+
+    @Column(name = "fztyp_lenkung", length = 1, columnDefinition = "CHAR(1)")
+    private String steering;
+
+    @Column(name = "fztyp_getriebe", length = 1, columnDefinition = "CHAR(1)")
+    private String transmission;
+}
