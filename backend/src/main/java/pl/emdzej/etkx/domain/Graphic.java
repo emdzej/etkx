@@ -1,47 +1,35 @@
 package pl.emdzej.etkx.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "graphics")
+@Table(name = "w_grafik")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Graphic {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "grafik_grafikid")
+    private Integer graphicId;
 
-    private String fileName;
+    @Column(name = "grafik_laenge")
+    private Integer length;
 
-    private String description;
+    @Column(name = "grafik_art", length = 1)
+    private String type;
 
-    public Graphic() {
-    }
+    @Column(name = "grafik_format", length = 3)
+    private String format;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    @Lob
+    @Column(name = "grafik_blob")
+    private byte[] imageData;
 }

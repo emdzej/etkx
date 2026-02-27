@@ -1,37 +1,39 @@
 package pl.emdzej.etkx.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "diagrams")
+@Table(name = "w_bildtaf")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Diagram {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "bildtaf_btnr", length = 7)
+    private String diagramNumber;
 
-    private String title;
+    @Column(name = "bildtaf_hg", length = 2)
+    private String mainGroup;
 
-    public Diagram() {
-    }
+    @Column(name = "bildtaf_fg", length = 2)
+    private String subGroup;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "bildtaf_produktart", length = 1)
+    private String productType;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "bildtaf_textc")
+    private Integer textCode;
 
-    public String getTitle() {
-        return title;
-    }
+    @Column(name = "bildtaf_grafikid")
+    private Integer graphicId;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    @Column(name = "bildtaf_pos")
+    private Integer position;
 }

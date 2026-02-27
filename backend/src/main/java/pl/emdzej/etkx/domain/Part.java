@@ -1,47 +1,45 @@
 package pl.emdzej.etkx.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "parts")
+@Table(name = "w_teil")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Part {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "teil_sachnr", length = 7)
     private String partNumber;
 
-    private String name;
+    @Column(name = "teil_hauptgr", length = 2)
+    private String mainGroup;
 
-    public Part() {
-    }
+    @Column(name = "teil_untergrup", length = 2)
+    private String subGroup;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "teil_textcode")
+    private Integer textCode;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "teil_benennzus", length = 30)
+    private String supplement;
 
-    public String getPartNumber() {
-        return partNumber;
-    }
+    @Column(name = "teil_art", length = 1)
+    private String type;
 
-    public void setPartNumber(String partNumber) {
-        this.partNumber = partNumber;
-    }
+    @Column(name = "teil_mengeeinh", length = 2)
+    private String quantityUnit;
 
-    public String getName() {
-        return name;
-    }
+    @Column(name = "teil_alt", length = 7)
+    private String oldPart;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Column(name = "teil_tausch", length = 7)
+    private String replacement;
 }
