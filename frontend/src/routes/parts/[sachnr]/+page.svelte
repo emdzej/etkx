@@ -8,4 +8,4 @@
   <title>Part {data.details.sachnr}</title>
 </svelte:head>
 
-<PartDetails details={data.details} usage={data.usage} />
+<PartDetails details={data.details} usage={data.usage} supersession={data.supersession} />

@@ -35,6 +35,12 @@ public class Part {
     @Column(name = "teil_benennzus", length = 30)
     private String teilBenennzus;
 
+    @Column(name = "teil_alt", length = 7, columnDefinition = "CHAR(7)")
+    private String teilAlt;
+
+    @Column(name = "teil_entfall_dat")
+    private Integer teilEntfallDat;
+
     @Column(name = "teil_art", length = 1, columnDefinition = "CHAR(1)")
     private String teilArt;
 }

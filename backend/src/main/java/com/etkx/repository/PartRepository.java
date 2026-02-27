@@ -11,4 +11,6 @@ public interface PartRepository extends JpaRepository<Part, String> {
     List<Part> findByTeilHauptgr(String hg);
 
     List<Part> findByTeilHauptgrAndTeilUntergrup(String hg, String fg);
+
+    List<Part> findByTeilAlt(String sachnr);
 }

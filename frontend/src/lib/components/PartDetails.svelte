@@ -1,9 +1,24 @@
 <script>
-  const { details, usage = [] } = $props();
+  import SupersessionTable from '$lib/components/SupersessionTable.svelte';
+  import SupersessionTree from '$lib/components/SupersessionTree.svelte';
+  import { addPart } from '$lib/stores/PartsListStore';
+
+  const { details, usage = [], supersession } = $props();
+
+  let quantity = $state(1);
+  let view = $state('table');
 </script>
 
 <section class="details">
-  <h2>Part {details.sachnr}</h2>
+  <div class="details-header">
+    <h2>Part {details.sachnr}</h2>
+    <div class="actions">
+      <input type="number" min="1" bind:value={quantity} />
+      <button type="button" on:click={() => addPart(details.sachnr, quantity)}>
+        Add to list
+      </button>
+    </div>
+  </div>
   <dl>
     <div>
       <dt>Name</dt>
@@ -60,9 +75,95 @@
   {/if}
 </section>
 
+<section class="supersession">
+  <div class="supersession-header">
+    <h3>Supersession</h3>
+    <div class="view-toggle">
+      <button
+        type="button"
+        class:active={view === 'table'}
+        on:click={() => (view = 'table')}
+      >
+        Table
+      </button>
+      <button
+        type="button"
+        class:active={view === 'tree'}
+        on:click={() => (view = 'tree')}
+      >
+        Tree
+      </button>
+    </div>
+  </div>
+  {#if view === 'tree'}
+    <SupersessionTree supersession={supersession} />
+  {:else}
+    <SupersessionTable supersession={supersession} />
+  {/if}
+</section>
+
 <style>
   .details {
     margin-bottom: 2rem;
+  }
+
+  .details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .actions input {
+    width: 4.5rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .actions button {
+    padding: 0.5rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid #cbd5f5;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .supersession {
+    margin-top: 2rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .supersession-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .view-toggle {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .view-toggle button {
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid #cbd5f5;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .view-toggle button.active {
+    background: #0f172a;
+    color: #fff;
+    border-color: #0f172a;
   }
 
   dl {
