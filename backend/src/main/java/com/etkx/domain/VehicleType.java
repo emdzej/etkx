@@ -21,20 +21,20 @@ public class VehicleType {
 
     @Id
     @Column(name = "fztyp_mospid")
-    private Integer mospId;
+    private Integer fztypMospid;
 
     @Column(name = "fztyp_baureihe", length = 4)
-    private String series;
+    private String fztypBaureihe;
 
     @Column(name = "fztyp_motor", length = 5)
-    private String engine;
+    private String fztypMotor;
 
     @Column(name = "fztyp_karosserie", length = 10)
-    private String body;
+    private String fztypKarosserie;
 
     @Column(name = "fztyp_lenkung", length = 1, columnDefinition = "CHAR(1)")
-    private String steering;
+    private String fztypLenkung;
 
     @Column(name = "fztyp_getriebe", length = 1, columnDefinition = "CHAR(1)")
-    private String transmission;
+    private String fztypGetriebe;
 }
