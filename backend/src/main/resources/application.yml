@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:${ETK_DB_PATH:./data/etk.sqlite}
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
