@@ -5,7 +5,7 @@
   let mainGroup = $state('');
   let subGroup = $state('');
 
-  const submit = (event: SubmitEvent) => {
+  const submit = (event) => {
     event.preventDefault();
     onSearch?.({
       query: query.trim(),
