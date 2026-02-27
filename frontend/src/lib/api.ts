@@ -22,6 +22,19 @@ export type PartUsage = {
   subGroup: string | null;
 };
 
+export type SupersessionItem = {
+  nr: number;
+  sachnr: string;
+  description: string | null;
+  expiration: string | null;
+};
+
+export type Supersession = {
+  searched: string;
+  current: string;
+  chain: SupersessionItem[];
+};
+
 export type Series = {
   series: string;
   name: string | null;
@@ -104,6 +117,20 @@ export async function getPartUsage(
   const response = await fetcher(`/api/parts/${encodeURIComponent(sachnr)}/usage`);
   if (!response.ok) {
     throw new Error('Failed to load part usage');
+  }
+  return response.json();
+}
+
+export async function getSupersession(
+  sachnr: string,
+  view: 'table' | 'tree' = 'table',
+  fetcher: typeof fetch = defaultFetcher
+): Promise<Supersession> {
+  const response = await fetcher(
+    `/api/parts/${encodeURIComponent(sachnr)}/supersession?view=${encodeURIComponent(view)}`
+  );
+  if (!response.ok) {
+    throw new Error('Failed to load supersession data');
   }
   return response.json();
 }
