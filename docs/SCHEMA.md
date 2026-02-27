@@ -259,3 +259,20 @@ w_teil (parts)
 - Graphics stored as BLOBs in w_grafik
 - Text in multiple languages via w_publben (ISO/RegISO codes)
 - Conditions system is complex (bed_bedkez links to multiple condition types)
+
+---
+
+## Database Access
+
+### Credentials
+- **User:** `tbadmin`
+- **Password:** `altabe` (hardcoded in `ServerGlobalObjects.java`)
+
+### Connection
+- **JDBC URL:** `jdbc:transbase://<host>:2024/<database>`
+- **Databases:** `etk_publ`, `etk_nutzer`, `etk_preise`
+- **Port:** 2024
+
+### Remote Access
+ETK Transbase on Windows XP (192.168.101.150) listens on all interfaces (0.0.0.0:2024).
+Remote JDBC connection works with credentials above.
