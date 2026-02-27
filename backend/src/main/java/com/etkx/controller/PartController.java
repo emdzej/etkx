@@ -3,6 +3,7 @@ package com.etkx.controller;
 import com.etkx.dto.PartDetailsDto;
 import com.etkx.dto.PartSearchResultDto;
 import com.etkx.dto.PartUsageDto;
+import com.etkx.dto.SupersessionDto;
 import com.etkx.service.PartService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -39,5 +40,15 @@ public class PartController {
     @GetMapping("/{sachnr}/usage")
     public List<PartUsageDto> getPartUsage(@PathVariable String sachnr) {
         return partService.getPartUsage(sachnr);
+    }
+
+    @GetMapping("/{sachnr}/supersession")
+    public SupersessionDto getSupersession(
+            @PathVariable String sachnr,
+            @RequestParam(name = "view", defaultValue = "table") String view
+    ) {
+        partService.getPartDetails(sachnr)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Part not found"));
+        return partService.getSupersession(sachnr);
     }
 }

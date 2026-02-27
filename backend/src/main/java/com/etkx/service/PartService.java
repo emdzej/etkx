@@ -4,13 +4,21 @@ import com.etkx.domain.Part;
 import com.etkx.dto.PartDetailsDto;
 import com.etkx.dto.PartSearchResultDto;
 import com.etkx.dto.PartUsageDto;
+import com.etkx.dto.SupersessionDto;
+import com.etkx.dto.SupersessionItemDto;
 import com.etkx.repository.PartRepository;
 import com.etkx.repository.PublbenRepository;
+import com.etkx.repository.TeileersetzungRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +32,7 @@ public class PartService {
 
     private final PartRepository partRepository;
     private final PublbenRepository publbenRepository;
+    private final TeileersetzungRepository teileersetzungRepository;
     private final EntityManager entityManager;
 
     public List<PartSearchResultDto> searchParts(String query, String hg, String fg) {
@@ -106,6 +115,61 @@ public class PartService {
                         .subGroup(stringValue(columns[3]))
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    public SupersessionDto getSupersession(String sachnr) {
+        if (!StringUtils.hasText(sachnr)) {
+            return SupersessionDto.builder()
+                    .searched(sachnr)
+                    .current(sachnr)
+                    .chain(List.of())
+                    .build();
+        }
+
+        List<SupersessionItemDto> chain = new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+        buildSupersessionChain(sachnr, chain, visited);
+
+        String current = chain.isEmpty()
+                ? sachnr
+                : chain.get(chain.size() - 1).getSachnr();
+
+        return SupersessionDto.builder()
+                .searched(sachnr)
+                .current(current)
+                .chain(chain)
+                .build();
+    }
+
+    private void buildSupersessionChain(String sachnr, List<SupersessionItemDto> chain, Set<String> visited) {
+        if (!StringUtils.hasText(sachnr) || !visited.add(sachnr)) {
+            return;
+        }
+
+        partRepository.findById(sachnr)
+                .map(part -> SupersessionItemDto.builder()
+                        .nr(chain.size() + 1)
+                        .sachnr(part.getTeilSachnr())
+                        .description(resolveName(part.getTeilTextcode()))
+                        .expiration(toDate(part.getTeilEntfallDat()))
+                        .build())
+                .ifPresent(chain::add);
+
+        List<String> replacements = teileersetzungRepository.findReplacementSachnrs(sachnr);
+        for (String replacement : replacements) {
+            buildSupersessionChain(replacement, chain, visited);
+        }
+    }
+
+    private LocalDate toDate(Integer date) {
+        if (date == null) {
+            return null;
+        }
+        String raw = date.toString();
+        if (raw.length() != 8) {
+            return null;
+        }
+        return LocalDate.parse(raw, DateTimeFormatter.BASIC_ISO_DATE);
     }
 
     private String resolveName(Integer textCode) {
