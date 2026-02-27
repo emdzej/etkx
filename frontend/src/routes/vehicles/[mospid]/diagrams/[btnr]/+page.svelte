@@ -3,7 +3,7 @@
   import { page } from '$app/stores';
   import { getDiagram } from '$lib/api';
   import DiagramView from '$lib/components/DiagramView.svelte';
-  import PartsList from '$lib/components/PartsList.svelte';
+  import DiagramPartsList from '$lib/components/DiagramPartsList.svelte';
 
   let diagram = $state(null);
   let loading = $state(false);
@@ -41,7 +41,7 @@
 {:else if diagram}
   <div class="layout">
     <DiagramView imageUrl={`/api/catalog/diagrams/${btnr}/image`} title={diagram.name ?? 'Diagram'} />
-    <PartsList parts={diagram.parts ?? []} />
+    <DiagramPartsList parts={diagram.parts ?? []} />
   </div>
 {/if}
 
