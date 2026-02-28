@@ -4,14 +4,15 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
  * Represents a function group (FG) within a main group.
  * Maps to the w_hgfg table for hierarchical parts catalog structure.
+ * 
+ * Note: MainGroup and SubGroup both map to w_hgfg with composite PK.
+ * No JPA relationship between them - use queries to join by hgfg_hg.
  */
 @Entity
 @Table(name = "w_hgfg")
@@ -49,11 +50,4 @@ public class SubGroup {
      */
     @Column(name = "hgfg_ist_valueline")
     private String valueLineFlag;
-
-    /**
-     * Parent main group.
-     */
-    @ManyToOne
-    @JoinColumn(name = "hgfg_hg", referencedColumnName = "hgfg_hg", insertable = false, updatable = false)
-    private MainGroup mainGroup;
 }
