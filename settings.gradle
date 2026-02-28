@@ -1,5 +1,3 @@
 rootProject.name = 'etkx'
 
-include 'backend'
-include 'dal'
-include 'api'
+include 'service'

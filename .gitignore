@@ -5,3 +5,5 @@ dist/
 *.rom
 *.000
 data
+build
+**/build.idea
