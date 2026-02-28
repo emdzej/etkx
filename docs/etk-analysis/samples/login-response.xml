@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PSEUDO‑XML representation of the Java‑serialized TrfHashMap response for LOGIN.
+  Real ETK traffic is Java serialization (ObjectInputStream), not XML.
+-->
+<TrfHashMap commandID="2" response="true">
+  <entry key="webetkSession" type="LoginInfo">
+    <LoginInfo>
+      <Login>user</Login>
+      <FirmaId>123</FirmaId>
+      <FilialeId>001</FilialeId>
+      <Session>ABCDEF123456</Session>
+      <Username>John Doe</Username>
+      <Language>de</Language>
+      <LangRegion>DE</LangRegion>
+    </LoginInfo>
+  </entry>
+</TrfHashMap>

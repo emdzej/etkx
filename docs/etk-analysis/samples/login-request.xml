@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PSEUDO‑XML representation of the Java‑serialized TrfHashMap used for LOGIN (service=2).
+  Real ETK traffic is Java serialization (ObjectOutputStream), not XML.
+-->
+<TrfHashMap commandID="2">
+  <entry key="firmaid" type="String">123</entry>
+  <entry key="filialid" type="String">001</entry>
+  <entry key="filialid_alt" type="String">001</entry>
+  <entry key="username" type="String">user</entry>
+  <entry key="pwd" type="String">password</entry>
+  <entry key="us_filename" type="String">US_DEALER.DAT</entry>
+</TrfHashMap>
