@@ -8,6 +8,8 @@ Total queries: 3
 - w_teileinfo ↔ w_ben_gk ↔ w_publben ↔ w_teil
 
 ## RETRIEVE_ANZ_NOTIZEN
+**Description:** Retrieves data from w_teileinfo filtered by teileinfo_user_id. Used in the NotizuebersichtHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo
@@ -20,6 +22,8 @@ select count (*) ANZ from w_teileinfo@etk_nutzer where teileinfo_user_id = '&NUT
 ```
 
 ## RETRIEVE_MIN_HG
+**Description:** Retrieves data from w_teil, w_teileinfo filtered by teileinfo_user_id, teil_sachnr. Used in the NotizuebersichtHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teileinfo
@@ -32,6 +36,8 @@ select min(teil_hauptgr) HG from w_teil, w_teileinfo@etk_nutzer where teileinfo_
 ```
 
 ## RETRIEVE_NOTIZEN
+**Description:** Retrieves data from w_teileinfo, w_ben_gk, w_publben, w_teil filtered by teileinfo_user_id, teileinfo_sachnr, teil_textcode, ben_iso, ben_regiso, publben_art, teileinfo_gueltig_bis_monat, publben_textcode and ordered by HG, UG, SACHNR. Used in the NotizuebersichtHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo, w_ben_gk, w_publben, w_teil

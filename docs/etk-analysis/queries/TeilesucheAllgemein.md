@@ -7,6 +7,8 @@ Total queries: 1
 - w_bildtaf ↔ w_markt_etk ↔ w_ben_gk
 
 ## LOAD_MARKT_BENENNUNG
+**Description:** Retrieves data from w_bildtaf, w_markt_etk, w_ben_gk filtered by marktetk_lkz, ben_iso, ben_regiso, bildtaf_produktart. Used in the TeilesucheAllgemein module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf, w_markt_etk, w_ben_gk

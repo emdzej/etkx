@@ -10,6 +10,8 @@ Total queries: 5
 - w_teil ↔ w_ben_gk ↔ w_teil_marken ↔ w_normnummer
 
 ## RETRIEVE_BENENNUNGEN
+**Description:** Retrieves data from w_normteilben, w_ben_gk filtered by normteilben_marke_tps, normteilben_produktart, normteilben_textcode, ben_iso, ben_regiso and ordered by BENENNUNG. Used in the Normteile module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_normteilben, w_ben_gk
@@ -22,6 +24,8 @@ select distinct ben_text BENENNUNG, normteilben_textcode TEXTCODE from w_normtei
 ```
 
 ## RETRIEVE_TEILE_ZU_BENENNUNG
+**Description:** Retrieves data from w_teil, w_ben_gk, w_teil_marken, w_normnummer filtered by teil_textcode, ben_iso, ben_regiso, teilm_marke_tps, teil_produktart, teil_hauptgr, teil_untergrup, teil_lkz, teil_technik, teil_dispo, teil_entfall_dat and ordered by ZUSATZ, NORMNUMMER. Used in the Normteile module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_ben_gk, w_teil_marken, w_normnummer
@@ -34,6 +38,8 @@ select distinct ben_text BENENNUNG, teil_hauptgr HG, teil_untergrup UG, teil_sac
 ```
 
 ## RETRIEVE_TEILE_ZU_NORMNUMMER
+**Description:** Retrieves data from w_teil, w_ben_gk, w_teil_marken, w_normnummer filtered by teil_textcode, ben_iso, ben_regiso, teilm_marke_tps, teil_produktart, teil_normnummer, teil_hauptgr, teil_untergrup, teil_lkz, teil_technik, teil_dispo, teil_entfall_dat and ordered by ZUSATZ, NORMNUMMER. Used in the Normteile module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_ben_gk, w_teil_marken, w_normnummer
@@ -46,6 +52,8 @@ select distinct teil_hauptgr HG, teil_untergrup UG, teil_sachnr SACHNUMMER, ben_
 ```
 
 ## RETRIEVE_NORMNUMMERN_GRUPPEN
+**Description:** Retrieves data from w_normnummergruppe, w_grafik filtered by nng_marke_tps, nng_produktart, nng_grafikid, grafik_art and ordered by POS. Used in the Normteile module to support ETK workflows for standard parts.
+
 
 - Type: SELECT
 - Tables: w_normnummergruppe, w_grafik
@@ -58,6 +66,8 @@ select nng_nngid NUMMER, nng_grafikid GRAFIKID, nng_pos POS, grafik_moddate TS f
 ```
 
 ## RETRIEVE_NORMNUMMERN
+**Description:** Retrieves data from w_normnummer, w_grafik filtered by nn_marke_tps, nn_produktart, nn_nngid, nn_grafikid, grafik_art and ordered by POS. Used in the Normteile module to support ETK workflows for standard parts.
+
 
 - Type: SELECT
 - Tables: w_normnummer, w_grafik

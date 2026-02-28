@@ -9,6 +9,8 @@ Total queries: 5
 - w_publben ↔ w_ben_gk
 
 ## RETRIEVE_FGS
+**Description:** Retrieves data from w_hgfg_mosp, w_bildtaf, w_hgfg, w_ben_gk, w_btzeilenugb_verbauung filtered by hgfgm_mospid, hgfgm_hg, hgfgm_fg, hgfgm_produktart, hgfgm_bereich, hgfg_textcode, ben_iso, ben_regiso, bildtaf_hg, bildtaf_produktart, bildtaf_vbereich, bildtaf_btnr, btzeilenuv_marke_tps, bildtaf_fg, hgfg_bereich and ordered by 1, 2. Used in the TechnischeLiteratur module to support ETK workflows for hgfg mosp data.
+
 
 - Type: SELECT
 - Tables: w_hgfg_mosp, w_bildtaf, w_hgfg, w_ben_gk, w_btzeilenugb_verbauung
@@ -21,6 +23,8 @@ select hgfg_hg Hauptgruppe, hgfg_fg Funktionsgruppe, ben_text Benennung from w_h
 ```
 
 ## RETRIEVE_SPRACHEN
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Benennung. Used in the TechnischeLiteratur module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk
@@ -33,6 +37,8 @@ select substr(publben_bezeichnung, 1, 2) SpracheISO, substr(publben_bezeichnung,
 ```
 
 ## LOAD_TECHNISCHE_LITERATUR
+**Description:** Retrieves data from w_bildtaf, w_btzeilen, w_teil, w_ben_gk, w_btzeilen_verbauung, w_btzeilenugb, w_btzeilenugb_verbauung filtered by bildtaf_btnr, btzeilen_bildposnr, ben_iso, ben_regiso, btzeilen_pos, btzeilenv_mospid, bildtaf_fg, bildtaf_bteart, bildtaf_produktart, bildtaf_vbereich, btzeilenu_bildposnr, btzeilenu_pos, btzeilenuv_marke_tps and ordered by Benennung, Kommentar, Einsatz. Used in the TechnischeLiteratur module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf, w_btzeilen, w_teil, w_ben_gk, w_btzeilen_verbauung, w_btzeilenugb, w_btzeilenugb_verbauung
@@ -45,6 +51,8 @@ select teil_hauptgr HG, teil_untergrup UG, teil_sachnr Sachnummer, teil_ist_eba 
 ```
 
 ## TL_SPRACHE_STMT_GEB
+**Description:** Retrieves data from w_tl_sprache_bnb filtered by btzeilen_bildposnr, tlsb_regiso. Used in the TechnischeLiteratur module to support ETK workflows for tl sprache bnb data.
+
 
 - Type: SELECT
 - Tables: w_tl_sprache_bnb
@@ -57,6 +65,8 @@ and btzeilen_bildposnr = (select tlsb_bildnummer from w_tl_sprache_bnb where tls
 ```
 
 ## TL_SPRACHE_STMT_UGB
+**Description:** Retrieves data from w_tl_sprache_bnb filtered by btzeilenu_bildposnr, tlsb_regiso. Used in the TechnischeLiteratur module to support ETK workflows for tl sprache bnb data.
+
 
 - Type: SELECT
 - Tables: w_tl_sprache_bnb

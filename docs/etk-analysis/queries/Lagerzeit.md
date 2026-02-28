@@ -8,6 +8,8 @@ Total queries: 2
 - w_teil ↔ w_teil_marken ↔ w_ben_gk ↔ w_tc_performance_allg
 
 ## RETRIEVE_HGS
+**Description:** Retrieves data from w_teil, w_teil_marken filtered by teil_lzb, teil_hauptgr, teil_produktart, teil_sachnr, teilm_marke_tps and ordered by HG. Used in the Lagerzeit module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken
@@ -20,6 +22,8 @@ select distinct teil_hauptgr HG from w_teil, w_teil_marken  where teil_lzb = 'J'
 ```
 
 ## RETRIEVE_TEILE
+**Description:** Retrieves data from w_teil, w_teil_marken, w_ben_gk, w_tc_performance_allg filtered by teil_sachnr, teilm_marke_tps, ben_iso, ben_regiso, tcp_marke_tps, tcp_produktart, tcp_vbereich, tcp_datum_von, tcp_datum_bis, teil_hauptgr, teil_produktart and ordered by HG, UG, SACHNR. Used in the Lagerzeit module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken, w_ben_gk, w_tc_performance_allg

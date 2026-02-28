@@ -10,6 +10,8 @@ Total queries: 5
 - w_bte_bedkurz ↔ w_bildtaf ↔ w_ben_gk ↔ w_bed_sala ↔ w_bed ↔ w_eg ↔ w_bte_bedelem
 
 ## LOAD_BT_STAMM
+**Description:** Retrieves data from w_bildtaf, w_grafik, w_bildtafzub, w_ben_gk filtered by bildtaf_grafikid, ben_iso, ben_regiso. Used in the BedAuswertung module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf, w_grafik, w_bildtafzub, w_ben_gk
@@ -22,6 +24,8 @@ select distinct bildtaf_hg HG, bildtaf_fg FG, bildtaf_btnr BildtafelNr, bildtaf_
 ```
 
 ## LOAD_BT_STAMM_CP
+**Description:** Retrieves data from w_bildtaf_cp filtered by bildtafc_btnr and ordered by Art, Datum. Used in the BedAuswertung module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf_cp
@@ -34,6 +38,8 @@ select distinct bildtafc_art Art, bildtafc_datum Datum from w_bildtaf_cp where b
 ```
 
 ## LOAD_BT_BEDINGUNGEN_SALA
+**Description:** Retrieves data from w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed_sala, w_bed, w_eg, w_bte_bedelem filtered by btebk_btnr, btebk_mospid, btebk_kez, btebe_elemid, bed_elemid, bed_egid, bed_textcode, ben_iso, ben_regiso, bildtaf_btnr, bildtaf_bedkez and ordered by EGruppenPosition, PrimaNr. Used in the BedAuswertung module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed_sala, w_bed, w_eg, w_bte_bedelem
@@ -46,6 +52,8 @@ select distinct btebe_elemid ElementId, bedsala_art || bedsala_pnr || bedsala_hz
 ```
 
 ## LOAD_BT_BEDINGUNGEN_AFL
+**Description:** Retrieves data from w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed_afl, w_bed, w_eg, w_bte_bedelem filtered by btebk_btnr, btebk_mospid, btebk_kez, btebe_elemid, bed_elemid, bed_egid, bed_textcode, ben_iso, ben_regiso, bildtaf_btnr, bildtaf_bedkez and ordered by EGruppenPosition, Code. Used in the BedAuswertung module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed_afl, w_bed, w_eg, w_bte_bedelem
@@ -58,6 +66,8 @@ select distinct btebe_elemid ElementId, bedafl_code Code, ben_text Benennung, be
 ```
 
 ## LOAD_BT_BEDINGUNGEN_TEXT
+**Description:** Retrieves data from w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed, w_eg, w_bte_bedelem filtered by btebk_btnr, btebk_mospid, btebk_kez, btebe_elemid, bed_ogid, bed_egid, bed_textcode, ben_iso, ben_regiso, bildtaf_btnr, bildtaf_bedkez and ordered by EGruppenPosition, Benennung. Used in the BedAuswertung module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedkurz, w_bildtaf, w_ben_gk, w_bed, w_eg, w_bte_bedelem

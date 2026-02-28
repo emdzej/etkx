@@ -9,6 +9,8 @@ Total queries: 4
 - w_teil ↔ w_teil_marken ↔ w_ben_gk
 
 ## RETRIEVE_TEIL_ZU_MARKE_PROD
+**Description:** Retrieves data from w_teil, w_teil_marken, w_ben_gk filtered by teil_sachnr, teil_produktart, teilm_sachnr, teilm_marke_tps, teil_textcode, ben_iso, ben_regiso. Used in the TeilevwdgTeil module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken, w_ben_gk
@@ -21,6 +23,8 @@ select teil_hauptgr HG, teil_untergrup UG, ben_text BEN    , teil_ist_diebstahlr
 ```
 
 ## RETRIEVE_TEIL
+**Description:** Retrieves data from w_teil, w_teil_marken, w_ben_gk filtered by teil_sachnr, teil_textcode, ben_iso, ben_regiso. Used in the TeilevwdgTeil module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken, w_ben_gk
@@ -33,6 +37,8 @@ select teil_hauptgr HG,  teil_untergrup UG,  teilm_marke_tps MARKE,  teil_produk
 ```
 
 ## RETRIEVE_BAUREIHEN
+**Description:** Retrieves data from w_btzeilen_verbauung, w_btzeilen, w_ben_gk, w_baureihe, w_fztyp filtered by btzeilenv_sachnr, btzeilen_btnr, btzeilen_pos, btzeilen_bildposnr, btzeilenv_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_baureihe, baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_textcode, ben_iso, ben_regiso and ordered by POS. Used in the TeilevwdgTeil module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_btzeilen, w_ben_gk, w_baureihe, w_fztyp
@@ -45,6 +51,8 @@ select distinct baureihe_baureihe BAUREIHE, ben_text EXT_BAUREIHE, baureihe_posi
 ```
 
 ## RETRIEVE_MODELLSPALTEN
+**Description:** Retrieves data from w_fztyp, w_markt_etk, w_ben_gk, w_publben, w_baureihe, w_btzeilen, w_btzeilen_verbauung, w_bildtaf filtered by marktetk_lkz, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_mospid, btzeilenv_sachnr, btzeilen_btnr, btzeilen_pos, btzeilen_bildposnr, btzeilenv_btnr, fztyp_baureihe, fztyp_karosserie, publben_art, publben_textcode, ben_iso, ben_regiso, bildtaf_textc and ordered by MODELL, BTNR, KAROSSERIE, REGION. Used in the TeilevwdgTeil module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_markt_etk, w_ben_gk, w_publben, w_baureihe, w_btzeilen, w_btzeilen_verbauung, w_bildtaf

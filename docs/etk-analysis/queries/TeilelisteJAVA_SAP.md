@@ -7,6 +7,8 @@ Total queries: 9
 - w_ben_gk ↔ w_publben ↔ w_teileliste_hist
 
 ## LOAD_TEILELISTE_HIST
+**Description:** Retrieves data from w_ben_gk, w_publben, w_teileliste_hist filtered by teilelistehist_firma_id, teilelistehist_id, teilelistehist_user_id, publben_bezeichnung, ben_textcode, ben_iso, ben_regiso, publben_art and ordered by teilelistehist_datum. Used in the TeilelisteJAVA_SAP module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_publben, w_teileliste_hist
@@ -19,6 +21,8 @@ select teilelistehist_datum Datum, ben_text Funktion, teilelistehist_abfrage_id 
 ```
 
 ## DELETE_TEILELISTE_HIST
+**Description:** Deletes records from w_teileliste_hist filtered by teilelistehist_firma_id, teilelistehist_id, teilelistehist_user_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_hist
@@ -31,6 +35,8 @@ delete from w_teileliste_hist where teilelistehist_firma_id = '&FIRMA&' and teil
 ```
 
 ## INSERT_TEILELISTE_HIST
+**Description:** Inserts records in w_teileliste_hist. Used in the TeilelisteJAVA_SAP module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste_hist
@@ -43,6 +49,8 @@ insert into w_teileliste_hist ( teilelistehist_firma_id, teilelistehist_id, teil
 ```
 
 ## LOAD_NUTZERDATEN
+**Description:** Retrieves data from w_user_rr filtered by user_rr_firma_id, user_rr_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_rr
@@ -55,6 +63,8 @@ select user_rr_name Name, user_rr_telefon Telefon, user_rr_email Email, user_rr_
 ```
 
 ## INSERT_NUTZERDATEN
+**Description:** Inserts records in w_user_rr. Used in the TeilelisteJAVA_SAP module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_rr
@@ -67,6 +77,8 @@ insert into w_user_rr ( user_rr_firma_id, user_rr_id, user_rr_name, user_rr_tele
 ```
 
 ## UPDATE_NUTZERDATEN
+**Description:** Updates records in w_user_rr filtered by user_rr_firma_id, user_rr_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user_rr
@@ -79,6 +91,8 @@ update w_user_rr set user_rr_name = &NAME&, user_rr_telefon = &TELEFON&, user_rr
 ```
 
 ## UPDATE_ID_IN_LISTEPOS
+**Description:** Updates records in w_teilelistepos filtered by teilelistepos_teileliste_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teilelistepos
@@ -91,6 +105,8 @@ update w_teilelistepos set teilelistepos_teileliste_id = '&NEWID&' where teileli
 ```
 
 ## UPDATE_ID_IN_LISTEHIST
+**Description:** Updates records in w_teileliste_hist filtered by teilelistehist_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste_hist
@@ -103,6 +119,8 @@ update w_teileliste_hist set teilelistehist_id = '&NEWID&' where teilelistehist_
 ```
 
 ## UPDATE_ID_IN_LISTE
+**Description:** Updates records in w_teileliste filtered by teileliste_id. Used in the TeilelisteJAVA_SAP module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste

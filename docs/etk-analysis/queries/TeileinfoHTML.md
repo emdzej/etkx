@@ -3,6 +3,8 @@
 Total queries: 3
 
 ## RETRIEVE_TEILEINFO_NOTIZ
+**Description:** Retrieves data from w_teileinfo filtered by teileinfo_sachnr, teileinfo_user_id. Used in the TeileinfoHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo
@@ -15,6 +17,8 @@ select teileinfo_notiz Notiz, teileinfo_gueltig_bis_monat BisMonat, teileinfo_gu
 ```
 
 ## DELETE_TEILEINFO_NOTIZ
+**Description:** Deletes records from w_teileinfo filtered by teileinfo_sachnr, teileinfo_user_id. Used in the TeileinfoHTML module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileinfo
@@ -27,6 +31,8 @@ delete from w_teileinfo@etk_nutzer where teileinfo_sachnr = '&SACHNR&' and teile
 ```
 
 ## INSERT_TEILEINFO_NOTIZ
+**Description:** Inserts records in w_teileinfo. Used in the TeileinfoHTML module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileinfo

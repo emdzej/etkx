@@ -14,6 +14,8 @@ Total queries: 10
 - w_btzeilen_verbauung ↔ w_btzeilenugb ↔ w_ben_gk ↔ w_teil_marken ↔ w_teil
 
 ## RETRIEVE_BAUREIHEN
+**Description:** Retrieves data from w_baureihe, w_fztyp, w_bildtaf_suche, w_bildtaf, w_ben_gk filtered by SUCHSTR, ben_iso, ben_regiso, bildtaf_textc, bildtafs_btnr, bildtafs_hg, fztyp_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, baureihe_baureihe, baureihe_marke_tps, baureihe_produktart, ben_textcode and ordered by POS. Used in the TeilevwdgBen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp, w_bildtaf_suche, w_bildtaf, w_ben_gk
@@ -26,6 +28,8 @@ select distinct baureihe_baureihe BAUREIHE, benbr.ben_text EXT_BAUREIHE, baureih
 ```
 
 ## RETRIEVE_BAUREIHEN_SONDERLOCKE
+**Description:** Retrieves data from w_baureihe, w_fztyp, w_bildtaf_suche, w_bildtaf, w_ben_gk filtered by SUCHSTR, ben_iso, ben_regiso, bildtaf_textc, bildtafs_btnr, bildtafs_hg, fztyp_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, baureihe_baureihe, baureihe_marke_tps, baureihe_produktart, ben_textcode and ordered by POS. Used in the TeilevwdgBen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp, w_bildtaf_suche, w_bildtaf, w_ben_gk
@@ -38,6 +42,8 @@ select distinct baureihe_baureihe BAUREIHE, benbr.ben_text EXT_BAUREIHE, baureih
 ```
 
 ## RETRIEVE_BAUREIHEN_TR
+**Description:** Retrieves data from w_baureihe, w_ben_gk, w_bildtaf, w_bildtaf_marke, w_bildtaf_suche, w_fztyp filtered by ben_textcode, ben_iso, ben_regiso, bildtaf_vbereich, bildtaf_produktart, bildtafm_marke_tps, bildtafs_btnr, SUCHSTR and ordered by POS. Used in the TeilevwdgBen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_ben_gk, w_bildtaf, w_bildtaf_marke, w_bildtaf_suche, w_fztyp
@@ -50,6 +56,8 @@ select distinct baureihe_baureihe BAUREIHE, ben_text EXT_BAUREIHE, baureihe_posi
 ```
 
 ## RETRIEVE_MODELLSPALTEN
+**Description:** Retrieves data from w_ben_gk, w_markt_etk, w_bildtaf_marke, w_bildtaf_suche, w_fztyp, w_baureihe, w_publben, w_bildtaf filtered by marktetk_lkz, ben_regiso, SUCHSTR, ben_textcode, bildtaf_vbereich, bildtaf_produktart, bildtafm_btnr, bildtafm_marke_tps, bildtaf_hg, bildtaf_btnr, bildtafs_mospid, fztyp_baureihe, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_karosserie, publben_art, publben_textcode, ben_iso, bildtaf_textc and ordered by MODELL, BTNR, KAROSSERIE, REGION. Used in the TeilevwdgBen module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_markt_etk, w_bildtaf_marke, w_bildtaf_suche, w_fztyp, w_baureihe, w_publben, w_bildtaf
@@ -62,6 +70,8 @@ select distinct bildtaf_btnr BTNR, B.ben_text BTUEBERSCHRIFT, fztyp_erwvbez MODE
 ```
 
 ## RETRIEVE_MODELLSPALTEN_SONDERLOCKE
+**Description:** Retrieves data from w_ben_gk, w_markt_etk, w_bildtaf_suche, w_bildtaf_marke, w_fztyp, w_baureihe, w_publben, w_bildtaf filtered by marktetk_lkz, ben_regiso, SUCHSTR, ben_textcode, bildtaf_vbereich, bildtaf_produktart, bildtafm_btnr, bildtafm_marke_tps, bildtaf_hg, bildtaf_btnr, bildtafs_mospid, fztyp_baureihe, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_karosserie, publben_art, publben_textcode, ben_iso, bildtaf_textc and ordered by MODELL, BTNR, KAROSSERIE, REGION. Used in the TeilevwdgBen module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_markt_etk, w_bildtaf_suche, w_bildtaf_marke, w_fztyp, w_baureihe, w_publben, w_bildtaf
@@ -74,6 +84,8 @@ select distinct bildtaf_btnr BTNR, B.ben_text BTUEBERSCHRIFT, fztyp_erwvbez MODE
 ```
 
 ## RETRIEVE_BAUREIHEN_TNR
+**Description:** Retrieves data from w_baureihe, w_fztyp, w_ben_gk, w_btzeilen_verbauung filtered by btzeilenv_sachnr, fztyp_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, baureihe_baureihe, baureihe_marke_tps, baureihe_produktart, ben_textcode, ben_iso, ben_regiso and ordered by POS. Used in the TeilevwdgBen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp, w_ben_gk, w_btzeilen_verbauung
@@ -86,6 +98,8 @@ select distinct baureihe_baureihe BAUREIHE, benbr.ben_text EXT_BAUREIHE, baureih
 ```
 
 ## RETRIEVE_MODELLSPALTEN_TNR
+**Description:** Retrieves data from w_bildtaf_marke, w_markt_etk, w_bildtaf_suche, w_fztyp, w_baureihe, w_ben_gk, w_publben, w_btzeilen_verbauung, w_bildtaf filtered by marktetk_lkz, btzeilenv_btnr, bildtaf_vbereich, bildtaf_produktart, bildtafm_btnr, bildtafm_marke_tps, bildtaf_hg, bildtaf_btnr, bildtafs_mospid, fztyp_baureihe, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_karosserie, publben_art, publben_textcode, ben_iso, ben_regiso, bildtaf_textc and ordered by MODELL, BTNR, KAROSSERIE, REGION. Used in the TeilevwdgBen module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf_marke, w_markt_etk, w_bildtaf_suche, w_fztyp, w_baureihe, w_ben_gk, w_publben, w_btzeilen_verbauung, w_bildtaf
@@ -98,6 +112,8 @@ select distinct btzeilenv_vmenge MENGE, bildtaf_btnr BTNR, B.ben_text BTUEBERSCH
 ```
 
 ## SEARCH_SNR_TVBENENNUNG
+**Description:** Retrieves data from w_btzeilen_verbauung, w_btzeilenugb, w_ben_gk, w_teil_marken, w_teil filtered by ben_textcode, ben_iso, ben_regiso, SUCHSTR, teilm_marke_tps, teil_verbaubar, teil_produktart, btzeilenv_sachnr, dist, btzeilenu_sachnr and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the TeilevwdgBen module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_btzeilenugb, w_ben_gk, w_teil_marken, w_teil
@@ -110,6 +126,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_SNR_TVBENENNUNG_SONDERLOCKE
+**Description:** Retrieves data from w_btzeilen_verbauung, w_btzeilenugb, w_ben_gk, w_teil_marken, w_teil filtered by ben_textcode, ben_iso, ben_regiso, SUCHSTR, teilm_marke_tps, teil_verbaubar, teil_produktart, btzeilenv_sachnr, dist, btzeilenu_sachnr and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the TeilevwdgBen module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_btzeilenugb, w_ben_gk, w_teil_marken, w_teil
@@ -122,6 +140,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_BT_SACHNUMMERN_TVBEN
+**Description:** Retrieves data from w_ben_gk, w_markt_etk, w_bildtaf, w_btzeilen, w_btzeilen_verbauung, w_fztyp, w_baureihe filtered by marktetk_lkz, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, fztyp_baureihe, baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, btzeilenv_sachnr, btzeilenv_btnr, btzeilenv_pos, btzeilen_btnr, bildtaf_textc, ben_iso, ben_regiso and ordered by Pos. Used in the TeilevwdgBen module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_markt_etk, w_bildtaf, w_btzeilen, w_btzeilen_verbauung, w_fztyp, w_baureihe

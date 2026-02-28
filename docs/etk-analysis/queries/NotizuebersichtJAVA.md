@@ -8,6 +8,8 @@ Total queries: 4
 - w_teileinfo ↔ w_teil
 
 ## RETRIEVE_ANZ_NOTIZEN
+**Description:** Retrieves data from w_teileinfo filtered by teileinfo_user_id, teileinfo_allgemein, teileinfo_firma_id. Used in the NotizuebersichtJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo
@@ -20,6 +22,8 @@ select count (distinct teileinfo_sachnr) ANZ from w_teileinfo@etk_nutzer where (
 ```
 
 ## RETRIEVE_ANZ_NOTIZEN_ZU_SACHNUMMER
+**Description:** Retrieves data from w_teileinfo filtered by teileinfo_user_id, teileinfo_allgemein, teileinfo_firma_id, teileinfo_sachnr. Used in the NotizuebersichtJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo
@@ -32,6 +36,8 @@ select count (distinct teileinfo_sachnr) ANZ from w_teileinfo@etk_nutzer where (
 ```
 
 ## RETRIEVE_MIN_HG
+**Description:** Retrieves data from w_teileinfo, w_teil filtered by teileinfo_user_id, teileinfo_firma_id, teileinfo_sachnr. Used in the NotizuebersichtJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo, w_teil
@@ -44,6 +50,8 @@ select min(teil_hauptgr) HG from w_teileinfo@etk_nutzer, w_teil where teileinfo_
 ```
 
 ## RETRIEVE_NOTIZEN
+**Description:** Retrieves data from w_teileinfo, w_publben, w_ben_gk, w_teil filtered by teileinfo_user_id, teileinfo_allgemein, teileinfo_firma_id, teileinfo_sachnr, teil_textcode, ben_iso, ben_regiso, publben_art, teileinfo_gueltig_bis_monat, publben_textcode and ordered by HG, UG, SACHNR. Used in the NotizuebersichtJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo, w_publben, w_ben_gk, w_teil

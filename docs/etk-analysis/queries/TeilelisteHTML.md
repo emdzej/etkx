@@ -7,6 +7,8 @@ Total queries: 9
 - w_teilelistepos ↔ w_ben_gk ↔ w_teil
 
 ## RETRIEVE_LISTEN_IDS
+**Description:** Retrieves data from — filtered by teileliste_marke. Used in the TeilelisteHTML module to support ETK workflows for — data.
+
 
 - Type: SELECT
 - Tables: —
@@ -19,6 +21,8 @@ select teileliste_marke Marke,  teileliste_filiale_id Filiale, teileliste_user_i
 ```
 
 ## RETRIEVE_LISTE_ALLG
+**Description:** Retrieves data from w_teileliste filtered by teileliste_id, teileliste_user_id. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste
@@ -31,6 +35,8 @@ select teileliste_bemerkung Bemerkung, teileliste_erzeugt Erzeugt, teileliste_ge
 ```
 
 ## RETRIEVE_LISTE_POS
+**Description:** Retrieves data from w_teilelistepos, w_ben_gk, w_teil filtered by teilelistepos_teileliste_id, teilelistepos_user_id, teilelistepos_sachnr, teil_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos, w_ben_gk, w_teil
@@ -43,6 +49,8 @@ select teilelistepos_sachnr SachNr, teil_hauptgr Hg, teil_untergrup Ug, teilelis
 ```
 
 ## DELETE
+**Description:** Deletes records from w_teileliste filtered by teileliste_id, teileliste_user_id. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste
@@ -55,6 +63,8 @@ delete from w_teileliste@etk_nutzer where teileliste_id = '&ID&' and teileliste_
 ```
 
 ## DELETE_POS
+**Description:** Deletes records from w_teilelistepos filtered by teilelistepos_teileliste_id, teilelistepos_user_id. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teilelistepos
@@ -67,6 +77,8 @@ delete from w_teilelistepos@etk_nutzer where teilelistepos_teileliste_id = '&ID&
 ```
 
 ## INSERT_LISTE_ALLG
+**Description:** Inserts records in w_teileliste. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste
@@ -79,6 +91,8 @@ insert into w_teileliste@etk_nutzer (teileliste_id, teileliste_user_id, teilelis
 ```
 
 ## UPDATE_LISTE_ALLG
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -91,6 +105,8 @@ update w_teileliste@etk_nutzer set teileliste_bemerkung = '&BEMERKUNG&', teileli
 ```
 
 ## INSERT_LISTE_POS
+**Description:** Inserts records in w_teilelistepos. Used in the TeilelisteHTML module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teilelistepos
@@ -103,6 +119,8 @@ insert into w_teilelistepos@etk_nutzer (teilelistepos_teileliste_id, teilelistep
 ```
 
 ## RETRIEVE_MAILADRESSEN
+**Description:** Retrieves data from w_mailadressen filtered by mailadr_marke_tps. Used in the TeilelisteHTML module to support ETK workflows for email options.
+
 
 - Type: SELECT
 - Tables: w_mailadressen

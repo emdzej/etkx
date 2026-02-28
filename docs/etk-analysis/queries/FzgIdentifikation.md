@@ -22,6 +22,8 @@ Total queries: 25
 - w_vbez_pos ↔ w_fztyp
 
 ## RETRIEVE_BAUARTEN
+**Description:** Retrieves data from w_baureihe, w_bauart, w_ben_gk, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, fztyp_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, bauart_bauart, ben_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_bauart, w_ben_gk, w_fztyp
@@ -34,6 +36,8 @@ select distinct baureihe_bauart Bauart, ben_text ExtBauart, bauart_position Pos 
 ```
 
 ## RETRIEVE_BAUREIHEN
+**Description:** Retrieves data from w_baureihe, w_ben_gk, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, baureihe_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_ben_gk, w_fztyp
@@ -46,6 +50,8 @@ select distinct baureihe_baureihe Baureihe, ben_text ExtBaureihe, baureihe_posit
 ```
 
 ## GET_GRAFIKID_FOR_BAUREIHE
+**Description:** Retrieves data from w_baureihe, w_grafik filtered by baureihe_baureihe, baureihe_grafikid, grafik_art. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_grafik
@@ -58,6 +64,8 @@ select grafik_grafikid GrafikId, grafik_moddate ModStamp from w_baureihe, w_graf
 ```
 
 ## GET_GRAFIKID_FOR_BAUREIHE_KAROSSERIE
+**Description:** Retrieves data from w_baureihe_kar_thb, w_grafik filtered by baureihekar_baureihe, baureihekar_karosserie, baureihekar_grafikid, grafik_art. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe_kar_thb, w_grafik
@@ -70,6 +78,8 @@ select grafik_grafikid GrafikId, grafik_moddate ModStamp from w_baureihe_kar_thb
 ```
 
 ## GET_GRAFIKID_FOR_FIBILD
+**Description:** Retrieves data from w_etk_grafiken, w_grafik filtered by etkgraf_ablauf, etkgraf_marke, etkgraf_produktart, etkgraf_vbereich, etkgraf_grafikid, grafik_art. Used in the FzgIdentifikation module to support ETK workflows for graphics.
+
 
 - Type: SELECT
 - Tables: w_etk_grafiken, w_grafik
@@ -82,6 +92,8 @@ select grafik_grafikid GrafikId, grafik_format Format, grafik_moddate ModStamp f
 ```
 
 ## RETRIEVE_KAROSSERIEN
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben filtered by fztyp_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, publben_art, fztyp_karosserie, publben_textcode, ben_iso, ben_regiso and ordered by ExtKarosserie. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben
@@ -94,6 +106,8 @@ select distinct fztyp_karosserie Karosserie, ben_text ExtKarosserie from w_fztyp
 ```
 
 ## RETRIEVE_MODELLE
+**Description:** Retrieves data from w_vbez_pos, w_fztyp filtered by fztyp_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, vbezp_baureihe, vbezp_vbez and ordered by Pos, Modell. Used in the FzgIdentifikation module to support ETK workflows for vbez pos data.
+
 
 - Type: SELECT
 - Tables: w_vbez_pos, w_fztyp
@@ -106,6 +120,8 @@ select distinct fztyp_erwvbez Modell, vbezp_pos Pos from w_vbez_pos, w_fztyp whe
 ```
 
 ## RETRIEVE_REGIONEN
+**Description:** Retrieves data from w_fztyp filtered by fztyp_baureihe, fztyp_vbereich, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz and ordered by Region. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp
@@ -118,6 +134,8 @@ select distinct fztyp_ktlgausf Region from w_fztyp where fztyp_baureihe = '&BAUR
 ```
 
 ## RETRIEVE_LENKUNGEN
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben filtered by fztyp_baureihe, fztyp_vbereich, fztyp_karosserie, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz, fztyp_lenkung, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Lenkung. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben
@@ -130,6 +148,8 @@ select distinct fztyp_lenkung Lenkung, ben_text ExtLenkung from w_fztyp, w_ben_g
 ```
 
 ## RETRIEVE_GETRIEBEARTEN
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben filtered by fztyp_baureihe, fztyp_vbereich, fztyp_karosserie, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz, fztyp_getriebe, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Getriebe. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben
@@ -142,6 +162,8 @@ select distinct fztyp_getriebe Getriebe, ben_text ExtGetriebe from w_fztyp, w_be
 ```
 
 ## RETRIEVE_BAUJAHRE
+**Description:** Retrieves data from w_fztyp, w_fgstnr filtered by fztyp_baureihe, fztyp_vbereich, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz, fztyp_typschl and ordered by Baujahr. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_fgstnr
@@ -154,6 +176,8 @@ select distinct substr(to_char(fgstnr_prod), 1, 4) Baujahr from w_fztyp, w_fgstn
 ```
 
 ## RETRIEVE_ZULASSMONATE
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben, w_fgstnr filtered by fztyp_baureihe, fztyp_vbereich, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz, fztyp_typschl, 4, 2, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Zulassungsmonat. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben, w_fgstnr
@@ -166,6 +190,8 @@ select distinct substr(to_char(fgstnr_prod), 5, 2) Zulassungsmonat, ben_text Ext
 ```
 
 ## RETRIEVE_ZULASSMONATE2
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben, w_fgstnr filtered by fztyp_baureihe, fztyp_vbereich, fztyp_erwvbez, fztyp_ktlgausf, fztyp_sichtschutz, fztyp_typschl, 2, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Zulassungsmonat. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben, w_fgstnr
@@ -178,6 +204,8 @@ select distinct substr(to_char(fgstnr_prod), 5, 2) Zulassungsmonat, ben_text Ext
 ```
 
 ## RETRIEVE_MOSP_BY_ATTRIBUTE_PKW
+**Description:** Retrieves data from w_fztyp filtered by fztyp_baureihe, fztyp_karosserie, fztyp_erwvbez, fztyp_ktlgausf. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp
@@ -190,6 +218,8 @@ select distinct fztyp_mospid Modellspalte from w_fztyp where fztyp_baureihe = '&
 ```
 
 ## RETRIEVE_MOSP_BY_ATTRIBUTE_KRAD
+**Description:** Retrieves data from w_fztyp filtered by fztyp_baureihe, fztyp_erwvbez, fztyp_ktlgausf. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp
@@ -202,6 +232,8 @@ select distinct fztyp_mospid Modellspalte from w_fztyp where fztyp_baureihe = '&
 ```
 
 ## RETRIEVE_MOSP_BY_FGSTNR
+**Description:** Retrieves data from w_fgstnr, w_fztyp, w_baureihe, w_publben, w_ben_gk filtered by fgstnr_typschl, fgstnr_mospid, publben_art, ben_iso, ben_regiso, fgstnr_bis, fgstnr_anf. Used in the FzgIdentifikation module to support ETK workflows for VIN identification.
+
 
 - Type: SELECT
 - Tables: w_fgstnr, w_fztyp, w_baureihe, w_publben, w_ben_gk
@@ -214,6 +246,8 @@ select distinct fgstnr_mospid Modellspalte, fgstnr_typschl Typ, fgstnr_werk Werk
 ```
 
 ## RETRIEVE_MOSP_BY_TYP
+**Description:** Retrieves data from w_fztyp, w_baureihe, w_publben, w_ben_gk filtered by fztyp_baureihe, publben_art, ben_iso, ben_regiso. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_baureihe, w_publben, w_ben_gk
@@ -226,6 +260,8 @@ select distinct fztyp_mospid Modellspalte, fztyp_typschl Typ, null Werk, baureih
 ```
 
 ## RETRIEVE_TYPMENGE_BY_ATTRIBUTE_PKW
+**Description:** Retrieves data from w_fztyp, w_fgstnr filtered by fztyp_mospid, fztyp_sichtschutz, fztyp_lenkung, fztyp_getriebe, fztyp_typschl, fgstnr_prod. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_fgstnr
@@ -238,6 +274,8 @@ select distinct fztyp_typschl Typ from w_fztyp, w_fgstnr where fztyp_mospid = &M
 ```
 
 ## RETRIEVE_TYPMENGE_BY_ATTRIBUTE_KRAD
+**Description:** Retrieves data from w_fztyp, w_fgstnr filtered by fztyp_mospid, fztyp_sichtschutz, fztyp_typschl, fgstnr_prod. Used in the FzgIdentifikation module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_fgstnr
@@ -250,6 +288,8 @@ select distinct fztyp_typschl Typ from w_fztyp, w_fgstnr where fztyp_mospid = &M
 ```
 
 ## RETRIEVE_LENKUNG_BEN
+**Description:** Retrieves data from _publben, w_ben_gk filtered by publben_art, publben_bezeichnung, publben_textcode, ben_iso, ben_regiso. Used in the FzgIdentifikation module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: _publben, w_ben_gk
@@ -263,6 +303,8 @@ select ben_text Name from _publben, w_ben_gk where publben_art = 'L' and publben
 ```
 
 ## LOAD_SALAS_ZU_FGSTNR
+**Description:** Retrieves data from w_fgstnr_sala, w_bed_sala, w_bed, w_ben_gk, w_eg, w_bed_zusatzinfo filtered by fgstnrs_salaid, ben_iso, ben_regiso. Used in the FzgIdentifikation module to support ETK workflows for VIN identification.
+
 
 - Type: SELECT
 - Tables: w_fgstnr_sala, w_bed_sala, w_bed, w_ben_gk, w_eg, w_bed_zusatzinfo
@@ -275,6 +317,8 @@ select distinct bed_elemid ElementId, bedsala_art || bedsala_pnr || bedsala_hz C
 ```
 
 ## LOAD_SS_BEDINGUNGEN_AF
+**Description:** Retrieves data from w_bed_afl, w_ben_gk, w_bed, w_eg filtered by bedafl_art, bedafl_gilt_v, 99999999, bedafl_id, bed_egid, bed_textcode, ben_iso, ben_regiso, bedafl_code. Used in the FzgIdentifikation module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bed_afl, w_ben_gk, w_bed, w_eg
@@ -287,6 +331,8 @@ select distinct bed_elemid ElementId, af.bedafl_code Code, ben_text Benennung, b
 ```
 
 ## LOAD_SS_BEDINGUNGEN_LACK
+**Description:** Retrieves data from w_bed_afl, w_ben_gk, w_bed, w_eg filtered by bedafl_art, bedafl_gilt_v, 99999999, bedafl_id, bed_egid, bed_textcode, ben_iso, ben_regiso. Used in the FzgIdentifikation module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bed_afl, w_ben_gk, w_bed, w_eg
@@ -299,6 +345,8 @@ select distinct bed_elemid ElementId, bedafl_code Code, ben_text Benennung, bed_
 ```
 
 ## LOAD_SS_BEDINGUNGEN_SALAPA
+**Description:** Retrieves data from w_bed_sala, w_ben_gk, w_bed, w_eg filtered by bedsala_produktart, bedsala_pnr, bedsala_gilt_v, 99999999, not, bedsala_id, bed_egid, bed_textcode, ben_iso, ben_regiso. Used in the FzgIdentifikation module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bed_sala, w_ben_gk, w_bed, w_eg
@@ -311,6 +359,8 @@ select distinct bed_elemid ElementId, bedsala_art || bedsala_pnr || bedsala_hz C
 ```
 
 ## RETRIEVE_BED_ZUSATZINFO
+**Description:** Retrieves data from w_komm, w_bed_zusatzinfo, w_ben_gk filtered by komm_id, komm_textcode, ben_iso, ben_regiso and ordered by KommId, Pos. Used in the FzgIdentifikation module to support ETK workflows for comments.
+
 
 - Type: SELECT
 - Tables: w_komm, w_bed_zusatzinfo, w_ben_gk

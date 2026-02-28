@@ -9,6 +9,8 @@ Total queries: 5
 - w_btzeilen_verbauung ↔ w_teil ↔ w_btzeilen ↔ w_ben_gk ↔ w_tc_performance
 
 ## RETRIEVE_HGS
+**Description:** Retrieves data from w_teileverwendungfzg_suche filtered by tvs_mospid, tvs_hg and ordered by HG. Used in the TeilevwdgFzg module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileverwendungfzg_suche
@@ -21,6 +23,8 @@ select distinct tvs_hg HG from w_teileverwendungfzg_suche where tvs_mospid IN (&
 ```
 
 ## RETRIEVE_TEILE_OHNE_LENKUNG
+**Description:** Retrieves data from w_btzeilen_verbauung, w_teil, w_ben_gk, w_tc_performance filtered by btzeilenv_sachnr, teil_hauptgr, ben_iso, ben_regiso, tcp_sachnr, tcp_datum_von, tcp_datum_bis and ordered by HG, UG, SACHNR. Used in the TeilevwdgFzg module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_teil, w_ben_gk, w_tc_performance
@@ -33,6 +37,8 @@ select distinct NeuesTeil.teil_hauptgr HG, NeuesTeil.teil_untergrup UG, NeuesTei
 ```
 
 ## RETRIEVE_TEILE_MIT_LENKUNG
+**Description:** Retrieves data from w_btzeilen_verbauung, w_teil, w_btzeilen, w_ben_gk, w_tc_performance filtered by btzeilenv_sachnr, teil_hauptgr, btzeilenv_btnr, btzeilenv_pos, btzeilen_lenkg, jo, ben_iso, ben_regiso, tcp_sachnr, tcp_datum_von, tcp_datum_bis and ordered by HG, UG, SACHNR. Used in the TeilevwdgFzg module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_teil, w_btzeilen, w_ben_gk, w_tc_performance
@@ -45,6 +51,8 @@ select distinct NeuesTeil.teil_hauptgr HG, NeuesTeil.teil_untergrup UG, NeuesTei
 ```
 
 ## RETRIEVE_TEIL_ONLY_IN_OHNE_LENKUNG
+**Description:** Retrieves data from w_btzeilen_verbauung filtered by btzeilenv_sachnr, NOT. Used in the TeilevwdgFzg module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung
@@ -57,6 +65,8 @@ select count (*) ANZ from w_btzeilen_verbauung where btzeilenv_sachnr = '&SACHNR
 ```
 
 ## RETRIEVE_TEIL_ONLY_IN_MIT_LENKUNG
+**Description:** Retrieves data from w_btzeilen, w_btzeilen_verbauung filtered by btzeilen_sachnr, btzeilen_lenkg, btzeilen_btnr, btzeilen_pos, NOT. Used in the TeilevwdgFzg module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen, w_btzeilen_verbauung

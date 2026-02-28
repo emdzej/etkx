@@ -12,6 +12,8 @@ Total queries: 8
 - w_teil_reach ↔ w_teil
 
 ## RETRIEVE_TEILEINFO
+**Description:** Retrieves data from w_teil, w_ben_gk, w_teil_marken, w_normnummer, w_eu_reifen filtered by teil_textcode, ben_iso, ben_regiso, teilm_marke_tps. Used in the Teileinfo module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_ben_gk, w_teil_marken, w_normnummer, w_eu_reifen
@@ -24,6 +26,8 @@ select distinct teil.teil_hauptgr Hg, teil.teil_untergrup Ug, teil.teil_sachnr S
 ```
 
 ## RETRIEVE_TEILEINFO_SERVICEINFO
+**Description:** Retrieves data from w_si filtered by si_sachnr. Used in the Teileinfo module to support ETK workflows for service information.
+
 
 - Type: SELECT
 - Tables: w_si
@@ -36,6 +40,8 @@ select si_dokart DokArt, si_doknr DokNr from w_si where si_sachnr = '&SACHNR&'
 ```
 
 ## RETRIEVE_TEILEINFO_PRODUKTINFO
+**Description:** Retrieves data from w_komm, w_ben_gk filtered by komm_id, komm_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the Teileinfo module to support ETK workflows for comments.
+
 
 - Type: SELECT
 - Tables: w_komm, w_ben_gk
@@ -48,6 +54,8 @@ select ben_text Ben, komm_pos Pos from w_komm, w_ben_gk where komm_id = &KOMID& 
 ```
 
 ## RETRIEVE_TEILEINFO_REACHINFO
+**Description:** Retrieves data from w_teil_reach, w_teil filtered by teilreach_sachnr and ordered by casNr. Used in the Teileinfo module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil_reach, w_teil
@@ -60,6 +68,8 @@ select teilreach_casnr casNr, teilreach_casname casName, teilreach_gewanteil Gew
 ```
 
 ## RETRIEVE_BEN_ZU_KUERZEL
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_bezeichnung, ben_textcode, ben_iso, ben_regiso. Used in the Teileinfo module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk
@@ -72,6 +82,8 @@ select ben_text Ben from w_publben, w_ben_gk where publben_art = '&ART&' and pub
 ```
 
 ## RETRIEVE_TEILEINFO_TEILECLEARING
+**Description:** Retrieves data from w_tc_sachnummer, w_tc_kampagne filtered by tcs_sachnr, tcs_id, tck_marke_tps, tck_produktart, tck_vbereich, tck_datum_von, tck_datum_bis and ordered by Land, Marke, Produktart, VBereich, Id, Pos. Used in the Teileinfo module to support ETK workflows for technical campaigns.
+
 
 - Type: SELECT
 - Tables: w_tc_sachnummer, w_tc_kampagne
@@ -84,6 +96,8 @@ select distinct tck_id Id, tck_landkuerzel Land, tck_marke_tps Marke, tck_produk
 ```
 
 ## RETRIEVE_HGUG
+**Description:** Retrieves data from w_teil filtered by teil_sachnr. Used in the Teileinfo module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil
@@ -96,6 +110,8 @@ select teil_hauptgr Hg, teil_untergrup Ug from w_teil where teil_sachnr = '&SACH
 ```
 
 ## SEARCH_SNR_FREMDNR
+**Description:** Retrieves data from w_teil, w_ben_gk, w_teil_marken filtered by teil_textcode, ben_iso, ben_regiso and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the Teileinfo module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_ben_gk, w_teil_marken

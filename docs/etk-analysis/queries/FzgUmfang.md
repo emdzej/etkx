@@ -12,6 +12,8 @@ Total queries: 7
 - w_vbez_pos ↔ w_baureihe ↔ w_fztyp
 
 ## RETRIEVE_REGIONEN
+**Description:** Retrieves data from w_baureihe, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz and ordered by Region. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp
@@ -24,6 +26,8 @@ select distinct fztyp_ktlgausf Region from w_baureihe, w_fztyp where baureihe_ma
 ```
 
 ## RETRIEVE_LENKUNGEN
+**Description:** Retrieves data from w_baureihe, w_ben_gk, w_publben, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_lenkung, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Lenkung. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_ben_gk, w_publben, w_fztyp
@@ -36,6 +40,8 @@ select distinct fztyp_lenkung Lenkung, ben_text ExtLenkung from w_baureihe, w_be
 ```
 
 ## RETRIEVE_BAUARTEN
+**Description:** Retrieves data from w_baureihe, w_bauart, w_ben_gk, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, bauart_bauart, ben_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_bauart, w_ben_gk, w_fztyp
@@ -48,6 +54,8 @@ select distinct baureihe_bauart Bauart, ben_text ExtBauart, bauart_position Pos 
 ```
 
 ## RETRIEVE_BAUREIHEN
+**Description:** Retrieves data from w_baureihe, w_ben_gk, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_vbereich, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, baureihe_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_ben_gk, w_fztyp
@@ -60,6 +68,8 @@ select distinct baureihe_baureihe Baureihe, ben_text ExtBaureihe, baureihe_posit
 ```
 
 ## RETRIEVE_KAROSSERIEN
+**Description:** Retrieves data from w_fztyp, w_ben_gk, w_publben filtered by fztyp_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_lenkung, fztyp_sichtschutz, fztyp_karosserie, publben_art, publben_textcode, ben_iso, ben_regiso and ordered by ExtKarosserie. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp, w_ben_gk, w_publben
@@ -72,6 +82,8 @@ select distinct fztyp_karosserie Karosserie, ben_text ExtKarosserie from w_fztyp
 ```
 
 ## RETRIEVE_MODELLE
+**Description:** Retrieves data from w_vbez_pos, w_baureihe, w_fztyp filtered by baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz, vbezp_baureihe, vbezp_vbez and ordered by Pos, Modell. Used in the FzgUmfang module to support ETK workflows for vbez pos data.
+
 
 - Type: SELECT
 - Tables: w_vbez_pos, w_baureihe, w_fztyp
@@ -84,6 +96,8 @@ select distinct fztyp_erwvbez Modell, vbezp_pos Pos from w_vbez_pos, w_baureihe,
 ```
 
 ## RETRIEVE_MODELLSPALTEN
+**Description:** Retrieves data from w_baureihe, w_fztyp filtered by baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf, fztyp_sichtschutz and ordered by MospID. Used in the FzgUmfang module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp

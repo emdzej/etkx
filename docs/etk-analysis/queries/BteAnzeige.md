@@ -17,6 +17,8 @@ Total queries: 14
 - w_tc_sachnummer ↔ w_tc_kampagne_proddatum ↔ w_tc_kampagne
 
 ## LOAD_HOTSPOTS
+**Description:** Retrieves data from w_grafik_hs filtered by grafikhs_grafikid, grafikhs_art. Used in the BteAnzeige module to support ETK workflows for graphics.
+
 
 - Type: SELECT
 - Tables: w_grafik_hs
@@ -29,6 +31,8 @@ select grafikhs_bildposnr Bildnummer, grafikhs_topleft_x TopLeft_x, grafikhs_top
 ```
 
 ## LOAD_BTZEILEN_FZG
+**Description:** Retrieves data from w_btzeilen_verbauung, w_btzeilen, w_teil, w_ben_gk, w_kompl_satz, w_tc_performance, w_grp_information, w_si, w_bildtaf_bnbben filtered by btzeilenv_btnr, btzeilenv_pos, ben_iso, ben_regiso, ks_marke_tps, tcp_sachnr, tcp_datum_von, tcp_datum_bis, grpinfo_sachnr, grpinfo_typ, bildtafb_bildposnr and ordered by Pos, GRP_PA, GRP_HG, GRP_UG, GRP_lfdNr, SI_DokArt. Used in the BteAnzeige module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_btzeilen, w_teil, w_ben_gk, w_kompl_satz, w_tc_performance, w_grp_information, w_si, w_bildtaf_bnbben
@@ -41,6 +45,8 @@ select distinct btzeilen_bildposnr Bildnummer, teil_hauptgr Teil_HG, teil_unterg
 ```
 
 ## LOAD_BTZEILEN_CP_FZG
+**Description:** Retrieves data from w_btzeilen_cp filtered by btzeilenc_mospid, btzeilenc_btnr and ordered by Pos. Used in the BteAnzeige module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_cp
@@ -53,6 +59,8 @@ select distinct btzeilenc_pos Pos, btzeilenc_typschl Typ, btzeilenc_werk Werk, b
 ```
 
 ## LOAD_BTZEILEN_UGB
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_teil, w_ben_gk, w_kompl_satz, w_tc_performance_allg, w_si, w_bildtaf_bnbben filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, ks_marke_tps, tcp_marke_tps, tcp_produktart, tcp_vbereich, tcp_datum_von, tcp_datum_bis, bildtafb_bildposnr and ordered by Pos. Used in the BteAnzeige module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_teil, w_ben_gk, w_kompl_satz, w_tc_performance_allg, w_si, w_bildtaf_bnbben
@@ -65,6 +73,8 @@ select distinct btzeilenu_bildposnr Bildnummer, teil_hauptgr Teil_HG, teil_unter
 ```
 
 ## LOAD_KOMMENTARE_FZG
+**Description:** Retrieves data from w_komm_help, w_ben_gk, w_komm filtered by kommh_mospid, kommh_btnr, kommh_id, komm_textcode, ben_iso, ben_regiso and ordered by KommId, Pos. Used in the BteAnzeige module to support ETK workflows for comments.
+
 
 - Type: SELECT
 - Tables: w_komm_help, w_ben_gk, w_komm
@@ -77,6 +87,8 @@ select distinct komm_id KommId, ben_text Text, komm_code Code, komm_vz VZ, komm_
 ```
 
 ## LOAD_KOMMENTARE_UGB
+**Description:** Retrieves data from w_kommugb_help, w_ben_gk, w_komm filtered by kommuh_marke_tps, kommuh_btnr, kommuh_id, komm_textcode, ben_iso, ben_regiso and ordered by KommId, Pos. Used in the BteAnzeige module to support ETK workflows for comments.
+
 
 - Type: SELECT
 - Tables: w_kommugb_help, w_ben_gk, w_komm
@@ -89,6 +101,8 @@ select distinct komm_id KommId, ben_text Text, komm_pos Pos from w_kommugb_help,
 ```
 
 ## LOAD_BEDINGUNGEN_FZG
+**Description:** Retrieves data from w_bte_bedkurz, w_bildtaf, w_bte_bedelem, w_bte_bedog, w_bte_bedgesamt filtered by btebk_btnr, btebk_mospid, btebk_kez, btebg_btnr, btebg_kez, btebo_btnr, btebo_kez, btebo_ogid, bildtaf_btnr, bildtaf_bedkez and ordered by Kuerzel, OG, Pos. Used in the BteAnzeige module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedkurz, w_bildtaf, w_bte_bedelem, w_bte_bedog, w_bte_bedgesamt
@@ -101,6 +115,8 @@ select distinct btebg_kez Kuerzel, btebg_vz  GesamttermVZ, btebg_gesamtterm Gesa
 ```
 
 ## LOAD_BTE_BEDINGUNGEN_FZG
+**Description:** Retrieves data from w_bte_bedelem, w_bte_bedog, w_bte_bedgesamt filtered by btebg_btnr, btebg_kez, btebo_btnr, btebo_kez, btebe_btnr, btebe_kez, btebe_ogid and ordered by OG, Pos. Used in the BteAnzeige module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedelem, w_bte_bedog, w_bte_bedgesamt
@@ -113,6 +129,8 @@ select distinct btebg_vz  GesamttermVZ, btebg_gesamtterm Gesamtterm, btebo_ogid 
 ```
 
 ## LOAD_UEBERBEDINGUNGEN_FZG
+**Description:** Retrieves data from w_bte_bedkurz, w_bte_bedueber filtered by btebk_btnr, btebk_mospid, btebu_btnr, btebu_kez, btebu_kezueber and ordered by Kuerzel, KuerzelUeber. Used in the BteAnzeige module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bte_bedkurz, w_bte_bedueber
@@ -125,6 +143,8 @@ select distinct btebu_kez Kuerzel, btebu_kezueber  KuerzelUeber from w_bte_bedku
 ```
 
 ## LOAD_BTVERWEISE_FZG
+**Description:** Retrieves data from w_bildtaf_verweis, w_ben_gk, w_komm, w_bildtaf, w_bildtaf_suche filtered by bv_btnr_von, bildtafs_hg, bildtafs_mospid, bildtafs_btnr, bv_kommid, komm_textcode, ben_iso, ben_regiso, bv_btnr_nach, bildtaf_textc and ordered by Bildtafelnummer, Pos. Used in the BteAnzeige module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf_verweis, w_ben_gk, w_komm, w_bildtaf, w_bildtaf_suche
@@ -137,6 +157,8 @@ select distinct bv_btnr_nach Bildtafelnummer, bt.ben_text Ueberschrift, bv.ben_t
 ```
 
 ## LOAD_BTVERWEISE_UGB
+**Description:** Retrieves data from w_bildtaf_verweis, w_ben_gk, w_komm, w_bildtaf, w_btzeilenugb_verbauung filtered by bv_btnr_von, bv_btnr_nach, btzeilenuv_marke_tps, bv_kommid, komm_textcode, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_textc and ordered by Bildtafelnummer, Pos. Used in the BteAnzeige module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf_verweis, w_ben_gk, w_komm, w_bildtaf, w_btzeilenugb_verbauung
@@ -149,6 +171,8 @@ select distinct bv_btnr_nach Bildtafelnummer, bt.ben_text Ueberschrift, bv.ben_t
 ```
 
 ## LOAD_JA_NEIN_TEXT
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_textcode, ben_iso, ben_regiso and ordered by Bezeichnung. Used in the BteAnzeige module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk
@@ -161,6 +185,8 @@ select distinct publben_bezeichnung Bezeichnung, ben_text Benennung from w_publb
 ```
 
 ## LOAD_AZEICHEN
+**Description:** Retrieves data from w_teil_atb filtered by teilatb_sachnr_alt, teilatb_sachnr_neu. Used in the BteAnzeige module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil_atb
@@ -173,6 +199,8 @@ select distinct teilatb_kennz ATB,              teilatb_bap BAP from w_teil_atb 
 ```
 
 ## LOAD_ANZAHL_REL_KAMPAGNEN
+**Description:** Retrieves data from w_tc_sachnummer, w_tc_kampagne_proddatum, w_tc_kampagne filtered by tckp_mospid, tckp_proddatum_von, 99999999, tcs_id, tcs_sachnr, tck_id. Used in the BteAnzeige module to support ETK workflows for technical campaigns.
+
 
 - Type: SELECT
 - Tables: w_tc_sachnummer, w_tc_kampagne_proddatum, w_tc_kampagne

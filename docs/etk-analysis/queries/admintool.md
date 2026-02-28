@@ -7,6 +7,8 @@ Total queries: 11
 - w_ben_gk ↔ w_publben
 
 ## LOAD_FIRMEN
+**Description:** Retrieves data from w_firma and ordered by firma_bezeichnung. Used in the admintool module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_firma
@@ -19,6 +21,8 @@ select firma_id Id from w_firma order by firma_bezeichnung
 ```
 
 ## DELETE_PRICES
+**Description:** Deletes records from w_preise. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: DELETE
 - Tables: w_preise
@@ -31,6 +35,8 @@ delete from w_preise
 ```
 
 ## DELETE_PRICES_BY_FIRMA
+**Description:** Deletes records from w_preise filtered by preise_firma. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: DELETE
 - Tables: w_preise
@@ -43,6 +49,8 @@ delete from w_preise where preise_firma = '&FIRMA&'
 ```
 
 ## ERMITTLE_NUTZERTABELLEN
+**Description:** Retrieves data from systable filtered by NOT. Used in the admintool module to support ETK workflows for systable data.
+
 
 - Type: SELECT
 - Tables: systable
@@ -56,6 +64,8 @@ SELECT tname tabelle FROM systable WHERE tname NOT LIKE 'sys%' AND tname NOT LIK
 ```
 
 ## ERMITTLE_NUTZERSEQUENZEN
+**Description:** Retrieves data from systable filtered by NOT, tname. Used in the admintool module to support ETK workflows for systable data.
+
 
 - Type: SELECT
 - Tables: systable
@@ -69,6 +79,8 @@ SELECT tname sequenz FROM systable WHERE tname NOT LIKE 'sys%' AND tname LIKE '%
 ```
 
 ## GET_COUNT_FIRMA_PREISE
+**Description:** Retrieves data from w_preise filtered by preise_firma. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: SELECT
 - Tables: w_preise
@@ -81,6 +93,8 @@ select count(preise_firma) cnt from w_preise where preise_firma = '&FIRMA&'
 ```
 
 ## GET_DISTINCT_FIRMA_PREISE
+**Description:** Retrieves data from w_preise. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: SELECT
 - Tables: w_preise
@@ -93,6 +107,8 @@ select distinct preise_firma FirmaId from w_preise
 ```
 
 ## INSERT_PRICES
+**Description:** Inserts records in w_preise. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: INSERT
 - Tables: w_preise
@@ -105,6 +121,8 @@ INSERT INTO w_preise (preise_firma,preise_sachnr,preise_evpreis,preise_nachbelas
 ```
 
 ## UPDATE_PRICES
+**Description:** Updates records in w_preise filtered by preise_firma, preise_sachnr. Used in the admintool module to support ETK workflows for pricing.
+
 
 - Type: UPDATE
 - Tables: w_preise
@@ -117,6 +135,8 @@ UPDATE w_preise SET preise_preis_kz = &preise_preis_kz&,preise_evpreis = &preise
 ```
 
 ## LOAD_SPRACHEN
+**Description:** Retrieves data from w_ben_gk, w_publben filtered by publben_art, ben_textcode, ben_iso, ben_regiso. Used in the admintool module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_publben
@@ -129,6 +149,8 @@ select ben_iso ISO, ben_regiso RegISO, ben_text Benennung from w_ben_gk@etk_publ
 ```
 
 ## LOAD_DBVERSIONSINFO
+**Description:** Retrieves data from w_verwaltung. Used in the admintool module to support ETK workflows for verwaltung data.
+
 
 - Type: SELECT
 - Tables: w_verwaltung

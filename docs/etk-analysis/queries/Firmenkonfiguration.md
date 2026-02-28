@@ -14,6 +14,8 @@ Total queries: 59
 - w_zub_konfig ↔ w_user
 
 ## RETRIEVE_FIRMEN
+**Description:** Retrieves data from w_firma and ordered by Bezeichnung. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_firma
@@ -26,6 +28,8 @@ select firma_id Id, firma_bezeichnung Bezeichnung from w_firma@etk_nutzer order 
 ```
 
 ## RETRIEVE_FILIALEN
+**Description:** Retrieves data from w_filiale filtered by filiale_firma_id and ordered by Bezeichnung. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_filiale
@@ -38,6 +42,8 @@ select filiale_id Id, filiale_bezeichnung Bezeichnung from w_filiale@etk_nutzer 
 ```
 
 ## RETRIEVE_COUNT_FILIALEN_IN_FIRMA
+**Description:** Retrieves data from w_filiale filtered by filiale_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_filiale
@@ -50,6 +56,8 @@ select Count(*) countFiliale from w_filiale@etk_nutzer where filiale_firma_id = 
 ```
 
 ## RETRIEVE_INFO_FILIALE
+**Description:** Retrieves data from w_firma, w_filiale filtered by filiale_firma_id, filiale_id, firma_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_firma, w_filiale
@@ -62,6 +70,8 @@ select firma_id FirmaId,  firma_bezeichnung FirmaBezeichnung,  filiale_id Filial
 ```
 
 ## RETRIEVE_EXIST_USER
+**Description:** Retrieves data from w_user filtered by user_firma_id, user_id, user_passwort. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -74,6 +84,8 @@ select count(user_id) ANZ from w_user@etk_nutzer where user_firma_id = '&FIRMA&'
 ```
 
 ## RETRIEVE_DMS_VERWENDEN
+**Description:** Retrieves data from w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: SELECT
 - Tables: w_konfig
@@ -86,6 +98,8 @@ select konfig_hs_verwenden DMSVerwenden from w_konfig@etk_nutzer where konfig_fi
 ```
 
 ## LOAD_KONFIGURATION
+**Description:** Retrieves data from w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: SELECT
 - Tables: w_konfig
@@ -98,6 +112,8 @@ select konfig_hd_firma Firma, konfig_hd_zusatz Zusatz, konfig_hd_strasse Strasse
 ```
 
 ## DELETE_KONFIGURATION
+**Description:** Deletes records from w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: DELETE
 - Tables: w_konfig
@@ -110,6 +126,8 @@ delete from w_konfig@etk_nutzer where konfig_firma_id = '&FIRMA&' and konfig_fil
 ```
 
 ## DELETE_ZUB_KONFIGURATION
+**Description:** Deletes records from w_zub_konfig filtered by konfigz_firma_id, konfigz_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for zub konfig data.
+
 
 - Type: DELETE
 - Tables: w_zub_konfig
@@ -122,6 +140,8 @@ delete from w_zub_konfig@etk_nutzer where konfigz_firma_id = '&FIRMA&' and konfi
 ```
 
 ## INSERT_KONFIGURATION
+**Description:** Inserts records in w_konfig. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: INSERT
 - Tables: w_konfig
@@ -134,6 +154,8 @@ insert into w_konfig@etk_nutzer (konfig_firma_id, konfig_filiale_id, konfig_hd_f
 ```
 
 ## UPDATE_KONFIGURATION
+**Description:** Updates records in w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: UPDATE
 - Tables: w_konfig
@@ -146,6 +168,8 @@ update w_konfig@etk_nutzer set konfig_hd_firma = &FIRMENNAME&, konfig_hd_zusatz 
 ```
 
 ## SELECT_RECHNUNGSNUMMER_FOR_UPDATE
+**Description:** Retrieves data from w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: SELECT
 - Tables: w_konfig
@@ -158,6 +182,8 @@ select konfig_rechnungnr RechnungsNr from w_konfig@etk_nutzer where konfig_firma
 ```
 
 ## UPDATE_RECHNUNGSNUMMER
+**Description:** Updates records in w_konfig filtered by konfig_firma_id, konfig_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for konfig data.
+
 
 - Type: UPDATE
 - Tables: w_konfig
@@ -170,6 +196,8 @@ update w_konfig@etk_nutzer set konfig_rechnungnr = &RECHNUNGSNR& where konfig_fi
 ```
 
 ## UPDATE_FIRMENBEZEICHNUNG
+**Description:** Updates records in w_firma filtered by firma_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: UPDATE
 - Tables: w_firma
@@ -182,6 +210,8 @@ update w_firma@etk_nutzer set firma_bezeichnung = '&BEZEICHNUNG&' where firma_id
 ```
 
 ## INSERT_FILIALE
+**Description:** Inserts records in w_filiale. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: INSERT
 - Tables: w_filiale
@@ -194,6 +224,8 @@ insert into w_filiale@etk_nutzer (filiale_firma_id, filiale_id, filiale_bezeichn
 ```
 
 ## DELETE_FILIALE
+**Description:** Deletes records from w_filiale filtered by filiale_firma_id, filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: DELETE
 - Tables: w_filiale
@@ -206,6 +238,8 @@ delete from w_filiale@etk_nutzer where filiale_firma_id = '&FIRMAID&' and filial
 ```
 
 ## UPDATE_FILIALE
+**Description:** Updates records in w_filiale filtered by filiale_firma_id, filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: UPDATE
 - Tables: w_filiale
@@ -218,6 +252,8 @@ update w_filiale@etk_nutzer set filiale_bezeichnung = '&FILIALE&', filiale_iso =
 ```
 
 ## RETRIEVE_FILIALEN_SPRACHEN
+**Description:** Retrieves data from w_filiale filtered by filiale_firma_id and ordered by filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_filiale
@@ -230,6 +266,8 @@ select filiale_id Id, filiale_bezeichnung Bezeichnung, filiale_iso Iso, filiale_
 ```
 
 ## RETRIEVE_ANZAHL_NUTZER
+**Description:** Retrieves data from w_user filtered by user_firma_id, NOT, user_id, user_name. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -242,6 +280,8 @@ SELECT count(user_id) NutzerAnzahl FROM   w_user@etk_nutzer WHERE  user_firma_id
 ```
 
 ## RETRIEVE_MATCHING_NUTZER
+**Description:** Retrieves data from w_user filtered by user_firma_id, NOT, user_id, user_name and ordered by user_name. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -254,6 +294,8 @@ SELECT user_id NutzerId,        user_name NutzerName FROM   w_user@etk_nutzer WH
 ```
 
 ## RETRIEVE_NUTZER
+**Description:** Retrieves data from w_user filtered by user_firma_id and ordered by user_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -266,6 +308,8 @@ select user_id NutzerId, user_name NutzerName, user_passwort Passwort,  user_def
 ```
 
 ## RETRIEVE_SINGLE_NUTZER
+**Description:** Retrieves data from w_user filtered by user_firma_id, user_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -278,6 +322,8 @@ select user_name NutzerName,  user_passwort Passwort,  user_default_filiale_id D
 ```
 
 ## RETRIEVE_BERECHTIGUNEN
+**Description:** Retrieves data from w_firma_berechtigungen filtered by firmab_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_firma_berechtigungen
@@ -290,6 +336,8 @@ select firmab_art Art, firmab_wert Wert from w_firma_berechtigungen@etk_nutzer w
 ```
 
 ## RETRIEVE_SPRACHEN
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_textcode, ben_iso, ben_regiso. Used in the Firmenkonfiguration module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk
@@ -302,6 +350,8 @@ select publben_bezeichnung Code, ben_text Benennung from w_publben, w_ben_gk whe
 ```
 
 ## RETRIEVE_FUNKTIONSRECHTE
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_textcode, ben_iso, ben_regiso and ordered by ben_text. Used in the Firmenkonfiguration module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk
@@ -314,6 +364,8 @@ select publben_bezeichnung Bezeichnung, ben_text Text from w_publben, w_ben_gk w
 ```
 
 ## RETRIEVE_NUTZER_FUNKTIONSRECHTE
+**Description:** Retrieves data from w_user_funktionsrechte, w_ben_gk, w_publben filtered by userf_firma_id, userf_id, publben_art, publben_bezeichnung, ben_textcode, ben_iso, ben_regiso and ordered by publben_bezeichnung. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_funktionsrechte, w_ben_gk, w_publben
@@ -326,6 +378,8 @@ select publben_bezeichnung Bezeichnung, ben_text Text from w_user_funktionsrecht
 ```
 
 ## RETRIEVE_NUTZER_BERECHTIGUNGEN
+**Description:** Retrieves data from w_user_berechtigungen filtered by userb_id, userb_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_berechtigungen
@@ -338,6 +392,8 @@ select userb_art Art, userb_wert Wert from w_user_berechtigungen@etk_nutzer wher
 ```
 
 ## DELETE_NUTZER_BERECHTIGUNGEN
+**Description:** Deletes records from w_user_berechtigungen filtered by userb_id, userb_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_berechtigungen
@@ -350,6 +406,8 @@ delete from w_user_berechtigungen@etk_nutzer where userb_id = '&ID&' and userb_f
 ```
 
 ## DELETE_NUTZER_FUNKTIONSRECHTE
+**Description:** Deletes records from w_user_funktionsrechte filtered by userf_id, userf_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_funktionsrechte
@@ -362,6 +420,8 @@ delete from w_user_funktionsrechte@etk_nutzer where userf_id = '&ID&' and userf_
 ```
 
 ## DELETE_NUTZER_EINSTELLUNGEN
+**Description:** Deletes records from w_user_einstellungen filtered by user_id, user_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen
@@ -374,6 +434,8 @@ delete from w_user_einstellungen@etk_nutzer where user_id = '&ID&' and user_firm
 ```
 
 ## DELETE_ZUB_NUTZER
+**Description:** Deletes records from w_zub_user filtered by userz_id, userz_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_zub_user
@@ -386,6 +448,8 @@ delete from w_zub_user@etk_nutzer where userz_id = '&ID&' and userz_firma_id = '
 ```
 
 ## DELETE_NUTZER_EINSTELLUNGEN_REGION
+**Description:** Deletes records from w_user_einstellungen_region filtered by user_id, user_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen_region
@@ -398,6 +462,8 @@ delete from w_user_einstellungen_region@etk_nutzer where user_id = '&ID&' and us
 ```
 
 ## DELETE_NUTZER
+**Description:** Deletes records from w_user filtered by user_id, user_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user
@@ -410,6 +476,8 @@ delete from w_user@etk_nutzer where user_id = '&ID&' and user_firma_id= '&FIRMA&
 ```
 
 ## DELETE_NUTZER_TEILELISTEPOS
+**Description:** Deletes records from w_teilelistepos filtered by teilelistepos_user_id, teilelistepos_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teilelistepos
@@ -422,6 +490,8 @@ delete from w_teilelistepos@etk_nutzer where teilelistepos_user_id = '&ID&' and 
 ```
 
 ## DELETE_NUTZER_TEILELISTE
+**Description:** Deletes records from w_teileliste filtered by teileliste_user_id, teileliste_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste
@@ -434,6 +504,8 @@ delete from w_teileliste@etk_nutzer where teileliste_user_id = '&ID&' and teilel
 ```
 
 ## DELETE_NUTZER_TEILELISTE_SENDEINFO
+**Description:** Deletes records from w_teileliste_sendeinfo filtered by teilelistesi_user_id, teilelistesi_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_sendeinfo
@@ -446,6 +518,8 @@ delete from w_teileliste_sendeinfo@etk_nutzer where teilelistesi_user_id = '&ID&
 ```
 
 ## DELETE_NUTZER_TEILEINFO
+**Description:** Deletes records from w_teileinfo filtered by teileinfo_user_id, teileinfo_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileinfo
@@ -458,6 +532,8 @@ delete from w_teileinfo@etk_nutzer where teileinfo_user_id = '&ID&' and teileinf
 ```
 
 ## RETRIEVE_EXIST_USER_ID
+**Description:** Retrieves data from w_user filtered by user_firma_id, user_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -470,6 +546,8 @@ select count(user_id) Cnt from w_user@etk_nutzer where user_firma_id = '&FIRMA&'
 ```
 
 ## STORE_NUTZER
+**Description:** Inserts records in w_user. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user
@@ -482,6 +560,8 @@ insert into w_user@etk_nutzer (user_firma_id, user_id, user_name, user_passwort,
 ```
 
 ## STORE_NUTZER_BERECHTIGUNGEN
+**Description:** Inserts records in w_user_berechtigungen. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_berechtigungen
@@ -494,6 +574,8 @@ insert into w_user_berechtigungen@etk_nutzer (userb_firma_id, userb_id, userb_ar
 ```
 
 ## STORE_NUTZER_FUNKTIONSRECHTE
+**Description:** Inserts records in w_user_funktionsrechte. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_funktionsrechte
@@ -506,6 +588,8 @@ insert into w_user_funktionsrechte@etk_nutzer (userf_firma_id, userf_id, userf_r
 ```
 
 ## UPDATE_NUTZER
+**Description:** Updates records in w_user filtered by user_firma_id, user_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user
@@ -518,6 +602,8 @@ UPDATE w_user@etk_nutzer SET    user_name = ?,        user_passwort = ?,        
 ```
 
 ## MOVE_TEILELISTEN
+**Description:** Updates records in w_teileliste filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_user_id, teileliste_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -530,6 +616,8 @@ update w_teileliste@etk_nutzer set teileliste_filiale_id = '&FILIALID_NEU&' wher
 ```
 
 ## MOVE_TEILELISTENPOS
+**Description:** Updates records in w_teileliste, w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_user_id, teilelistepos_teileliste_id, teileliste_firma_id, teileliste_filiale_id, teileliste_user_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste, w_teilelistepos
@@ -542,6 +630,8 @@ update w_teilelistepos@etk_nutzer set teilelistepos_filiale_id = '&FILIALID_NEU&
 ```
 
 ## MOVE_TEILELISTENSI
+**Description:** Updates records in w_teileliste, w_teileliste_sendeinfo filtered by teilelistesi_firma_id, teilelistesi_filiale_id, teilelistesi_user_id, teilelistesi_teileliste_id, teileliste_firma_id, teileliste_filiale_id, teileliste_user_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste, w_teileliste_sendeinfo
@@ -554,6 +644,8 @@ update w_teileliste_sendeinfo@etk_nutzer set teilelistesi_filiale_id = '&FILIALI
 ```
 
 ## RETRIEVE_USERINFO
+**Description:** Retrieves data from w_user, w_filiale filtered by user_firma_id, user_id, user_default_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user, w_filiale
@@ -566,6 +658,8 @@ select user_id UserId, user_passwort Passwort,  user_default_filiale_id DefaultF
 ```
 
 ## UPDATE_DEFAULT_FILIALE
+**Description:** Updates records in w_user filtered by user_firma_id, user_id. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user
@@ -578,6 +672,8 @@ update w_user@etk_nutzer set user_default_filiale_id='&FILIALID&' where user_fir
 ```
 
 ## RETRIEVE_EINEFIRMAFILIALENUTZER
+**Description:** Retrieves data from w_firma, w_filiale, w_user filtered by filiale_firma_id. Used in the Firmenkonfiguration module to support ETK workflows for company/branch settings.
+
 
 - Type: SELECT
 - Tables: w_firma, w_filiale, w_user
@@ -590,6 +686,8 @@ select firma_id FirmaId, filiale_id FilialId, user_id UserId from w_firma@etk_nu
 ```
 
 ## RETRIEVE_USER_BY_DEFAULT_FILIALE
+**Description:** Retrieves data from w_user filtered by user_default_filiale_id, user_firma_id and ordered by user_name. Used in the Firmenkonfiguration module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
@@ -602,6 +700,8 @@ select user_id NutzerId, user_name NutzerName, user_passwort Passwort, user_bear
 ```
 
 ## RETRIEVE_BESTELLLISTE_POSITIONEN
+**Description:** Retrieves data from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestelllistepos
@@ -614,6 +714,8 @@ select * from w_bestelllistepos@etk_nutzer where bestelllistepos_firma_id='&FIRM
 ```
 
 ## RETRIEVE_TEILELISTE_POSITIONEN
+**Description:** Retrieves data from w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos
@@ -626,6 +728,8 @@ select * from w_teilelistepos@etk_nutzer where teilelistepos_firma_id='&FIRMAID&
 ```
 
 ## DELETE_ALL_AUFTRAEGE
+**Description:** Deletes records from w_auftrag filtered by auftrag_firma_id, auftrag_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_auftrag
@@ -638,6 +742,8 @@ delete from w_auftrag@etk_nutzer where auftrag_firma_id='&FIRMAID&' and auftrag_
 ```
 
 ## DELETE_ALL_TEILELISTEN
+**Description:** Deletes records from w_teileliste filtered by teileliste_firma_id, teileliste_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste
@@ -650,6 +756,8 @@ delete from w_teileliste@etk_nutzer where teileliste_firma_id='&FIRMAID&' and te
 ```
 
 ## DELETE_ALL_TEILELISTEN_POSITIONEN
+**Description:** Deletes records from w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teilelistepos
@@ -662,6 +770,8 @@ delete from w_teilelistepos@etk_nutzer where teilelistepos_firma_id='&FIRMAID&' 
 ```
 
 ## DELETE_ALL_TEILELISTEN_SI
+**Description:** Deletes records from w_teileliste_sendeinfo filtered by teilelistesi_firma_id, teilelistesi_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_sendeinfo
@@ -674,6 +784,8 @@ delete from w_teileliste_sendeinfo@etk_nutzer where teilelistesi_firma_id='&FIRM
 ```
 
 ## DELETE_ALL_BESTELLLISTEN
+**Description:** Deletes records from w_bestellliste filtered by bestellliste_firma_id, bestellliste_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_bestellliste
@@ -686,6 +798,8 @@ delete from w_bestellliste@etk_nutzer where bestellliste_firma_id='&FIRMAID&' an
 ```
 
 ## DELETE_ALL_BESTELLLISTEN_POSITIONEN
+**Description:** Deletes records from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_bestelllistepos
@@ -698,6 +812,8 @@ delete from w_bestelllistepos@etk_nutzer where bestelllistepos_firma_id='&FIRMAI
 ```
 
 ## EXISTIERT_FILIAL_ZUB
+**Description:** Retrieves data from w_zub_konfig filtered by konfigz_firma_id, konfigz_filiale_id. Used in the Firmenkonfiguration module to support ETK workflows for zub konfig data.
+
 
 - Type: SELECT
 - Tables: w_zub_konfig
@@ -710,6 +826,8 @@ select count(*) from w_zub_konfig@etk_nutzer where konfigz_firma_id = ?  and kon
 ```
 
 ## UPDATE_MARKTID_NUTZER_VON_FILIALE
+**Description:** Updates records in w_zub_konfig, w_user filtered by konfigz_filiale_id, konfigz_firma_id, user_id. Used in the Firmenkonfiguration module to support ETK workflows for zub konfig data.
+
 
 - Type: UPDATE
 - Tables: w_zub_konfig, w_user

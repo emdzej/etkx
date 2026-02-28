@@ -11,6 +11,8 @@ Total queries: 27
 - w_user_einstellungen_wmaerkte ↔ w_markt_etk ↔ w_ben_gk
 
 ## RETRIEVE_EINSTELLUNGEN
+**Description:** Retrieves data from w_user_einstellungen filtered by user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_einstellungen
@@ -23,6 +25,8 @@ select user_marke,  user_produktart, user_lenkung,  user_katalogumfang, user_iso
 ```
 
 ## RETRIEVE_EINSTELLUNGEN_JAVA
+**Description:** Retrieves data from w_user_einstellungen filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_einstellungen
@@ -35,6 +39,8 @@ select user_marke, user_produktart, user_lenkung, user_katalogumfang, user_iso, 
 ```
 
 ## RETRIEVE_EINSTELLUNGEN_MARKTID_JAVA
+**Description:** Retrieves data from w_user, w_markt_ipac filtered by user_id, user_firma_id, marktipac_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user, w_markt_ipac
@@ -47,6 +53,8 @@ select user_marktid Id, marktipac_kuerzel Kuerzel, marktipac_lkz Lkz, marktipac_
 ```
 
 ## RETRIEVE_IPAC_MARKT
+**Description:** Retrieves data from w_markt_ipac filtered by marktipac_id. Used in the Einstellungen module to support ETK workflows for brand/market data.
+
 
 - Type: SELECT
 - Tables: w_markt_ipac
@@ -59,6 +67,8 @@ select marktipac_kuerzel Kuerzel, marktipac_lkz Lkz from w_markt_ipac@etk_publ w
 ```
 
 ## UPDATE_MARKTID
+**Description:** Updates records in w_user filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user
@@ -71,6 +81,8 @@ update w_user  set user_marktid = ? where user_firma_id = coalesce(?,user_firma_
 ```
 
 ## RETRIEVE_EINSTELLUNGEN_REGIONEN
+**Description:** Retrieves data from w_user_einstellungen_region filtered by user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_einstellungen_region
@@ -83,6 +95,8 @@ select user_region from w_user_einstellungen_region@etk_nutzer where user_id = '
 ```
 
 ## RETRIEVE_EINSTELLUNGEN_REGIONEN_JAVA
+**Description:** Retrieves data from w_user_einstellungen_region filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_einstellungen_region
@@ -95,6 +109,8 @@ select user_region from w_user_einstellungen_region@etk_nutzer where user_firma_
 ```
 
 ## DELETE_EINSTELLUNGEN
+**Description:** Deletes records from w_user_einstellungen filtered by user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen
@@ -107,6 +123,8 @@ delete from w_user_einstellungen@etk_nutzer where user_id = '&ID&'
 ```
 
 ## DELETE_EINSTELLUNGEN_JAVA
+**Description:** Deletes records from w_user_einstellungen filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen
@@ -119,6 +137,8 @@ delete from w_user_einstellungen@etk_nutzer where user_firma_id = '&FIRMAID&' an
 ```
 
 ## INSERT_EINSTELLUNGEN
+**Description:** Inserts records in w_user_einstellungen. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_einstellungen
@@ -131,6 +151,8 @@ insert into w_user_einstellungen@etk_nutzer (user_id, user_marke, user_produktar
 ```
 
 ## INSERT_EINSTELLUNGEN_JAVA
+**Description:** Inserts records in w_user_einstellungen. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_einstellungen
@@ -143,6 +165,8 @@ insert into w_user_einstellungen@etk_nutzer (user_firma_id, user_id, user_marke,
 ```
 
 ## RETRIEVE_SPRACHEN
+**Description:** Retrieves data from w_ben_gk, w_publben filtered by publben_art, ben_textcode, ben_iso, ben_regiso and ordered by ben_iso, ben_regiso. Used in the Einstellungen module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_ben_gk, w_publben
@@ -155,6 +179,8 @@ select ben_iso ISO, ben_regiso RegISO, ben_text Benennung from w_ben_gk, w_publb
 ```
 
 ## DELETE_EINSTELLUNGEN_REGIONEN
+**Description:** Deletes records from w_user_einstellungen_region filtered by user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen_region
@@ -167,6 +193,8 @@ delete from w_user_einstellungen_region@etk_nutzer where user_id = '&ID&'
 ```
 
 ## DELETE_EINSTELLUNGEN_REGIONEN_JAVA
+**Description:** Deletes records from w_user_einstellungen_region filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen_region
@@ -179,6 +207,8 @@ delete from w_user_einstellungen_region@etk_nutzer where user_firma_id = '&FIRMA
 ```
 
 ## INSERT_EINSTELLUNGEN_REGIONEN
+**Description:** Inserts records in w_user_einstellungen_region. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_einstellungen_region
@@ -191,6 +221,8 @@ insert into w_user_einstellungen_region@etk_nutzer (user_id, user_region) values
 ```
 
 ## INSERT_EINSTELLUNGEN_REGIONEN_JAVA
+**Description:** Inserts records in w_user_einstellungen_region. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_einstellungen_region
@@ -203,6 +235,8 @@ insert into w_user_einstellungen_region@etk_nutzer (user_firma_id, user_id, user
 ```
 
 ## RETRIEVE_REGIONEN
+**Description:** Retrieves data from w_fztyp. Used in the Einstellungen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_fztyp
@@ -215,6 +249,8 @@ select distinct fztyp_ktlgausf REGIONEN from  w_fztyp
 ```
 
 ## RETRIEVE_COUNT_MODSPALTEN
+**Description:** Retrieves data from w_baureihe, w_fztyp filtered by baureihe_marke_tps, baureihe_produktart, baureihe_baureihe, fztyp_vbereich, fztyp_ktlgausf. Used in the Einstellungen module to support ETK workflows for vehicle identification.
+
 
 - Type: SELECT
 - Tables: w_baureihe, w_fztyp
@@ -227,6 +263,8 @@ select count (distinct fztyp_mospid) from w_baureihe, w_fztyp where baureihe_mar
 ```
 
 ## RETRIEVE_RECHTE_JAVA
+**Description:** Retrieves data from w_user_funktionsrechte filtered by userf_id, userf_firma_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_funktionsrechte
@@ -239,6 +277,8 @@ select userf_recht_id RechtId from w_user_funktionsrechte@etk_nutzer where userf
 ```
 
 ## RETRIEVE_RECHTE
+**Description:** Retrieves data from w_user_funktionsrechte filtered by userf_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_funktionsrechte
@@ -251,6 +291,8 @@ select userf_recht_id RechtId from w_user_funktionsrechte where userf_id = '&ID&
 ```
 
 ## RETRIEVE_BERECHTIGUNGEN
+**Description:** Retrieves data from w_user_berechtigungen filtered by userb_firma_id, userb_id and ordered by Art. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_berechtigungen
@@ -263,6 +305,8 @@ select userb_art Art, userb_wert Wert from w_user_berechtigungen@etk_nutzer wher
 ```
 
 ## DELETE_TEILENOTIZEN_ABGELAUFEN
+**Description:** Deletes records from w_teileinfo filtered by teileinfo_firma_id, teileinfo_user_id, teileinfo_gueltig_bis_jahr, teileinfo_gueltig_bis_monat, teile. Used in the Einstellungen module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileinfo
@@ -275,6 +319,8 @@ delete from w_teileinfo@etk_nutzer where teileinfo_firma_id = '&FIRMAID&' and  t
 ```
 
 ## RETRIEVE_MAERKTE_ETK_LOKALE_PRODUKTE
+**Description:** Retrieves data from w_markt_etk, w_ben_gk filtered by marktetk_anzlokbt, ben_textcode, ben_iso, ben_regiso and ordered by ben_text. Used in the Einstellungen module to support ETK workflows for brand/market data.
+
 
 - Type: SELECT
 - Tables: w_markt_etk, w_ben_gk
@@ -287,6 +333,8 @@ select marktetk_id id, ben_text name, marktetk_isokz kuerzel, marktetk_lkz lkz f
 ```
 
 ## RETRIEVE_ETK_MARKT
+**Description:** Retrieves data from w_markt_etk, w_ben_gk filtered by marktetk_id, ben_textcode, ben_iso, ben_regiso. Used in the Einstellungen module to support ETK workflows for brand/market data.
+
 
 - Type: SELECT
 - Tables: w_markt_etk, w_ben_gk
@@ -299,6 +347,8 @@ select ben_text name, marktetk_isokz kuerzel, marktetk_lkz lkz from w_markt_etk,
 ```
 
 ## RETRIEVE_WEITERE_MAERKTE
+**Description:** Retrieves data from w_user_einstellungen_wmaerkte, w_markt_etk, w_ben_gk filtered by user_firma_id, user_id, marktetk_id, ben_textcode, ben_iso, ben_regiso and ordered by ben_text. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_einstellungen_wmaerkte, w_markt_etk, w_ben_gk
@@ -311,6 +361,8 @@ select user_markt_id, ben_text name, marktetk_isokz kuerzel, marktetk_lkz lkz fr
 ```
 
 ## DELETE_WEITERE_MAERKTE
+**Description:** Deletes records from w_user_einstellungen_wmaerkte filtered by user_firma_id, user_id. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_einstellungen_wmaerkte
@@ -323,6 +375,8 @@ delete from w_user_einstellungen_wmaerkte@etk_nutzer where user_firma_id = '&FIR
 ```
 
 ## INSERT_WEITERE_MAERKTE
+**Description:** Inserts records in w_user_einstellungen_wmaerkte. Used in the Einstellungen module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_einstellungen_wmaerkte

@@ -9,6 +9,8 @@ Total queries: 4
 - w_kompl_satz ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance_allg
 
 ## LOAD_HG
+**Description:** Retrieves data from w_kompl_satz, w_ben_gk, w_hgfg filtered by ks_marke_tps, ks_produktart, hgfg_produktart, ks_hg, hgfg_fg, hgfg_textcode, ben_iso, ben_regiso and ordered by HG. Used in the SatzEinzelteile module to support ETK workflows for kompl satz data.
+
 
 - Type: SELECT
 - Tables: w_kompl_satz, w_ben_gk, w_hgfg
@@ -21,6 +23,8 @@ select distinct hgfg_hg HG, ben_text Benennung from w_kompl_satz, w_ben_gk, w_hg
 ```
 
 ## LOAD_SATZ
+**Description:** Retrieves data from w_kompl_satz, w_teil, w_ben_gk, w_tc_performance_allg filtered by ks_sachnr_satz, ben_iso, ben_regiso, tcp_marke_tps, tcp_produktart, tcp_vbereich, tcp_datum_von, tcp_datum_bis, ks_produktart, ks_hg and ordered by HG, UG, Sachnummer. Used in the SatzEinzelteile module to support ETK workflows for kompl satz data.
+
 
 - Type: SELECT
 - Tables: w_kompl_satz, w_teil, w_ben_gk, w_tc_performance_allg
@@ -33,6 +37,8 @@ select distinct teil_hauptgr HG, teil_untergrup UG, teil_sachnr Sachnummer, ben_
 ```
 
 ## COUNT_EINZELTEILE
+**Description:** Retrieves data from w_kompl_einzelteil filtered by ke_sachnr_satz. Used in the SatzEinzelteile module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_kompl_einzelteil
@@ -45,6 +51,8 @@ select count(ke_sachnr_einzelteil) Anzahl  from w_kompl_einzelteil where ke_sach
 ```
 
 ## LOAD_EINZELTEIL
+**Description:** Retrieves data from w_kompl_einzelteil, w_teil, w_ben_gk, w_tc_performance_allg filtered by ke_sachnr_einzelteil, ben_iso, ben_regiso, tcp_marke_tps, tcp_produktart, tcp_vbereich, tcp_datum_von, tcp_datum_bis and ordered by Pos. Used in the SatzEinzelteile module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_kompl_einzelteil, w_teil, w_ben_gk, w_tc_performance_allg

@@ -7,6 +7,8 @@ Total queries: 6
 - w_user_log ↔ w_user
 
 ## LOAD_SINGLE_USER_LOGIN_INFO
+**Description:** Retrieves data from —. Used in the LoginInfo module to support ETK workflows for — data.
+
 
 - Type: SELECT
 - Tables: —
@@ -19,6 +21,8 @@ SELECT\tuserlog_eingeloggt Eingeloggt, \t\t\t\tuserlog_lastlogin LastLogin, \t\t
 ```
 
 ## INSERT_NEW_LOGIN_INFO
+**Description:** Inserts records in w_user_log. Used in the LoginInfo module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_log
@@ -31,6 +35,8 @@ INSERT INTO w_user_log@etk_nutzer ( \t\t\t\tuserlog_firma_id, \t\t\t\tuserlog_us
 ```
 
 ## UPDATE_LOGIN_INFO
+**Description:** Updates records in w_user_log filtered by userlog_user_id. Used in the LoginInfo module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user_log
@@ -43,6 +49,8 @@ UPDATE w_user_log@etk_nutzer SET    userlog_eingeloggt = 'J', \t\t\t\tuserlog_la
 ```
 
 ## UPDATE_LOGIN_INFO_LOGOUT
+**Description:** Updates records in w_user_log filtered by userlog_user_id. Used in the LoginInfo module to support ETK workflows for user settings.
+
 
 - Type: UPDATE
 - Tables: w_user_log
@@ -55,6 +63,8 @@ UPDATE w_user_log@etk_nutzer SET    userlog_eingeloggt = 'N' WHERE\tuserlog_firm
 ```
 
 ## GET_LOGGEDIN_USERS
+**Description:** Retrieves data from w_user_log, w_user filtered by user_firma_id, user_id, NOT, userlog_firma_id, tuserlog_eingeloggt and ordered by UserId. Used in the LoginInfo module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_log, w_user
@@ -67,6 +77,8 @@ SELECT userlog_user_id UserId,        user_name UserName, \t      userlog_lastlo
 ```
 
 ## GET_INACTIVE_USERS
+**Description:** Retrieves data from w_user filtered by user_firma_id, NOT, userlog_lastlog, userlog_lastlogin and ordered by UserId. Used in the LoginInfo module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user
