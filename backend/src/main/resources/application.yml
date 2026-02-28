@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlite:/data/etkx.db
+    url: jdbc:sqlite:/data/etk.sqlite
     driver-class-name: org.sqlite.JDBC
   jpa:
     open-in-view: false
