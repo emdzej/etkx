@@ -7,6 +7,8 @@ Total queries: 2
 - w_teil_aspg ↔ w_teil ↔ w_ben_gk
 
 ## LOAD_ASPG_TEILE
+**Description:** Retrieves data from w_teil_aspg filtered by teilaspg_sachnr, teilaspg_kz_gruppe. Used in the Aspg module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil_aspg
@@ -19,6 +21,8 @@ select teilaspg_sachnr_pg, teilaspg_vmenge from w_teil_aspg where teilaspg_sachn
 ```
 
 ## LOAD_STECKER
+**Description:** Retrieves data from w_teil_aspg, w_teil, w_ben_gk filtered by teilaspg_sachnr, teilaspg_kz_gruppe, teilaspg_sachnr_pg, teil_textcode, ben_iso, ben_regiso. Used in the Aspg module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil_aspg, w_teil, w_ben_gk

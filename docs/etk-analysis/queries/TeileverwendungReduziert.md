@@ -8,6 +8,8 @@ Total queries: 2
 - w_teil ↔ w_ben_gk
 
 ## RETRIEVE_TEIL
+**Description:** Retrieves data from w_teil, w_ben_gk filtered by teil_sachnr, teil_textcode, ben_iso, ben_regiso. Used in the TeileverwendungReduziert module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_ben_gk
@@ -20,6 +22,8 @@ select teil_hauptgr HG, teil_untergrup UG, teil_sachnr Sachnummer, ben_text Ben,
 ```
 
 ## RETRIEVE_VERWENDUNG
+**Description:** Retrieves data from w_btzeilen_verbauung, w_ben_gk, w_baureihe, w_publben, w_fztyp filtered by btzeilenv_sachnr, btzeilenv_mospid, fztyp_sichtschutz, fztyp_baureihe, baureihe_textcode, ben_iso, ben_regiso, publben_art, fztyp_karosserie, publben_textcode and ordered by Baureihe, Modell, Karosserie, Region. Used in the TeileverwendungReduziert module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_ben_gk, w_baureihe, w_publben, w_fztyp

@@ -7,6 +7,8 @@ Total queries: 5
 - w_tipp ↔ w_user_tipps
 
 ## INSERT_USER_TIPP
+**Description:** Inserts records in w_user_tipps. Used in the Infotool module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_tipps
@@ -19,6 +21,8 @@ insert into w_user_tipps@etk_nutzer (usert_firma_id, usert_id, usert_tipp_id) ta
 ```
 
 ## DELETE_USER_TIPP
+**Description:** Deletes records from w_user_tipps filtered by usert_firma_id, usert_id. Used in the Infotool module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_tipps
@@ -31,6 +35,8 @@ delete from w_user_tipps@etk_nutzer where usert_firma_id = ?   and usert_id = ?
 ```
 
 ## LOAD_TIPPS_TRICKS
+**Description:** Retrieves data from w_tipp, w_user_tipps filtered by usert_firma_id, usert_id, usert_tipp_id, tipp_wichtig and ordered by tipp_pos. Used in the Infotool module to support ETK workflows for tips.
+
 
 - Type: SELECT
 - Tables: w_tipp, w_user_tipps
@@ -43,6 +49,8 @@ select tipp_id Id, tipp_filename Filename, tipp_art Art, DECODE(usert_tipp_id, u
 ```
 
 ## COUNT_TIPPS_TRICKS
+**Description:** Retrieves data from w_tipp filtered by tipp_id. Used in the Infotool module to support ETK workflows for tips.
+
 
 - Type: SELECT
 - Tables: w_tipp
@@ -55,6 +63,8 @@ select Count(*) Anzahl from w_tipp@etk_nutzer where tipp_id > 0
 ```
 
 ## COUNT_TICKER
+**Description:** Retrieves data from w_tipp filtered by tipp_id. Used in the Infotool module to support ETK workflows for tips.
+
 
 - Type: SELECT
 - Tables: w_tipp

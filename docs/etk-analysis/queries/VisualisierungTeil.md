@@ -8,6 +8,8 @@ Total queries: 2
 - w_btzeilenugb ↔ w_grafik ↔ w_ben_gk ↔ w_teil ↔ w_bildtaf ↔ w_btzeilenugb_verbauung
 
 ## RETRIEVE_VISUALISIERUNGSINFO_GEB
+**Description:** Retrieves data from w_btzeilen_verbauung, w_grafik, w_baureihe, w_fztyp, w_ben_gk, w_teil, w_bildtaf, w_btzeilen filtered by btzeilenv_sachnr, btzeilenv_mospid, fztyp_baureihe, baureihe_marke_tps, btzeilenv_btnr, bildtaf_produktart, btzeilenv_pos, teil_textcode, ben_iso, ben_regiso, bildtaf_textc, bildtaf_grafikid, grafik_art. Used in the VisualisierungTeil module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilen_verbauung, w_grafik, w_baureihe, w_fztyp, w_ben_gk, w_teil, w_bildtaf, w_btzeilen
@@ -20,6 +22,8 @@ select teil_hauptgr HG, teil_untergrup UG, teil_sachnr Sachnummer, t.ben_text Te
 ```
 
 ## RETRIEVE_VISUALISIERUNGSINFO_UGB
+**Description:** Retrieves data from w_btzeilenugb, w_grafik, w_ben_gk, w_teil, w_bildtaf, w_btzeilenugb_verbauung filtered by btzeilenu_sachnr, btzeilenu_btnr, btzeilenu_pos, btzeilenuv_marke_tps, bildtaf_produktart, teil_textcode, ben_iso, ben_regiso, bildtaf_textc, bildtaf_grafikid, grafik_art. Used in the VisualisierungTeil module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb, w_grafik, w_ben_gk, w_teil, w_bildtaf, w_btzeilenugb_verbauung

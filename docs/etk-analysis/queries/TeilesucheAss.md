@@ -13,6 +13,8 @@ Total queries: 20
 - w_btzeilenugb_verbauung ↔ w_markt_etk ↔ w_ben_gk ↔ w_btzeilenugb ↔ w_bildtaf
 
 ## RETRIEVE_HGS
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_bildtaf, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik filtered by btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, hgfg_fg, bildtaf_bereich, ben_iso, ben_regiso, hgthb_marke_tps, hgfg_produktart, hgfg_bereich, grafik_art and ordered by Hauptgruppe. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_bildtaf, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik
@@ -25,6 +27,8 @@ select distinct hgfg_hg Hauptgruppe, ben_text Benennung, hgthb_grafikid GrafikId
 ```
 
 ## RETRIEVE_HGS_GRAF
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_bildtaf, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik filtered by btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, hgfg_fg, bildtaf_bereich, ben_iso, ben_regiso, hgthb_marke_tps, hgfg_produktart, hgfg_bereich, grafik_art and ordered by Hauptgruppe. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_bildtaf, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik
@@ -37,6 +41,8 @@ select distinct hgfg_hg Hauptgruppe, ben_text Benennung, hgthb_grafikid GrafikId
 ```
 
 ## RETRIEVE_HGFGS
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_hgfg, w_ben_gk, w_bildtaf filtered by btzeilenuv_marke_tps, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_hg, bildtaf_fg, bildtaf_bereich, hgfg_textcode, ben_iso, ben_regiso and ordered by Hauptgruppe, Funktionsgruppe. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_hgfg, w_ben_gk, w_bildtaf
@@ -49,6 +55,8 @@ select distinct hgfg_hg Hauptgruppe, hgfg_fg Funktionsgruppe, ben_text Benennung
 ```
 
 ## RETRIEVE_ALL_HGFGS
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_hgfg, w_ben_gk, w_bildtaf filtered by btzeilenuv_marke_tps, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_hg, hgfg_fg, bildtaf_bereich, hgfg_textcode, ben_iso, ben_regiso, bildtaf_fg and ordered by 1, 2. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_hgfg, w_ben_gk, w_bildtaf
@@ -61,6 +69,8 @@ select hgfg_hg Hauptgruppe, hgfg_fg Funktionsgruppe, ben_text Benennung from w_b
 ```
 
 ## SEARCH_BT_BENENNUNG
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso, ben_text. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf
@@ -73,6 +83,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_BT_BENENNUNG_SONDERLOCKE
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso, ben_text. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf
@@ -85,6 +97,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_BT_BENENNUNG_TR
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso, SUCHSTR. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf
@@ -97,6 +111,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_BT_BEGRIFF
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_bildtaf
@@ -109,6 +125,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_SNR_BENENNUNG
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, ben_text. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -121,6 +139,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_SNR_BENENNUNG_SONDERLOCKE
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, ben_text. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -133,6 +153,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_SNR_BENENNUNG_TR
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, SUCHSTR. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -145,6 +167,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_SNR_BEGRIFF
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, dist. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -157,6 +181,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_BT_SACHNUMMER_COMPL
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, btzeilenuv_pos, btzeilenu_sachnr, btzeilenu_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf
@@ -169,6 +195,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_SNR_SACHNUMMER_INCOMPL
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, btzeilenu_sachnr, bildtaf_produktart, bildtaf_vbereich and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -181,6 +209,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_SNR_FREMDNR
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk filtered by btzeilenuv_btnr, btzeilenuv_pos, ben_iso, ben_regiso, btzeilenu_sachnr, bildtaf_produktart, bildtaf_vbereich and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_teil, w_ben_gk
@@ -193,6 +223,8 @@ select distinct teil_hauptgr Hauptgruppe, teil_untergrup Untergruppe, teil_sachn
 ```
 
 ## SEARCH_BT_SACHNUMMERN
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, btzeilenuv_pos, btzeilenu_sachnr, btzeilenu_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf
@@ -205,6 +237,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_BT_HGFG
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf filtered by marktetk_lkz, btzeilenuv_btnr, btzeilenuv_pos, btzeilenu_btnr, bildtaf_produktart, bildtaf_vbereich, bildtaf_textc, ben_iso, ben_regiso and ordered by Pos. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_markt_etk, w_ben_gk, w_btzeilenugb, w_bildtaf
@@ -217,6 +251,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, ben_text 
 ```
 
 ## SEARCH_BT_HG_GRAFISCH_MIT_GRAFIKEN
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik, w_ben_gk, w_markt_etk filtered by btzeilenuv_btnr, btzeilenuv_pos, grafik_art, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, bildtaf_hg and ordered by Pos. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik, w_ben_gk, w_markt_etk
@@ -229,6 +265,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, BB.ben_te
 ```
 
 ## SEARCH_BT_HG_FG_GRAFISCH_MIT_GRAFIKEN
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik, w_ben_gk, w_markt_etk filtered by btzeilenuv_btnr, btzeilenuv_pos, grafik_art, ben_iso, ben_regiso, bildtaf_produktart, bildtaf_vbereich, bildtaf_hg, bildtaf_fg and ordered by Pos. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik, w_ben_gk, w_markt_etk
@@ -241,6 +279,8 @@ select distinct bildtaf_btnr BildtafelNr, bildtaf_bteart BildtafelArt, BB.ben_te
 ```
 
 ## CHECK_BT_HG_GRAFISCH
+**Description:** Retrieves data from w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik filtered by btzeilenuv_btnr, btzeilenuv_pos, grafik_art, bildtaf_produktart, bildtaf_vbereich, bildtaf_hg. Used in the TeilesucheAss module to support ETK workflows for parts list lines.
+
 
 - Type: SELECT
 - Tables: w_btzeilenugb_verbauung, w_btzeilenugb, w_bildtaf, w_grafik

@@ -3,6 +3,8 @@
 Total queries: 9
 
 ## INSERT_NEWSTEXT
+**Description:** Inserts records in w_news_text. Used in the News module to support ETK workflows for news.
+
 
 - Type: INSERT
 - Tables: w_news_text
@@ -15,6 +17,8 @@ insert into w_news_text (NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO, NEWST_TEXT, N
 ```
 
 ## UPDATE_NEWSTEXT
+**Description:** Updates records in w_news_text filtered by NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO. Used in the News module to support ETK workflows for news.
+
 
 - Type: UPDATE
 - Tables: w_news_text
@@ -27,6 +31,8 @@ update w_news_text set NEWST_TEXT = '&TEXT&', NEWST_AKTUELL = '&AKTUELL&', NEWST
 ```
 
 ## LOAD_NEWSTEXTE
+**Description:** Retrieves data from w_news_text filtered by NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO and ordered by NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO, NEWST_STANDARD. Used in the News module to support ETK workflows for news.
+
 
 - Type: SELECT
 - Tables: w_news_text
@@ -39,6 +45,8 @@ select NEWST_TEXT Text, NEWST_AKTUELL IsAktiviert, NEWST_STANDARD IsStandard fro
 ```
 
 ## DELETE_NEWSTEXT
+**Description:** Deletes records from w_news_text filtered by NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO, NEWST_TEXT. Used in the News module to support ETK workflows for news.
+
 
 - Type: DELETE
 - Tables: w_news_text
@@ -51,6 +59,8 @@ delete from w_news_text where NEWST_MARKE_TPS = '&MARKE&' and NEWST_ISO = '&ISO&
 ```
 
 ## UPDATE_NEWSTEXT_AKTIVIERUNG
+**Description:** Updates records in w_news_text filtered by NEWST_MARKE_TPS, NEWST_ISO, NEWST_REGISO, NEWST_TEXT. Used in the News module to support ETK workflows for news.
+
 
 - Type: UPDATE
 - Tables: w_news_text
@@ -63,6 +73,8 @@ update w_news_text set NEWST_AKTUELL = '&AKTUELL&' where NEWST_MARKE_TPS = '&MAR
 ```
 
 ## DELETE_IMAGE
+**Description:** Deletes records from w_news_grafik filtered by newsg_marke_tps. Used in the News module to support ETK workflows for graphics.
+
 
 - Type: DELETE
 - Tables: w_news_grafik
@@ -75,6 +87,8 @@ delete from w_news_grafik where newsg_marke_tps = '&MARKE&'
 ```
 
 ## INSERT_IMAGE
+**Description:** Inserts records in w_news_grafik. Used in the News module to support ETK workflows for graphics.
+
 
 - Type: INSERT
 - Tables: w_news_grafik
@@ -87,6 +101,8 @@ insert into w_news_grafik values ( '&MARKE&', EMPTY_BLOB() )
 ```
 
 ## LOAD_IMAGE
+**Description:** Retrieves data from w_news_grafik filtered by newsg_marke_tps. Used in the News module to support ETK workflows for graphics.
+
 
 - Type: SELECT
 - Tables: w_news_grafik
@@ -99,6 +115,8 @@ select newsg_grafik Grafik from w_news_grafik where newsg_marke_tps = '&MARKE&'
 ```
 
 ## UPDATE_IMAGE
+**Description:** Retrieves data from w_news_grafik filtered by newsg_marke_tps. Used in the News module to support ETK workflows for graphics.
+
 
 - Type: SELECT
 - Tables: w_news_grafik

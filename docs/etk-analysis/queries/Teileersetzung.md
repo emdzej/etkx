@@ -7,6 +7,8 @@ Total queries: 3
 - w_teileersetzung ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance
 
 ## RETRIEVE_HGS
+**Description:** Retrieves data from w_teileersetzung_suche filtered by tss_mospid, tss_hg and ordered by HG. Used in the Teileersetzung module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileersetzung_suche
@@ -19,6 +21,8 @@ select distinct tss_hg HG from w_teileersetzung_suche where tss_mospid IN (&MOSP
 ```
 
 ## FIND_HG
+**Description:** Retrieves data from w_teil filtered by teil_hauptgr. Used in the Teileersetzung module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil
@@ -31,6 +35,8 @@ select distinct teil_hauptgr HG from w_teil where teil_hauptgr = '&HG&'
 ```
 
 ## RETRIEVE_TEILE
+**Description:** Retrieves data from w_teileersetzung, w_teil, w_ben_gk, w_tc_performance filtered by ts_sachnr, ben_iso, ben_regiso, tcp_sachnr, tcp_datum_von, tcp_datum_bis, ts_mospid and ordered by HGALT, UGALT, SACHNRALT, HG, UG, SACHNR. Used in the Teileersetzung module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileersetzung, w_teil, w_ben_gk, w_tc_performance

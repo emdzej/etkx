@@ -9,6 +9,8 @@ Total queries: 4
 - w_bedeutung ↔ w_ben_gk ↔ w_komm
 
 ## RETRIEVE_ABKUERZUNGEN
+**Description:** Retrieves data from w_abk, w_ben_gk filtered by abk_textcode, ben_iso, ben_regiso and ordered by ABKUERZUNG. Used in the Hilfe module to support ETK workflows for abk data.
+
 
 - Type: SELECT
 - Tables: w_abk, w_ben_gk
@@ -21,6 +23,8 @@ select abk_kuerzel ABKUERZUNG, abk_bedeutung BEDEUTUNG, ben_text UEBERSETZUNG fr
 ```
 
 ## RETRIEVE_VERSIONSINFO
+**Description:** Retrieves data from w_verwaltung. Used in the Hilfe module to support ETK workflows for verwaltung data.
+
 
 - Type: SELECT
 - Tables: w_verwaltung
@@ -33,6 +37,8 @@ select verwaltung_info Info, verwaltung_wert Wert from w_verwaltung
 ```
 
 ## RETRIEVE_BEDEUTUNGEN
+**Description:** Retrieves data from w_bedeutung, w_ben_gk, w_komm filtered by bedeutung_art, bedeutung_kommid, komm_textcode, ben_iso, ben_regiso and ordered by WERT, POS. Used in the Hilfe module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bedeutung, w_ben_gk, w_komm
@@ -45,6 +51,8 @@ select bedeutung_wert WERT, ben_text BEDEUTUNG, komm_pos POS from w_bedeutung, w
 ```
 
 ## RETRIEVE_SALAPAS
+**Description:** Retrieves data from w_bed_sala, w_ben_gk, w_bed filtered by bedsala_art, bedsala_id, bed_textcode, ben_iso, ben_regiso and ordered by Code. Used in the Hilfe module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bed_sala, w_ben_gk, w_bed

@@ -3,6 +3,8 @@
 Total queries: 6
 
 ## LOAD_GRAFIK
+**Description:** Retrieves data from w_grafik filtered by grafik_grafikid, grafik_art. Used in the Allgemein module to support ETK workflows for graphics.
+
 
 - Type: SELECT
 - Tables: w_grafik
@@ -15,6 +17,8 @@ select grafik_blob Grafik, grafik_format Format, grafik_moddate ModStamp from w_
 ```
 
 ## RETRIEVE_BMWSACHNUMMER_FOR_FREMDESACHNUMMER
+**Description:** Retrieves data from w_fremdtl filtered by fremdtl_fremdsnr. Used in the Allgemein module to support ETK workflows for fremdtl data.
+
 
 - Type: SELECT
 - Tables: w_fremdtl
@@ -27,6 +31,8 @@ select distinct fremdtl_sachnr Sachnummer from w_fremdtl where fremdtl_fremdsnr 
 ```
 
 ## RETRIEVE_URLS
+**Description:** Retrieves data from w_url filtered by url_type, url_iso, url_regiso, url_marke_tps. Used in the Allgemein module to support ETK workflows for URL configuration.
+
 
 - Type: SELECT
 - Tables: w_url
@@ -39,6 +45,8 @@ select url_url URL from w_url where upper(url_type)='&TYPE&' and upper(url_iso)=
 ```
 
 ## RETRIEVE_BMW_NETZ
+**Description:** Retrieves data from w_netz. Used in the Allgemein module to support ETK workflows for network settings.
+
 
 - Type: SELECT
 - Tables: w_netz
@@ -51,6 +59,8 @@ select netz_netz Netz, netz_krit Krit from w_netz
 ```
 
 ## RETRIEVE_BMW_NETZURL
+**Description:** Retrieves data from w_netzurl filtered by netzurl_netz, netzurl_krit. Used in the Allgemein module to support ETK workflows for network settings.
+
 
 - Type: SELECT
 - Tables: w_netzurl
@@ -63,6 +73,8 @@ select netzurl_url_asap AsapUrl, netzurl_asaptunnel AsapTunnel, netzurl_url_zr C
 ```
 
 ## RETRIEVE_BMW_PROXY
+**Description:** Retrieves data from w_proxy. Used in the Allgemein module to support ETK workflows for proxy settings.
+
 
 - Type: SELECT
 - Tables: w_proxy

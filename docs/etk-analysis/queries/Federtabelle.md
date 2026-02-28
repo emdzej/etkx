@@ -11,6 +11,8 @@ Total queries: 6
 - w_sfttyp ↔ w_sftsala ↔ w_sft
 
 ## LOAD_SALAS
+**Description:** Retrieves data from w_sfttyp, w_ben_gk, w_bed_sala, w_bed, w_sftsala, w_sft filtered by sfttyp_typ, sfttyp_sftid, sft_sftid, sftsala_salaid, bedsala_id, bed_textcode, ben_iso, ben_regiso and ordered by Code, Benennung. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sfttyp, w_ben_gk, w_bed_sala, w_bed, w_sftsala, w_sft
@@ -23,6 +25,8 @@ select distinct sftsala_salaid Id, bedsala_art || bedsala_pnr || bedsala_hz Code
 ```
 
 ## LOAD_PUNKTE_TYP
+**Description:** Retrieves data from w_sfttyp, w_sft filtered by sfttyp_typ, sfttyp_sftid and ordered by FTId, Typ. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sfttyp, w_sft
@@ -35,6 +39,8 @@ select distinct sfttyp_sftid FTId, sfttyp_typ Typ, sfttyp_punkte_va_l Grundpunkt
 ```
 
 ## LOAD_PUNKTE_SALA
+**Description:** Retrieves data from w_sfttyp, w_sftsala, w_sft filtered by sfttyp_typ, sfttyp_sftid, sft_sftid, sftsala_salaid and ordered by FTId, SalaId. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sfttyp, w_sftsala, w_sft
@@ -47,6 +53,8 @@ select distinct sftsala_sftid FTId, sftsala_salaid SalaId, sftsala_va_punkte_l P
 ```
 
 ## LOAD_FEDERN_LINKS
+**Description:** Retrieves data from w_sftfeder, w_teil filtered by sftfeder_sftid, sftfeder_kz_vh, sftfeder_punkte_von, sftfeder_punkte_bis, teil_sachnr. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sftfeder, w_teil
@@ -59,6 +67,8 @@ select distinct teil_hauptgr || teil_untergrup || sftfeder_sachnr_l Teilenummer 
 ```
 
 ## LOAD_FEDERN_RECHTS
+**Description:** Retrieves data from w_sftfeder, w_teil filtered by sftfeder_sftid, sftfeder_kz_vh, sftfeder_punkte_von, sftfeder_punkte_bis, teil_sachnr. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sftfeder, w_teil
@@ -71,6 +81,8 @@ select distinct teil_hauptgr || teil_untergrup || sftfeder_sachnr_r Teilenummer 
 ```
 
 ## LOAD_ASPG_KIT
+**Description:** Retrieves data from w_sft_aspg, w_teil filtered by sftaspg_sftid, teil_sachnr. Used in the Federtabelle module to support ETK workflows for spring table.
+
 
 - Type: SELECT
 - Tables: w_sft_aspg, w_teil

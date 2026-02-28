@@ -1,6 +1,6 @@
 # ETK SQL Queries (dbaccess + SQLStatementsTransbase)
 
-This document summarizes SQL queries used by dbaccess modules, extracted from `src/decompiled/SQLStatementsTransbase.java` and mapped to tables listed in `docs/SCHEMA.md`. Full per-module query listings are in `docs/etk-analysis/queries/`.
+This document summarizes SQL queries used by dbaccess modules, extracted from `src/decompiled/SQLStatementsTransbase.java` and mapped to tables listed in `docs/SCHEMA.md`. Full per-module query listings are in `docs/etk-analysis/queries/`, and each query there includes a short English description of its purpose and usage in ETK.
 
 ## Module → Tables
 
