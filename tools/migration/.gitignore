@@ -1,0 +1,5 @@
+*.class
+postgresql.jar
+sqlite-jdbc.jar
+*.sqlite
+*.db
