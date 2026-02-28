@@ -243,7 +243,7 @@ public class PartSearchVehicleRepository {
         left join w_markt_etk on (marktetk_lkz = bildtaf_lkz)
         where ben_iso = :iso
           and ben_regiso = :regiso
-          and upper(replace('i' by  '\u0130' in replace('\u0131' by 'I' in ben_text))) like :suchstring
+          and UPPER(ben_text) like :suchstring
           and ben_textcode = bildtaf_textc
           and bildtaf_btnr = bildtafs_btnr
           and bildtafs_mospid = :mosp
@@ -366,7 +366,7 @@ public class PartSearchVehicleRepository {
             and ben_komm.ben_regiso = :regiso
         )
         where btzeilenv_mospid = :mosp
-          and upper(replace('i' by '\u0130' in replace('\u0131' by 'I' in ben_teil.ben_text))) like :suchstring
+          and UPPER(ben_teil.ben_text) like :suchstring
         """;
 
     private static final String SEARCH_SNR_BEGRIFF = """

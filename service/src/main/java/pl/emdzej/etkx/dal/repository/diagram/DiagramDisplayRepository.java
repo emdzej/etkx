@@ -67,7 +67,7 @@ public class DiagramDisplayRepository {
             teil_ist_diebstahlrelevant Teil_Diebstahlrelevant,
             si_dokart SI_DokArt,
             decode(tcp_sachnr, tcp_sachnr, 'C', NULL) Teil_TC,
-            NVL(tcp_proddat_rel, 'N') Teil_TC_ProdDatRelevant,
+            COALESCE(tcp_proddat_rel, 'N') Teil_TC_ProdDatRelevant,
             grpinfo_leitaw_pa GRP_PA,
             grpinfo_leitaw_hg GRP_HG,
             grpinfo_leitaw_ug GRP_UG,

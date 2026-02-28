@@ -17,7 +17,7 @@ public class PartListRepository {
     private static final String RETRIEVE_PART = """
         select teil_hauptgr Hg, teil_untergrup Ug, ben_text Benennung, teil_benennzus Zusatz, teilm_marke_tps Marke,
             teil_art Teileart, teil_produktkl ProduktKlasse, teil_mam MAM, teil_mengeeinh Mengeneinheit,
-            NVL(teil_vorverpac, 0) VVM, NVL(teil_lagerverp, 0) LVM, NVL(teil_beh_verp, 0) BVM,
+            COALESCE(teil_vorverpac, 0) VVM, COALESCE(teil_lagerverp, 0) LVM, COALESCE(teil_beh_verp, 0) BVM,
             teil_fertigungshinweis FH, teil_ist_diebstahlrelevant Teil_Diebstahlrelevant
         from w_teil, w_teil_marken, w_ben_gk
         where teil_sachnr = :sachnr

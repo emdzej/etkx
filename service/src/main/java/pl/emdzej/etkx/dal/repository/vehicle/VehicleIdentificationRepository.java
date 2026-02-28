@@ -282,7 +282,7 @@ public class VehicleIdentificationRepository {
             fztyp_getriebe Getriebe,
             fgstnr_prod Produktionsdatum,
             fztyp_sichtschutz Sichtschutz,
-            NVL(fztyp_einsatz, 0) Einsatz
+            COALESCE(fztyp_einsatz, 0) Einsatz
         from w_fgstnr
         inner join w_fztyp on (fgstnr_typschl = fztyp_typschl and fgstnr_mospid = fztyp_mospid)
         inner join w_baureihe on (fztyp_baureihe = baureihe_baureihe)
@@ -316,7 +316,7 @@ public class VehicleIdentificationRepository {
             fztyp_getriebe Getriebe,
             :prodDatum Produktionsdatum,
             fztyp_sichtschutz Sichtschutz,
-            NVL(fztyp_einsatz, 0) Einsatz
+            COALESCE(fztyp_einsatz, 0) Einsatz
         from w_fztyp
         inner join w_baureihe on (fztyp_baureihe = baureihe_baureihe)
         inner join w_publben pk on (fztyp_karosserie = pk.publben_bezeichnung and pk.publben_art = 'K')
@@ -366,7 +366,7 @@ public class VehicleIdentificationRepository {
             bed_egid EGruppenId,
             bedsala_sicher Sicher,
             bedsala_saz SAZ,
-            DECODE(bedzus_elemid, bedzus_elemid, 'J', 'N') HasBedText,
+            CASE WHEN bedzus_elemid IS NOT NULL THEN 'J' ELSE 'N' END HasBedText,
             fgstnrs_showtext ShowBedText,
             eg_exklusiv Exklusiv,
             eg_pos EGruppenPosition,
@@ -393,7 +393,7 @@ public class VehicleIdentificationRepository {
         where af.bedafl_art = 'AF'
           __LOAD_SS_BEDINGUNGEN_AF_DECIDE__
           and af.bedafl_gilt_v <= :prodDatum
-          and NVL(af.bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(af.bedafl_gilt_b, 99999999) >= :prodDatum
           and af.bedafl_id = bed_elemid
           and bed_egid = eg_id
           and bed_textcode = ben_textcode
@@ -412,11 +412,11 @@ public class VehicleIdentificationRepository {
         where af.bedafl_art = 'AF'
           __LOAD_SS_BEDINGUNGEN_AF_DECIDE__
           and af.bedafl_gilt_v <= :prodDatum
-          and NVL(af.bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(af.bedafl_gilt_b, 99999999) >= :prodDatum
           and f.bedafl_code = substr(af.bedafl_code, 3)
           and f.bedafl_art = 'F'
           and f.bedafl_gilt_v <= :prodDatum
-          and NVL(f.bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(f.bedafl_gilt_b, 99999999) >= :prodDatum
           and f.bedafl_id = bed_elemid
           and bed_egid = eg_id
           and bed_textcode = ben_textcode
@@ -435,11 +435,11 @@ public class VehicleIdentificationRepository {
         where af.bedafl_art= 'AF'
           __LOAD_SS_BEDINGUNGEN_AF_DECIDE__
           and af.bedafl_gilt_v <= :prodDatum
-          and NVL(af.bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(af.bedafl_gilt_b, 99999999) >= :prodDatum
           and a.bedafl_code = substr(af.bedafl_code, 1, 2)
           and a.bedafl_art = 'A'
           and a.bedafl_gilt_v <= :prodDatum
-          and NVL(a.bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(a.bedafl_gilt_b, 99999999) >= :prodDatum
           and a.bedafl_id = bed_elemid
           and bed_egid = eg_id
           and bed_textcode = ben_textcode
@@ -459,7 +459,7 @@ public class VehicleIdentificationRepository {
         where bedafl_art= 'L'
           __LOAD_SS_BEDINGUNGEN_LACK_DECIDE__
           and bedafl_gilt_v <= :prodDatum
-          and NVL(bedafl_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(bedafl_gilt_b, 99999999) >= :prodDatum
           and bedafl_id = bed_elemid
           and bed_egid = eg_id
           and bed_textcode = ben_textcode
@@ -482,7 +482,7 @@ public class VehicleIdentificationRepository {
         where bedsala_produktart = :produktart
           and bedsala_pnr = :primaNummer
           and bedsala_gilt_v <= :prodDatum
-          and NVL(bedsala_gilt_b, 99999999) >= :prodDatum
+          and COALESCE(bedsala_gilt_b, 99999999) >= :prodDatum
           and bedsala_art not in ('N', 'V')
           __LOAD_SS_BEDINGUNGEN_SALAPA_DECIDE_ART__
           __LOAD_SS_BEDINGUNGEN_SALAPA_DECIDE_HZAEHLER__
