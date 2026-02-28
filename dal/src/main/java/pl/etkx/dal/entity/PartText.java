@@ -8,49 +8,32 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 /**
- * Represents a localized text entry used for part names and other labels.
- * Maps to the w_publben table containing multilingual text values.
+ * Represents published name/designation mapping.
+ * Maps to the w_publben table containing type→designation mappings.
+ * 
+ * Note: For localized texts by language, see LocalizedText (w_ben_gk).
  */
 @Entity
 @Table(name = "w_publben")
-@Data
 @IdClass(PartTextId.class)
+@Data
 public class PartText {
     /**
-     * Text code linking to language keys.
+     * Type/category code (e.g., 'A' for accessories).
+     */
+    @Id
+    @Column(name = "publben_art")
+    private String type;
+
+    /**
+     * Text code reference.
      */
     @Id
     @Column(name = "publben_textcode")
-    private String textCode;
+    private Integer textCode;
 
     /**
-     * Language ISO code.
-     */
-    @Id
-    @Column(name = "publben_iso")
-    private String languageIso;
-
-    /**
-     * Region ISO code.
-     */
-    @Id
-    @Column(name = "publben_regiso")
-    private String regionIso;
-
-    /**
-     * Text value in the specified language.
-     */
-    @Column(name = "publben_text")
-    private String text;
-
-    /**
-     * Text category/type (e.g., K=body, L=steering).
-     */
-    @Column(name = "publben_art")
-    private String textType;
-
-    /**
-     * Designation/code that the text describes.
+     * Designation/name.
      */
     @Column(name = "publben_bezeichnung")
     private String designation;
