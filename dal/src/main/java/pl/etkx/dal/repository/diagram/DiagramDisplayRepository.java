@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+import pl.etkx.dal.dto.admin.GraphicDto;
 import pl.etkx.dal.dto.diagram.DiagramAtbDto;
 import pl.etkx.dal.dto.diagram.DiagramCommentDto;
 import pl.etkx.dal.dto.diagram.DiagramCommentShortDto;
@@ -36,6 +37,16 @@ public class DiagramDisplayRepository {
         from w_grafik_hs
         where grafikhs_grafikid = :grafikId
           and grafikhs_art = :art
+        """;
+
+    private static final String LOAD_DIAGRAM_GRAFIK = """
+        select grafik_blob Grafik,
+            grafik_format Format,
+            grafik_moddate ModStamp
+        from w_bildtaf
+        inner join w_grafik on (bildtaf_grafikid = grafik_grafikid)
+        where bildtaf_btnr = :btnr
+          and grafik_art = :art
         """;
 
     private static final String LOAD_BTZEILEN_FZG = """
@@ -576,7 +587,21 @@ public class DiagramDisplayRepository {
             .bap(rs.getString("BAP"))
             .build();
 
+    private static final RowMapper<GraphicDto> GRAPHIC_MAPPER = (rs, rowNum) ->
+        GraphicDto.builder()
+            .grafik(rs.getBytes("Grafik"))
+            .format(rs.getString("Format"))
+            .modStamp(rs.getString("ModStamp"))
+            .build();
+
     private final NamedParameterJdbcTemplate jdbc;
+
+    /**
+     * Loads the diagram graphic for a plate number.
+     */
+    public GraphicDto loadDiagramGraphic(String btnr, String art) {
+        return jdbc.queryForObject(LOAD_DIAGRAM_GRAFIK, Map.of("btnr", btnr, "art", art), GRAPHIC_MAPPER);
+    }
 
     /**
      * Retrieves graphic hotspots for a diagram.
