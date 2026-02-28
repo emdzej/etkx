@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  PSEUDO‑XML representation of the Java‑serialized TrfImage request (service=4).
+  Real ETK traffic is Java serialization (ObjectOutputStream), not XML.
+-->
+<TrfImage commandID="4">
+  <ImageID>1234567</ImageID>
+  <Timestamp>20240101120000</Timestamp>
+  <FormFactor>T</FormFactor>
+  <ImageFormat>TIF</ImageFormat>
+</TrfImage>
