@@ -67,6 +67,6 @@ public class DictionaryController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam(defaultValue = "  ") String regIso
     ) {
-        return dictionaryRepository.findBodyStyles(seriesCode, lang, regIso);
+        return dictionaryRepository.findBodyStylesBySeries(seriesCode);
     }
 }
