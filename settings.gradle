@@ -1,0 +1,4 @@
+rootProject.name = 'etkx'
+
+include 'backend'
+include 'dal'
