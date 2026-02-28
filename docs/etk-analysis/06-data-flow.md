@@ -12,9 +12,9 @@ This document traces the **end‑to‑end** data flow for four key operations, f
 - **Transferable:** `webetk.communication.transferables.TrfTeilesuche`
 - **Service ID:** `PERFORM_TEILESUCHE = 63`
 - **Key request fields** (set by `DlgTeilesucheSucheController.performSearchTeilenummer`):
-  - `isfzg`: `"true"` or `"false"`
-  - `modus`: `"sucheteilenummer"`
-  - `hgug`: HG/UG prefix (optional)
+  - `isfzg`: `"true"` or `"false"` (vehicle vs. accessories)
+  - `modus`: `"sucheteilenummer"` (part‑number search mode)
+  - `hgug`: HG/UG prefix (optional sub‑group scope)
   - `sachnummer`: part number query
   - Optional `PSESSID` query param for ASAP
 - **Response fields:**
@@ -29,25 +29,29 @@ This document traces the **end‑to‑end** data flow for four key operations, f
 
 ### App layer (server)
 Key classes used to assemble results:
-- `webetk.app.SearchBTETeile` – base class for building `PartOrBTE` results.
+- `webetk.app.SearchBTETeile` – builds combined BTE (diagram) + part hits for UI lists.
 - **Vehicle parts search:**
-  - `webetk.app.fzgsuche.TeileSuche`
-  - `webetk.app.fzgsuche.BenennungSuche` / `BegriffSuche` / `HGFGSuche`
+  - `webetk.app.fzgsuche.TeileSuche` – searches within vehicle context (filters by model/series).
+  - `webetk.app.fzgsuche.BenennungSuche` / `BegriffSuche` / `HGFGSuche` – name/term/HG‑FG focused search paths.
 - **Accessory/general search:**
-  - `webetk.app.basesuche.SachnummernSuche`
-  - `webetk.app.basesuche.FremdeTNrSuche`
-- `SearchBTETeile.readResultIntoBte()` performs **market lookup** via `teilesucheallgemein.dbaccess`.
+  - `webetk.app.basesuche.SachnummernSuche` – base search for part numbers across accessories.
+  - `webetk.app.basesuche.FremdeTNrSuche` – searches external/alternate part numbers.
+- `SearchBTETeile.readResultIntoBte()` performs **market lookup** via `teilesucheallgemein.dbaccess` so results show localized market names.
 
 ### DB modules
 - `webetk.db.teilesuchefzg.dbaccess`
-  - `searchBildtafel_SNrCompl`, `searchSachnummer_SNrIncompl`, `searchBildtafel_SNrs`, etc.
+  - `searchBildtafel_SNrCompl` — **Purpose:** find diagrams (BTEs) matching a **complete** part number within vehicle catalog.
+  - `searchSachnummer_SNrIncompl` — **Purpose:** resolve **partial** part numbers; expands to matching full part records.
+  - `searchBildtafel_SNrs` — **Purpose:** list BTEs containing any of the matched part numbers.
+  - *(Other variants)* — **Purpose:** support different search scopes (HG/UG, market, validity).
 - `webetk.db.teilesucheallgemein.dbaccess`
-  - `selectMarktBenennung(...)` (market labels in results)
+  - `selectMarktBenennung(...)` — **Purpose:** fetch market/region labels for display so results are localized (e.g., DE/US labels).
 
 ### Response assembly
 - Handler returns a `TrfTeilesuche` with:
   - `bildtafeln` (BTEs/diagrams) + `teilenummern` (parts)
   - updated `JavaFzgSucheInfo` / `JavaAssSucheInfo`
+- **Business context:** the UI needs both **diagram hits** and **part hits** so users can jump to a diagram or open details immediately.
 
 ### Caching
 - No dedicated cache for search results in server code; **per‑request DB queries**.
@@ -71,6 +75,9 @@ sequenceDiagram
   SearchHandler-->>ClientService: TrfTeilesuche with bildtafeln/teilenummern
   ClientService-->>Client: serialized response
 ```
+**Notes:**
+- The handler decides **vehicle vs. accessory** search because results must respect different catalogs and validity rules.
+- Market labels are fetched separately to keep the core search fast and then decorate results for display.
 
 ### etkx mapping
 - **ETK request:** `TrfTeilesuche (cmd 63)`
@@ -99,20 +106,21 @@ sequenceDiagram
 
 ### App layer (server)
 - `webetk.app.fzgid.FzgIdInfo`
-  - Contains the VIN decoding + product/series/model selection
+  - **Purpose:** decode VIN into model series, production date, engine/drive, and option codes used to filter parts.
 - `webetk.app.fzgid.FzgIdControlInfo`
-  - Supports list selections, attribute‑based identification
+  - **Purpose:** supports VIN fallback flows (manual selection by attributes when VIN is incomplete).
 
 ### DB modules
 - `webetk.db.fzgid.dbaccess`
-  - Methods for VIN → vehicle resolution (e.g., `selectFzgIdDatenByFgstnr`)
-  - Additional lookups for series/body/model options
+  - `selectFzgIdDatenByFgstnr` — **Purpose:** resolve VIN → vehicle master data (series, body, engine, dates).
+  - Other lookups — **Purpose:** fetch selectable options (model/series/body) when VIN is ambiguous.
 
 ### Response assembly
 - `TrfFahrzeugId` is populated with:
   - `fzgsucheinfo_java` (vehicle search info)
   - `fzgidinfo_java` (decoded VIN data)
   - optional `bed_zusatz_info` (conditions)
+- **Business context:** the decoded VIN becomes the **filter context** for all later catalog queries.
 
 ### Caching
 - No explicit VIN cache in server code.
@@ -134,6 +142,9 @@ sequenceDiagram
   FzgIdHandler-->>ClientService: TrfFahrzeugId with fzgidinfo_java/fzgsucheinfo_java
   ClientService-->>Client: serialized response
 ```
+**Notes:**
+- VIN decoding is the **gatekeeper** step that determines which parts are valid for the vehicle.
+- Attribute fallback lets the UI proceed even when VIN is missing or incomplete.
 
 ### etkx mapping
 - **ETK request:** `TrfFahrzeugId (cmd 58)`
@@ -159,23 +170,28 @@ sequenceDiagram
 
 ### App layer (server)
 - `webetk.framework.ServerBTEManager`
-  - Holds **current BTE set** per session (`mcBtNummern`, `mcBtTypen`, current index).
+  - **Purpose:** stores the **current set of diagrams** and active index for the session.
 - `webetk.app.bteanzeige.CurrentBTE`
-  - Loads diagram metadata + line items + hotspots.
+  - **Purpose:** loads diagram metadata, line items, and hotspots for the chosen BTE.
 - `webetk.app.visualisierungteil.VisualisierungTeil`
-  - Loads part visualization references for selected part number.
+  - **Purpose:** resolves diagram/graphic references for a specific part number.
 
 ### DB modules
 - `webetk.db.bteanzeige.dbaccess`
-  - `loadZeilenFzg`, `loadZeilenUgb`, `loadHotspots`, `loadBedingungenFzg`
+  - `loadZeilenFzg` — **Purpose:** load line items (parts list) for a vehicle BTE.
+  - `loadZeilenUgb` — **Purpose:** load line items for accessory BTEs.
+  - `loadHotspots` — **Purpose:** fetch hotspot coordinates that link image to line items.
+  - `loadBedingungenFzg` — **Purpose:** retrieve conditions/validity rules for parts on the diagram.
 - `webetk.db.visualisierungteil.dbaccess`
-  - `retrieveVisualisierungsInfoUgb/…Geb`
-- `webetk.db.dbaccess` via `ImageCache` → `loadGrafik` (diagram image blobs)
+  - `retrieveVisualisierungsInfoUgb/…Geb` — **Purpose:** find diagram references for part visualization (accessory/vehicle).
+- `webetk.db.dbaccess` via `ImageCache` → `loadGrafik`
+  - **Purpose:** fetch the binary diagram image blob from DB.
 
 ### Response assembly
 - `TrfHashMap` with `currentbte`, `hasnextbt`, `hasprevbt`, etc.
 - `TrfImage` with binary image data + `ImageFormat`.
 - Visualization returns BTE/graphic references for the part.
+- **Business context:** diagrams + hotspots are the **primary UI**, enabling selection of parts by position.
 
 ### Caching
 - **BTE set & current diagram** cached in `ServerBTEManager` (session state).
@@ -203,6 +219,9 @@ sequenceDiagram
   BTEHandler-->>ClientService: TrfHashMap(currentbte,...)
   ClientService-->>Client: serialized response
 ```
+**Notes:**
+- BTE selection is split into **set list** + **load current** so the UI can paginate diagrams.
+- Hotspots bind image positions to line items, enabling click‑to‑part behavior.
 
 ### etkx mapping
 - **ETK request:** BTE commands (`84/87/88`) + `GET_IMAGE`
@@ -224,19 +243,24 @@ sequenceDiagram
 
 ### App layer (server)
 - `webetk.app.teileinfo.Teileinfo`
-  - Loads full part details, supersession flags, reach/service info, etc.
-- `webetk.app.zub.common.Preise` (pricing model)
+  - **Purpose:** loads full part details, supersession flags, reach/service info, and sale restrictions.
+- `webetk.app.zub.common.Preise`
+  - **Purpose:** pricing model container for accessory price rows.
 
 ### DB modules
 - `webetk.db.teileinfo.dbaccess`
-  - `loadTeileinfo`, `loadTeileclearing`, `loadServiceinfo`, `checkPreiseGeladen`, …
+  - `loadTeileinfo` — **Purpose:** fetch core part attributes (description, units, status, validity).
+  - `loadTeileclearing` — **Purpose:** retrieve supersession/replacement info.
+  - `loadServiceinfo` — **Purpose:** pull service/maintenance metadata tied to the part.
+  - `checkPreiseGeladen` — **Purpose:** verify whether price data already exists for the part.
 - `webetk.db.zub.preise.dbaccess`
-  - `ladeTeileUndPreiseZuBte` → `ladePreiseZuTeilen` (price DB)
-  - `ladeEinbauinfos` (install labor)
+  - `ladeTeileUndPreiseZuBte` → `ladePreiseZuTeilen` — **Purpose:** load accessory parts and corresponding price rows.
+  - `ladeEinbauinfos` — **Purpose:** load installation labor/time data for accessories.
 
 ### Response assembly
 - `TrfHashMap` with part detail objects, plus lists of matching `SearchBTETeile.PartOrBTE` where applicable.
 - Pricing response returns `Preise` + `PreisZeile` entries.
+- **Business context:** detailed part view is required for ordering and service workflows; pricing is needed for accessories.
 
 ### Caching
 - No explicit price cache; price data read from **Preis‑DB** connection (`getDBConnectionPreise`).
@@ -263,6 +287,9 @@ sequenceDiagram
   TeileinfoHandler->>DB_ZubPreise: ladeTeileUndPreiseZuBte
   ClientService-->>Client: Preise + PreisZeile list
 ```
+**Notes:**
+- Part details and accessory pricing are separate because prices live in a dedicated Preis DB.
+- Supersession info is critical to guide users from obsolete to valid parts.
 
 ### etkx mapping
 - **ETK request:** `LOAD_TEILEINFO (82)` + ZUB pricing
