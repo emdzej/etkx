@@ -1,0 +1,321 @@
+# ETK SQL Queries (dbaccess + SQLStatementsTransbase)
+
+This document summarizes SQL queries used by dbaccess modules, extracted from `src/decompiled/SQLStatementsTransbase.java` and mapped to tables listed in `docs/SCHEMA.md`. Full per-module query listings are in `docs/etk-analysis/queries/`.
+
+## Module → Tables
+
+- **Allgemein**: w_grafik, w_fremdtl, w_url, w_netz, w_netzurl, w_proxy
+- **Aspg**: w_teil_aspg, w_teil, w_ben_gk
+- **BTEInfo**: w_bildtaf, w_ben_gk, w_komm
+- **BedAuswertung**: w_bildtaf, w_grafik, w_bildtafzub, w_ben_gk, w_bildtaf_cp, w_bte_bedkurz, w_bed_sala, w_bed, w_eg, w_bte_bedelem, w_bed_afl
+- **BteAnzeige**: w_grafik_hs, w_btzeilen_verbauung, w_btzeilen, w_teil, w_ben_gk, w_kompl_satz, w_tc_performance, w_grp_information, w_si, w_bildtaf_bnbben, w_btzeilen_cp, w_btzeilenugb_verbauung, w_btzeilenugb, w_tc_performance_allg, w_komm_help, w_komm, w_kommugb_help, w_bte_bedkurz, w_bildtaf, w_bte_bedelem, w_bte_bedog, w_bte_bedgesamt, w_bte_bedueber, w_bildtaf_verweis, w_bildtaf_suche, w_publben, w_teil_atb, w_tc_sachnummer, w_tc_kampagne_proddatum, w_tc_kampagne
+- **ETKTexte**: w_bed_etktext, w_komm, w_ben_gk
+- **Einstellungen**: w_user_einstellungen, w_user, w_markt_ipac, w_user_einstellungen_region, w_ben_gk, w_publben, w_fztyp, w_baureihe, w_user_funktionsrechte, w_user_berechtigungen, w_teileinfo, w_markt_etk, w_user_einstellungen_wmaerkte
+- **Erstbevorratung**: w_erstbevorratung_suche, w_erstbevorratung, w_teil, w_ben_gk, w_tc_performance
+- **Federtabelle**: w_sfttyp, w_ben_gk, w_bed_sala, w_bed, w_sftsala, w_sft, w_sftfeder, w_teil, w_sft_aspg
+- **Firmenkonfiguration**: w_firma, w_filiale, w_user, w_konfig, w_zub_konfig, w_firma_berechtigungen, w_publben, w_ben_gk, w_user_funktionsrechte, w_user_berechtigungen, w_user_einstellungen, w_zub_user, w_user_einstellungen_region, w_teilelistepos, w_teileliste, w_teileliste_sendeinfo, w_teileinfo, w_bestelllistepos, w_auftrag, w_bestellliste
+- **Fuellmengen**: w_fuellmengen
+- **FzgIdentifikation**: w_baureihe, w_bauart, w_ben_gk, w_fztyp, w_grafik, w_baureihe_kar_thb, w_etk_grafiken, w_publben, w_vbez_pos, w_fgstnr, _publben, w_fgstnr_sala, w_bed_sala, w_bed, w_eg, w_bed_zusatzinfo, w_bed_afl, w_komm
+- **FzgUmfang**: w_baureihe, w_fztyp, w_ben_gk, w_publben, w_bauart, w_vbez_pos
+- **Hilfe**: w_abk, w_ben_gk, w_verwaltung, w_bedeutung, w_komm, w_bed_sala, w_bed
+- **Infotool**: w_user_tipps, w_tipp
+- **Interpretation**: w_teil_marken, w_hist, w_teil, w_ben_gk
+- **Lagerzeit**: w_teil, w_teil_marken, w_ben_gk, w_tc_performance_allg
+- **LoginInfo**: w_user_log, w_user
+- **MailOptions**: w_user_mailoptions
+- **News**: w_news_text, w_news_grafik
+- **Normteile**: w_normteilben, w_ben_gk, w_teil, w_teil_marken, w_normnummer, w_normnummergruppe, w_grafik
+- **NotizuebersichtHTML**: w_teileinfo, w_teil, w_ben_gk, w_publben
+- **NotizuebersichtJAVA**: w_teileinfo, w_teil, w_publben, w_ben_gk
+- **Polstercode**: w_bed_aflpc, w_ben_gk
+- **SatzEinzelteile**: w_kompl_satz, w_ben_gk, w_hgfg, w_teil, w_tc_performance_allg, w_kompl_einzelteil
+- **TabellenKonfiguration**: w_user_tabellenkonfig
+- **TechnischeLiteratur**: w_hgfg_mosp, w_bildtaf, w_hgfg, w_ben_gk, w_btzeilenugb_verbauung, w_publben, w_btzeilen, w_teil, w_btzeilen_verbauung, w_btzeilenugb, w_tl_sprache_bnb
+- **Teileersetzung**: w_teileersetzung_suche, w_teil, w_teileersetzung, w_ben_gk, w_tc_performance
+- **Teileinfo**: w_teil, w_ben_gk, w_teil_marken, w_normnummer, w_eu_reifen, w_si, w_komm, w_teil_reach, w_publben, w_tc_sachnummer, w_tc_kampagne
+- **TeileinfoHTML**: w_teileinfo
+- **TeileinfoJAVA**: w_teileinfo, w_publben, w_ben_gk, w_preise
+- **Teileliste**: w_teil, w_teil_marken, w_ben_gk
+- **TeilelisteHTML**: w_teileliste, w_teilelistepos, w_ben_gk, w_teil, w_mailadressen
+- **TeilelisteJAVA**: w_teileliste, w_bestellliste, w_auftrag, w_user, w_filiale, w_teilelistepos, w_teileinfo, w_teil, w_teil_marken, w_bestelllistepos, w_preise, w_ben_gk, w_teileliste_job, w_teileliste_srp, w_teileliste_sendeinfo, teileliste_id_seq, teileliste_score_id_seq, teileliste_rrsap_id_seq, w_tc_performance
+- **TeilelisteJAVA_SAP**: w_ben_gk, w_publben, w_teileliste_hist, w_user_rr, w_teilelistepos, w_teileliste
+- **TeilesucheAllgemein**: w_bildtaf, w_markt_etk, w_ben_gk
+- **TeilesucheAss**: w_btzeilenugb_verbauung, w_bildtaf, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik, w_markt_etk, w_btzeilenugb, w_teil
+- **TeilesucheFzg**: w_hgfg_mosp, w_hgfg, w_ben_gk, w_hg_thumbnail, w_grafik, w_fg_thumbnail, w_bildtaf, w_markt_etk, w_bildtaf_suche, w_komm_help, w_komm, w_btzeilen_verbauung, w_btzeilen, w_teil, w_btzeilen_cp
+- **TeilesucheSpezifischValueLineFzg**: w_kompl_satz, w_markt_etk, w_btzeilen_verbauung, w_bildtaf, w_ben_gk, w_bildtaf_suche
+- **TeileverwendungReduziert**: w_teil, w_ben_gk, w_btzeilen_verbauung, w_baureihe, w_publben, w_fztyp
+- **TeilevwdgBen**: w_baureihe, w_fztyp, w_bildtaf_suche, w_bildtaf, w_ben_gk, w_bildtaf_marke, w_markt_etk, w_publben, w_btzeilen_verbauung, w_btzeilenugb, w_teil_marken, w_teil, w_btzeilen
+- **TeilevwdgFzg**: w_teileverwendungfzg_suche, w_btzeilen_verbauung, w_teil, w_ben_gk, w_tc_performance, w_btzeilen
+- **TeilevwdgTeil**: w_teil, w_teil_marken, w_ben_gk, w_btzeilen_verbauung, w_btzeilen, w_baureihe, w_fztyp, w_markt_etk, w_publben, w_bildtaf
+- **ValueLine**: w_kompl_satz, w_ben_gk, w_hgfg, w_teil, w_tc_performance_allg, w_bildtaf, w_bildtaf_suche, w_baureihe, w_fztyp, w_publben, w_teil_marken
+- **VisualisierungTeil**: w_btzeilen_verbauung, w_grafik, w_baureihe, w_fztyp, w_ben_gk, w_teil, w_bildtaf, w_btzeilen, w_btzeilenugb, w_btzeilenugb_verbauung
+- **Wertebereiche**: w_publben, w_ben_gk
+- **admintool**: w_firma, w_preise, systable, w_ben_gk, w_publben, w_verwaltung
+
+## Table → Modules
+
+- **_publben**: FzgIdentifikation
+- **systable**: admintool
+- **teileliste_id_seq**: TeilelisteJAVA
+- **teileliste_rrsap_id_seq**: TeilelisteJAVA
+- **teileliste_score_id_seq**: TeilelisteJAVA
+- **w_abk**: Hilfe
+- **w_auftrag**: Firmenkonfiguration, TeilelisteJAVA
+- **w_bauart**: FzgIdentifikation, FzgUmfang
+- **w_baureihe**: Einstellungen, FzgIdentifikation, FzgUmfang, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgTeil, ValueLine, VisualisierungTeil
+- **w_baureihe_kar_thb**: FzgIdentifikation
+- **w_bed**: BedAuswertung, Federtabelle, FzgIdentifikation, Hilfe
+- **w_bed_afl**: BedAuswertung, FzgIdentifikation
+- **w_bed_aflpc**: Polstercode
+- **w_bed_etktext**: ETKTexte
+- **w_bed_sala**: BedAuswertung, Federtabelle, FzgIdentifikation, Hilfe
+- **w_bed_zusatzinfo**: FzgIdentifikation
+- **w_bedeutung**: Hilfe
+- **w_ben_gk**: Aspg, BTEInfo, BedAuswertung, BteAnzeige, ETKTexte, Einstellungen, Erstbevorratung, Federtabelle, Firmenkonfiguration, FzgIdentifikation, FzgUmfang, Hilfe, Interpretation, Lagerzeit, Normteile, NotizuebersichtHTML, NotizuebersichtJAVA, Polstercode, SatzEinzelteile, TechnischeLiteratur, Teileersetzung, Teileinfo, TeileinfoJAVA, Teileliste, TeilelisteHTML, TeilelisteJAVA, TeilelisteJAVA_SAP, TeilesucheAllgemein, TeilesucheAss, TeilesucheFzg, TeilesucheSpezifischValueLineFzg, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgFzg, TeilevwdgTeil, ValueLine, VisualisierungTeil, Wertebereiche, admintool
+- **w_bestellliste**: Firmenkonfiguration, TeilelisteJAVA
+- **w_bestelllistepos**: Firmenkonfiguration, TeilelisteJAVA
+- **w_bildtaf**: BTEInfo, BedAuswertung, BteAnzeige, TechnischeLiteratur, TeilesucheAllgemein, TeilesucheAss, TeilesucheFzg, TeilesucheSpezifischValueLineFzg, TeilevwdgBen, TeilevwdgTeil, ValueLine, VisualisierungTeil
+- **w_bildtaf_bnbben**: BteAnzeige
+- **w_bildtaf_cp**: BedAuswertung
+- **w_bildtaf_marke**: TeilevwdgBen
+- **w_bildtaf_suche**: BteAnzeige, TeilesucheFzg, TeilesucheSpezifischValueLineFzg, TeilevwdgBen, ValueLine
+- **w_bildtaf_verweis**: BteAnzeige
+- **w_bildtafzub**: BedAuswertung
+- **w_bte_bedelem**: BedAuswertung, BteAnzeige
+- **w_bte_bedgesamt**: BteAnzeige
+- **w_bte_bedkurz**: BedAuswertung, BteAnzeige
+- **w_bte_bedog**: BteAnzeige
+- **w_bte_bedueber**: BteAnzeige
+- **w_btzeilen**: BteAnzeige, TechnischeLiteratur, TeilesucheFzg, TeilevwdgBen, TeilevwdgFzg, TeilevwdgTeil, VisualisierungTeil
+- **w_btzeilen_cp**: BteAnzeige, TeilesucheFzg
+- **w_btzeilen_verbauung**: BteAnzeige, TechnischeLiteratur, TeilesucheFzg, TeilesucheSpezifischValueLineFzg, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgFzg, TeilevwdgTeil, VisualisierungTeil
+- **w_btzeilenugb**: BteAnzeige, TechnischeLiteratur, TeilesucheAss, TeilevwdgBen, VisualisierungTeil
+- **w_btzeilenugb_verbauung**: BteAnzeige, TechnischeLiteratur, TeilesucheAss, VisualisierungTeil
+- **w_eg**: BedAuswertung, FzgIdentifikation
+- **w_erstbevorratung**: Erstbevorratung
+- **w_erstbevorratung_suche**: Erstbevorratung
+- **w_etk_grafiken**: FzgIdentifikation
+- **w_eu_reifen**: Teileinfo
+- **w_fg_thumbnail**: TeilesucheFzg
+- **w_fgstnr**: FzgIdentifikation
+- **w_fgstnr_sala**: FzgIdentifikation
+- **w_filiale**: Firmenkonfiguration, TeilelisteJAVA
+- **w_firma**: Firmenkonfiguration, admintool
+- **w_firma_berechtigungen**: Firmenkonfiguration
+- **w_fremdtl**: Allgemein
+- **w_fuellmengen**: Fuellmengen
+- **w_fztyp**: Einstellungen, FzgIdentifikation, FzgUmfang, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgTeil, ValueLine, VisualisierungTeil
+- **w_grafik**: Allgemein, BedAuswertung, FzgIdentifikation, Normteile, TeilesucheAss, TeilesucheFzg, VisualisierungTeil
+- **w_grafik_hs**: BteAnzeige
+- **w_grp_information**: BteAnzeige
+- **w_hg_thumbnail**: TeilesucheAss, TeilesucheFzg
+- **w_hgfg**: SatzEinzelteile, TechnischeLiteratur, TeilesucheAss, TeilesucheFzg, ValueLine
+- **w_hgfg_mosp**: TechnischeLiteratur, TeilesucheFzg
+- **w_hist**: Interpretation
+- **w_komm**: BTEInfo, BteAnzeige, ETKTexte, FzgIdentifikation, Hilfe, Teileinfo, TeilesucheFzg
+- **w_komm_help**: BteAnzeige, TeilesucheFzg
+- **w_kommugb_help**: BteAnzeige
+- **w_kompl_einzelteil**: SatzEinzelteile
+- **w_kompl_satz**: BteAnzeige, SatzEinzelteile, TeilesucheSpezifischValueLineFzg, ValueLine
+- **w_konfig**: Firmenkonfiguration
+- **w_mailadressen**: TeilelisteHTML
+- **w_markt_etk**: Einstellungen, TeilesucheAllgemein, TeilesucheAss, TeilesucheFzg, TeilesucheSpezifischValueLineFzg, TeilevwdgBen, TeilevwdgTeil
+- **w_markt_ipac**: Einstellungen
+- **w_netz**: Allgemein
+- **w_netzurl**: Allgemein
+- **w_news_grafik**: News
+- **w_news_text**: News
+- **w_normnummer**: Normteile, Teileinfo
+- **w_normnummergruppe**: Normteile
+- **w_normteilben**: Normteile
+- **w_preise**: TeileinfoJAVA, TeilelisteJAVA, admintool
+- **w_proxy**: Allgemein
+- **w_publben**: BteAnzeige, Einstellungen, Firmenkonfiguration, FzgIdentifikation, FzgUmfang, NotizuebersichtHTML, NotizuebersichtJAVA, TechnischeLiteratur, Teileinfo, TeileinfoJAVA, TeilelisteJAVA_SAP, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgTeil, ValueLine, Wertebereiche, admintool
+- **w_sft**: Federtabelle
+- **w_sft_aspg**: Federtabelle
+- **w_sftfeder**: Federtabelle
+- **w_sftsala**: Federtabelle
+- **w_sfttyp**: Federtabelle
+- **w_si**: BteAnzeige, Teileinfo
+- **w_tc_kampagne**: BteAnzeige, Teileinfo
+- **w_tc_kampagne_proddatum**: BteAnzeige
+- **w_tc_performance**: BteAnzeige, Erstbevorratung, Teileersetzung, TeilelisteJAVA, TeilevwdgFzg
+- **w_tc_performance_allg**: BteAnzeige, Lagerzeit, SatzEinzelteile, ValueLine
+- **w_tc_sachnummer**: BteAnzeige, Teileinfo
+- **w_teil**: Aspg, BteAnzeige, Erstbevorratung, Federtabelle, Interpretation, Lagerzeit, Normteile, NotizuebersichtHTML, NotizuebersichtJAVA, SatzEinzelteile, TechnischeLiteratur, Teileersetzung, Teileinfo, Teileliste, TeilelisteHTML, TeilelisteJAVA, TeilesucheAss, TeilesucheFzg, TeileverwendungReduziert, TeilevwdgBen, TeilevwdgFzg, TeilevwdgTeil, ValueLine, VisualisierungTeil
+- **w_teil_aspg**: Aspg
+- **w_teil_atb**: BteAnzeige
+- **w_teil_marken**: Interpretation, Lagerzeit, Normteile, Teileinfo, Teileliste, TeilelisteJAVA, TeilevwdgBen, TeilevwdgTeil, ValueLine
+- **w_teil_reach**: Teileinfo
+- **w_teileersetzung**: Teileersetzung
+- **w_teileersetzung_suche**: Teileersetzung
+- **w_teileinfo**: Einstellungen, Firmenkonfiguration, NotizuebersichtHTML, NotizuebersichtJAVA, TeileinfoHTML, TeileinfoJAVA, TeilelisteJAVA
+- **w_teileliste**: Firmenkonfiguration, TeilelisteHTML, TeilelisteJAVA, TeilelisteJAVA_SAP
+- **w_teileliste_hist**: TeilelisteJAVA_SAP
+- **w_teileliste_job**: TeilelisteJAVA
+- **w_teileliste_sendeinfo**: Firmenkonfiguration, TeilelisteJAVA
+- **w_teileliste_srp**: TeilelisteJAVA
+- **w_teilelistepos**: Firmenkonfiguration, TeilelisteHTML, TeilelisteJAVA, TeilelisteJAVA_SAP
+- **w_teileverwendungfzg_suche**: TeilevwdgFzg
+- **w_tipp**: Infotool
+- **w_tl_sprache_bnb**: TechnischeLiteratur
+- **w_url**: Allgemein
+- **w_user**: Einstellungen, Firmenkonfiguration, LoginInfo, TeilelisteJAVA
+- **w_user_berechtigungen**: Einstellungen, Firmenkonfiguration
+- **w_user_einstellungen**: Einstellungen, Firmenkonfiguration
+- **w_user_einstellungen_region**: Einstellungen, Firmenkonfiguration
+- **w_user_einstellungen_wmaerkte**: Einstellungen
+- **w_user_funktionsrechte**: Einstellungen, Firmenkonfiguration
+- **w_user_log**: LoginInfo
+- **w_user_mailoptions**: MailOptions
+- **w_user_rr**: TeilelisteJAVA_SAP
+- **w_user_tabellenkonfig**: TabellenKonfiguration
+- **w_user_tipps**: Infotool
+- **w_vbez_pos**: FzgIdentifikation, FzgUmfang
+- **w_verwaltung**: Hilfe, admintool
+- **w_zub_konfig**: Firmenkonfiguration
+- **w_zub_user**: Firmenkonfiguration
+
+## Relationship Overview (co-occurrence by module)
+
+- **Aspg**: w_teil_aspg ↔ w_teil ↔ w_ben_gk
+- **BTEInfo**: w_bildtaf ↔ w_ben_gk; w_bildtaf ↔ w_ben_gk ↔ w_komm
+- **BedAuswertung**: w_bildtaf ↔ w_grafik ↔ w_bildtafzub ↔ w_ben_gk; w_bte_bedkurz ↔ w_bildtaf ↔ w_ben_gk ↔ w_bed ↔ w_eg ↔ w_bte_bedelem; w_bte_bedkurz ↔ w_bildtaf ↔ w_ben_gk ↔ w_bed_afl ↔ w_bed ↔ w_eg ↔ w_bte_bedelem; w_bte_bedkurz ↔ w_bildtaf ↔ w_ben_gk ↔ w_bed_sala ↔ w_bed ↔ w_eg ↔ w_bte_bedelem
+- **BteAnzeige**: w_bildtaf_verweis ↔ w_ben_gk ↔ w_komm ↔ w_bildtaf ↔ w_bildtaf_suche; w_bildtaf_verweis ↔ w_ben_gk ↔ w_komm ↔ w_bildtaf ↔ w_btzeilenugb_verbauung; w_bte_bedelem ↔ w_bte_bedog ↔ w_bte_bedgesamt; w_bte_bedkurz ↔ w_bildtaf ↔ w_bte_bedelem ↔ w_bte_bedog ↔ w_bte_bedgesamt; w_bte_bedkurz ↔ w_bte_bedueber; w_btzeilen_verbauung ↔ w_btzeilen ↔ w_teil ↔ w_ben_gk ↔ w_kompl_satz ↔ w_tc_performance ↔ w_grp_information ↔ w_si ↔ w_bildtaf_bnbben; w_btzeilenugb_verbauung ↔ w_btzeilenugb ↔ w_teil ↔ w_ben_gk ↔ w_kompl_satz ↔ w_tc_performance_allg ↔ w_si ↔ w_bildtaf_bnbben; w_komm_help ↔ w_ben_gk ↔ w_komm; w_kommugb_help ↔ w_ben_gk ↔ w_komm; w_publben ↔ w_ben_gk; w_tc_sachnummer ↔ w_tc_kampagne_proddatum ↔ w_tc_kampagne
+- **ETKTexte**: w_bed_etktext ↔ w_komm ↔ w_ben_gk
+- **Einstellungen**: w_baureihe ↔ w_fztyp; w_ben_gk ↔ w_publben; w_markt_etk ↔ w_ben_gk; w_user ↔ w_markt_ipac; w_user_einstellungen_wmaerkte ↔ w_markt_etk ↔ w_ben_gk
+- **Erstbevorratung**: w_erstbevorratung ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance
+- **Federtabelle**: w_sft_aspg ↔ w_teil; w_sftfeder ↔ w_teil; w_sfttyp ↔ w_ben_gk ↔ w_bed_sala ↔ w_bed ↔ w_sftsala ↔ w_sft; w_sfttyp ↔ w_sft; w_sfttyp ↔ w_sftsala ↔ w_sft
+- **Firmenkonfiguration**: w_firma ↔ w_filiale; w_firma ↔ w_filiale ↔ w_user; w_publben ↔ w_ben_gk; w_teileliste ↔ w_teileliste_sendeinfo; w_teileliste ↔ w_teilelistepos; w_user ↔ w_filiale; w_user_funktionsrechte ↔ w_ben_gk ↔ w_publben; w_zub_konfig ↔ w_user
+- **FzgIdentifikation**: _publben ↔ w_ben_gk; w_baureihe ↔ w_bauart ↔ w_ben_gk ↔ w_fztyp; w_baureihe ↔ w_ben_gk ↔ w_fztyp; w_baureihe ↔ w_grafik; w_baureihe_kar_thb ↔ w_grafik; w_bed_afl ↔ w_ben_gk ↔ w_bed ↔ w_eg; w_bed_sala ↔ w_ben_gk ↔ w_bed ↔ w_eg; w_etk_grafiken ↔ w_grafik; w_fgstnr ↔ w_fztyp ↔ w_baureihe ↔ w_publben ↔ w_ben_gk; w_fgstnr_sala ↔ w_bed_sala ↔ w_bed ↔ w_ben_gk ↔ w_eg ↔ w_bed_zusatzinfo; w_fztyp ↔ w_baureihe ↔ w_publben ↔ w_ben_gk; w_fztyp ↔ w_ben_gk ↔ w_publben; w_fztyp ↔ w_ben_gk ↔ w_publben ↔ w_fgstnr; w_fztyp ↔ w_fgstnr; w_komm ↔ w_bed_zusatzinfo ↔ w_ben_gk; w_vbez_pos ↔ w_fztyp
+- **FzgUmfang**: w_baureihe ↔ w_bauart ↔ w_ben_gk ↔ w_fztyp; w_baureihe ↔ w_ben_gk ↔ w_fztyp; w_baureihe ↔ w_ben_gk ↔ w_publben ↔ w_fztyp; w_baureihe ↔ w_fztyp; w_fztyp ↔ w_ben_gk ↔ w_publben; w_vbez_pos ↔ w_baureihe ↔ w_fztyp
+- **Hilfe**: w_abk ↔ w_ben_gk; w_bed_sala ↔ w_ben_gk ↔ w_bed; w_bedeutung ↔ w_ben_gk ↔ w_komm
+- **Infotool**: w_tipp ↔ w_user_tipps
+- **Interpretation**: w_hist ↔ w_teil ↔ w_ben_gk ↔ w_teil_marken
+- **Lagerzeit**: w_teil ↔ w_teil_marken; w_teil ↔ w_teil_marken ↔ w_ben_gk ↔ w_tc_performance_allg
+- **LoginInfo**: w_user_log ↔ w_user
+- **Normteile**: w_normnummer ↔ w_grafik; w_normnummergruppe ↔ w_grafik; w_normteilben ↔ w_ben_gk; w_teil ↔ w_ben_gk ↔ w_teil_marken ↔ w_normnummer
+- **NotizuebersichtHTML**: w_teil ↔ w_teileinfo; w_teileinfo ↔ w_ben_gk ↔ w_publben ↔ w_teil
+- **NotizuebersichtJAVA**: w_teileinfo ↔ w_publben ↔ w_ben_gk ↔ w_teil; w_teileinfo ↔ w_teil
+- **Polstercode**: w_bed_aflpc ↔ w_ben_gk
+- **SatzEinzelteile**: w_kompl_einzelteil ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance_allg; w_kompl_satz ↔ w_ben_gk ↔ w_hgfg; w_kompl_satz ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance_allg
+- **TechnischeLiteratur**: w_bildtaf ↔ w_btzeilen ↔ w_teil ↔ w_ben_gk ↔ w_btzeilen_verbauung ↔ w_btzeilenugb ↔ w_btzeilenugb_verbauung; w_hgfg_mosp ↔ w_bildtaf ↔ w_hgfg ↔ w_ben_gk ↔ w_btzeilenugb_verbauung; w_publben ↔ w_ben_gk
+- **Teileersetzung**: w_teileersetzung ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance
+- **Teileinfo**: w_komm ↔ w_ben_gk; w_publben ↔ w_ben_gk; w_tc_sachnummer ↔ w_tc_kampagne; w_teil ↔ w_ben_gk ↔ w_teil_marken; w_teil ↔ w_ben_gk ↔ w_teil_marken ↔ w_normnummer ↔ w_eu_reifen; w_teil_reach ↔ w_teil
+- **TeileinfoJAVA**: w_teileinfo ↔ w_publben ↔ w_ben_gk
+- **Teileliste**: w_teil ↔ w_teil_marken ↔ w_ben_gk
+- **TeilelisteHTML**: w_teilelistepos ↔ w_ben_gk ↔ w_teil
+- **TeilelisteJAVA**: w_teileliste ↔ w_auftrag; w_teileliste ↔ w_auftrag ↔ w_user ↔ w_filiale; w_teilelistepos ↔ w_preise; w_teilelistepos ↔ w_teil ↔ w_ben_gk ↔ w_teil_marken; w_teilelistepos ↔ w_teileinfo ↔ w_teil ↔ w_teil_marken
+- **TeilelisteJAVA_SAP**: w_ben_gk ↔ w_publben ↔ w_teileliste_hist
+- **TeilesucheAllgemein**: w_bildtaf ↔ w_markt_etk ↔ w_ben_gk
+- **TeilesucheAss**: w_btzeilenugb_verbauung ↔ w_bildtaf ↔ w_hgfg ↔ w_ben_gk ↔ w_hg_thumbnail ↔ w_grafik; w_btzeilenugb_verbauung ↔ w_btzeilenugb ↔ w_bildtaf ↔ w_grafik; w_btzeilenugb_verbauung ↔ w_btzeilenugb ↔ w_bildtaf ↔ w_grafik ↔ w_ben_gk ↔ w_markt_etk; w_btzeilenugb_verbauung ↔ w_btzeilenugb ↔ w_bildtaf ↔ w_teil ↔ w_ben_gk; w_btzeilenugb_verbauung ↔ w_hgfg ↔ w_ben_gk ↔ w_bildtaf; w_btzeilenugb_verbauung ↔ w_markt_etk ↔ w_ben_gk ↔ w_bildtaf; w_btzeilenugb_verbauung ↔ w_markt_etk ↔ w_ben_gk ↔ w_btzeilenugb ↔ w_bildtaf
+- **TeilesucheFzg**: w_ben_gk ↔ w_markt_etk ↔ w_bildtaf_suche ↔ w_bildtaf; w_ben_gk ↔ w_markt_etk ↔ w_bildtaf_suche ↔ w_bildtaf ↔ w_komm_help ↔ w_komm; w_bildtaf_suche ↔ w_markt_etk ↔ w_ben_gk ↔ w_bildtaf; w_btzeilen_verbauung ↔ w_btzeilen ↔ w_bildtaf ↔ w_grafik; w_btzeilen_verbauung ↔ w_btzeilen ↔ w_bildtaf ↔ w_grafik ↔ w_ben_gk ↔ w_markt_etk; w_btzeilen_verbauung ↔ w_btzeilen ↔ w_bildtaf ↔ w_teil ↔ w_ben_gk; w_btzeilen_verbauung ↔ w_markt_etk ↔ w_ben_gk ↔ w_btzeilen ↔ w_bildtaf; w_hgfg ↔ w_ben_gk ↔ w_fg_thumbnail ↔ w_grafik ↔ w_bildtaf; w_hgfg_mosp ↔ w_hgfg ↔ w_ben_gk; w_hgfg_mosp ↔ w_hgfg ↔ w_ben_gk ↔ w_fg_thumbnail ↔ w_grafik ↔ w_bildtaf; w_hgfg_mosp ↔ w_hgfg ↔ w_ben_gk ↔ w_hg_thumbnail ↔ w_grafik
+- **TeilesucheSpezifischValueLineFzg**: w_kompl_satz ↔ w_markt_etk ↔ w_btzeilen_verbauung ↔ w_bildtaf ↔ w_ben_gk ↔ w_bildtaf_suche
+- **TeileverwendungReduziert**: w_btzeilen_verbauung ↔ w_ben_gk ↔ w_baureihe ↔ w_publben ↔ w_fztyp; w_teil ↔ w_ben_gk
+- **TeilevwdgBen**: w_baureihe ↔ w_ben_gk ↔ w_bildtaf ↔ w_bildtaf_marke ↔ w_bildtaf_suche ↔ w_fztyp; w_baureihe ↔ w_fztyp ↔ w_ben_gk ↔ w_btzeilen_verbauung; w_baureihe ↔ w_fztyp ↔ w_bildtaf_suche ↔ w_bildtaf ↔ w_ben_gk; w_ben_gk ↔ w_markt_etk ↔ w_bildtaf ↔ w_btzeilen ↔ w_btzeilen_verbauung ↔ w_fztyp ↔ w_baureihe; w_ben_gk ↔ w_markt_etk ↔ w_bildtaf_marke ↔ w_bildtaf_suche ↔ w_fztyp ↔ w_baureihe ↔ w_publben ↔ w_bildtaf; w_ben_gk ↔ w_markt_etk ↔ w_bildtaf_suche ↔ w_bildtaf_marke ↔ w_fztyp ↔ w_baureihe ↔ w_publben ↔ w_bildtaf; w_bildtaf_marke ↔ w_markt_etk ↔ w_bildtaf_suche ↔ w_fztyp ↔ w_baureihe ↔ w_ben_gk ↔ w_publben ↔ w_btzeilen_verbauung ↔ w_bildtaf; w_btzeilen_verbauung ↔ w_btzeilenugb ↔ w_ben_gk ↔ w_teil_marken ↔ w_teil
+- **TeilevwdgFzg**: w_btzeilen ↔ w_btzeilen_verbauung; w_btzeilen_verbauung ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance; w_btzeilen_verbauung ↔ w_teil ↔ w_btzeilen ↔ w_ben_gk ↔ w_tc_performance
+- **TeilevwdgTeil**: w_btzeilen_verbauung ↔ w_btzeilen ↔ w_ben_gk ↔ w_baureihe ↔ w_fztyp; w_fztyp ↔ w_markt_etk ↔ w_ben_gk ↔ w_publben ↔ w_baureihe ↔ w_btzeilen ↔ w_btzeilen_verbauung ↔ w_bildtaf; w_teil ↔ w_teil_marken ↔ w_ben_gk
+- **ValueLine**: w_hgfg ↔ w_bildtaf ↔ w_ben_gk ↔ w_bildtaf_suche ↔ w_baureihe ↔ w_fztyp; w_hgfg ↔ w_bildtaf ↔ w_ben_gk ↔ w_publben ↔ w_bildtaf_suche ↔ w_baureihe ↔ w_fztyp; w_kompl_satz ↔ w_ben_gk ↔ w_hgfg; w_kompl_satz ↔ w_teil ↔ w_ben_gk ↔ w_tc_performance_allg; w_teil ↔ w_teil_marken ↔ w_ben_gk
+- **VisualisierungTeil**: w_btzeilen_verbauung ↔ w_grafik ↔ w_baureihe ↔ w_fztyp ↔ w_ben_gk ↔ w_teil ↔ w_bildtaf ↔ w_btzeilen; w_btzeilenugb ↔ w_grafik ↔ w_ben_gk ↔ w_teil ↔ w_bildtaf ↔ w_btzeilenugb_verbauung
+- **Wertebereiche**: w_publben ↔ w_ben_gk
+- **admintool**: w_ben_gk ↔ w_publben
+
+## Query Patterns
+
+- **Allgemein**: 6 queries | joins: 0 | filters: 4 | sorting: 0 | parameterized: 4
+- **Aspg**: 2 queries | joins: 1 | filters: 2 | sorting: 0 | parameterized: 2
+- **BTEInfo**: 2 queries | joins: 2 | filters: 2 | sorting: 1 | parameterized: 2
+- **BedAuswertung**: 5 queries | joins: 5 | filters: 5 | sorting: 4 | parameterized: 5
+- **BteAnzeige**: 14 queries | joins: 11 | filters: 14 | sorting: 11 | parameterized: 14
+- **ETKTexte**: 2 queries | joins: 2 | filters: 1 | sorting: 2 | parameterized: 1
+- **Einstellungen**: 27 queries | joins: 6 | filters: 21 | sorting: 4 | parameterized: 25
+- **Erstbevorratung**: 2 queries | joins: 1 | filters: 2 | sorting: 2 | parameterized: 2
+- **Federtabelle**: 6 queries | joins: 6 | filters: 6 | sorting: 3 | parameterized: 6
+- **Firmenkonfiguration**: 59 queries | joins: 6 | filters: 52 | sorting: 8 | parameterized: 57
+- **Fuellmengen**: 1 queries | joins: 1 | filters: 1 | sorting: 1 | parameterized: 1
+- **FzgIdentifikation**: 25 queries | joins: 22 | filters: 25 | sorting: 11 | parameterized: 25
+- **FzgUmfang**: 7 queries | joins: 7 | filters: 7 | sorting: 7 | parameterized: 7
+- **Hilfe**: 4 queries | joins: 3 | filters: 3 | sorting: 3 | parameterized: 3
+- **Infotool**: 5 queries | joins: 1 | filters: 4 | sorting: 1 | parameterized: 3
+- **Interpretation**: 3 queries | joins: 1 | filters: 3 | sorting: 1 | parameterized: 3
+- **Lagerzeit**: 2 queries | joins: 2 | filters: 2 | sorting: 2 | parameterized: 2
+- **LoginInfo**: 6 queries | joins: 2 | filters: 2 | sorting: 2 | parameterized: 6
+- **MailOptions**: 5 queries | joins: 0 | filters: 3 | sorting: 0 | parameterized: 5
+- **News**: 9 queries | joins: 1 | filters: 7 | sorting: 1 | parameterized: 9
+- **Normteile**: 5 queries | joins: 5 | filters: 5 | sorting: 5 | parameterized: 5
+- **NotizuebersichtHTML**: 3 queries | joins: 2 | filters: 3 | sorting: 1 | parameterized: 3
+- **NotizuebersichtJAVA**: 4 queries | joins: 2 | filters: 4 | sorting: 1 | parameterized: 4
+- **Polstercode**: 1 queries | joins: 1 | filters: 1 | sorting: 1 | parameterized: 1
+- **SatzEinzelteile**: 4 queries | joins: 3 | filters: 4 | sorting: 3 | parameterized: 4
+- **TabellenKonfiguration**: 3 queries | joins: 0 | filters: 2 | sorting: 1 | parameterized: 3
+- **TechnischeLiteratur**: 5 queries | joins: 3 | filters: 5 | sorting: 3 | parameterized: 5
+- **Teileersetzung**: 3 queries | joins: 1 | filters: 3 | sorting: 2 | parameterized: 3
+- **Teileinfo**: 8 queries | joins: 6 | filters: 8 | sorting: 4 | parameterized: 8
+- **TeileinfoHTML**: 3 queries | joins: 0 | filters: 2 | sorting: 0 | parameterized: 3
+- **TeileinfoJAVA**: 5 queries | joins: 2 | filters: 4 | sorting: 0 | parameterized: 5
+- **Teileliste**: 1 queries | joins: 1 | filters: 1 | sorting: 0 | parameterized: 1
+- **TeilelisteHTML**: 9 queries | joins: 1 | filters: 6 | sorting: 1 | parameterized: 9
+- **TeilelisteJAVA**: 56 queries | joins: 7 | filters: 45 | sorting: 7 | parameterized: 53
+- **TeilelisteJAVA_SAP**: 9 queries | joins: 1 | filters: 7 | sorting: 1 | parameterized: 9
+- **TeilesucheAllgemein**: 1 queries | joins: 1 | filters: 1 | sorting: 0 | parameterized: 1
+- **TeilesucheAss**: 20 queries | joins: 20 | filters: 20 | sorting: 9 | parameterized: 20
+- **TeilesucheFzg**: 26 queries | joins: 25 | filters: 26 | sorting: 23 | parameterized: 26
+- **TeilesucheSpezifischValueLineFzg**: 1 queries | joins: 1 | filters: 1 | sorting: 1 | parameterized: 1
+- **TeileverwendungReduziert**: 2 queries | joins: 2 | filters: 2 | sorting: 1 | parameterized: 2
+- **TeilevwdgBen**: 10 queries | joins: 10 | filters: 10 | sorting: 10 | parameterized: 10
+- **TeilevwdgFzg**: 5 queries | joins: 3 | filters: 5 | sorting: 3 | parameterized: 5
+- **TeilevwdgTeil**: 4 queries | joins: 4 | filters: 4 | sorting: 2 | parameterized: 4
+- **ValueLine**: 5 queries | joins: 5 | filters: 5 | sorting: 5 | parameterized: 4
+- **VisualisierungTeil**: 2 queries | joins: 2 | filters: 2 | sorting: 0 | parameterized: 2
+- **Wertebereiche**: 1 queries | joins: 1 | filters: 1 | sorting: 0 | parameterized: 1
+- **admintool**: 11 queries | joins: 1 | filters: 6 | sorting: 1 | parameterized: 2
+
+## Per-module Query Listings
+
+- `Allgemein` → `docs/etk-analysis/queries/Allgemein.md`
+- `Aspg` → `docs/etk-analysis/queries/Aspg.md`
+- `BTEInfo` → `docs/etk-analysis/queries/BTEInfo.md`
+- `BedAuswertung` → `docs/etk-analysis/queries/BedAuswertung.md`
+- `BteAnzeige` → `docs/etk-analysis/queries/BteAnzeige.md`
+- `ETKTexte` → `docs/etk-analysis/queries/ETKTexte.md`
+- `Einstellungen` → `docs/etk-analysis/queries/Einstellungen.md`
+- `Erstbevorratung` → `docs/etk-analysis/queries/Erstbevorratung.md`
+- `Federtabelle` → `docs/etk-analysis/queries/Federtabelle.md`
+- `Firmenkonfiguration` → `docs/etk-analysis/queries/Firmenkonfiguration.md`
+- `Fuellmengen` → `docs/etk-analysis/queries/Fuellmengen.md`
+- `FzgIdentifikation` → `docs/etk-analysis/queries/FzgIdentifikation.md`
+- `FzgUmfang` → `docs/etk-analysis/queries/FzgUmfang.md`
+- `Hilfe` → `docs/etk-analysis/queries/Hilfe.md`
+- `Infotool` → `docs/etk-analysis/queries/Infotool.md`
+- `Interpretation` → `docs/etk-analysis/queries/Interpretation.md`
+- `Lagerzeit` → `docs/etk-analysis/queries/Lagerzeit.md`
+- `LoginInfo` → `docs/etk-analysis/queries/LoginInfo.md`
+- `MailOptions` → `docs/etk-analysis/queries/MailOptions.md`
+- `News` → `docs/etk-analysis/queries/News.md`
+- `Normteile` → `docs/etk-analysis/queries/Normteile.md`
+- `NotizuebersichtHTML` → `docs/etk-analysis/queries/NotizuebersichtHTML.md`
+- `NotizuebersichtJAVA` → `docs/etk-analysis/queries/NotizuebersichtJAVA.md`
+- `Polstercode` → `docs/etk-analysis/queries/Polstercode.md`
+- `SatzEinzelteile` → `docs/etk-analysis/queries/SatzEinzelteile.md`
+- `TabellenKonfiguration` → `docs/etk-analysis/queries/TabellenKonfiguration.md`
+- `TechnischeLiteratur` → `docs/etk-analysis/queries/TechnischeLiteratur.md`
+- `Teileersetzung` → `docs/etk-analysis/queries/Teileersetzung.md`
+- `Teileinfo` → `docs/etk-analysis/queries/Teileinfo.md`
+- `TeileinfoHTML` → `docs/etk-analysis/queries/TeileinfoHTML.md`
+- `TeileinfoJAVA` → `docs/etk-analysis/queries/TeileinfoJAVA.md`
+- `Teileliste` → `docs/etk-analysis/queries/Teileliste.md`
+- `TeilelisteHTML` → `docs/etk-analysis/queries/TeilelisteHTML.md`
+- `TeilelisteJAVA` → `docs/etk-analysis/queries/TeilelisteJAVA.md`
+- `TeilelisteJAVA_SAP` → `docs/etk-analysis/queries/TeilelisteJAVA_SAP.md`
+- `TeilesucheAllgemein` → `docs/etk-analysis/queries/TeilesucheAllgemein.md`
+- `TeilesucheAss` → `docs/etk-analysis/queries/TeilesucheAss.md`
+- `TeilesucheFzg` → `docs/etk-analysis/queries/TeilesucheFzg.md`
+- `TeilesucheSpezifischValueLineFzg` → `docs/etk-analysis/queries/TeilesucheSpezifischValueLineFzg.md`
+- `TeileverwendungReduziert` → `docs/etk-analysis/queries/TeileverwendungReduziert.md`
+- `TeilevwdgBen` → `docs/etk-analysis/queries/TeilevwdgBen.md`
+- `TeilevwdgFzg` → `docs/etk-analysis/queries/TeilevwdgFzg.md`
+- `TeilevwdgTeil` → `docs/etk-analysis/queries/TeilevwdgTeil.md`
+- `ValueLine` → `docs/etk-analysis/queries/ValueLine.md`
+- `VisualisierungTeil` → `docs/etk-analysis/queries/VisualisierungTeil.md`
+- `Wertebereiche` → `docs/etk-analysis/queries/Wertebereiche.md`
+- `admintool` → `docs/etk-analysis/queries/admintool.md`
