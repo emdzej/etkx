@@ -4,70 +4,127 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import lombok.Data;
 
 /**
- * Represents a line item within a diagram panel, linking a part to its position.
- * Maps to the w_btzeilen table containing diagram parts lists.
+ * Represents a line item in a diagram panel (Bildtafelzeile).
+ * Maps to the w_btzeilen table linking parts to diagrams.
+ * 
+ * Each line shows a part at a specific position in the diagram.
  */
 @Entity
 @Table(name = "w_btzeilen")
-@Data
 @IdClass(DiagramLineId.class)
+@Data
 public class DiagramLine {
     /**
-     * Diagram number (Bildtafel number).
+     * Diagram panel number (FK to w_bildtaf).
      */
     @Id
     @Column(name = "btzeilen_btnr")
     private String diagramNumber;
 
     /**
-     * Position within the diagram.
+     * Line position within diagram.
      */
     @Id
     @Column(name = "btzeilen_pos")
-    private String position;
+    private Integer position;
 
     /**
-     * Part number (Sachnummer).
+     * Main group.
      */
-    @Id
+    @Column(name = "btzeilen_hg")
+    private String mainGroup;
+
+    /**
+     * Position number shown in diagram image.
+     */
+    @Column(name = "btzeilen_bildposnr")
+    private String imagePosition;
+
+    /**
+     * Part number (FK to w_teil).
+     */
     @Column(name = "btzeilen_sachnr")
     private String partNumber;
 
     /**
-     * Quantity of the part in the diagram.
+     * Category code.
      */
-    @Column(name = "btzeilen_menge")
-    private BigDecimal quantity;
+    @Column(name = "btzeilen_kat")
+    private String category;
 
     /**
-     * Condition code for applicability.
+     * Automatic transmission indicator.
+     */
+    @Column(name = "btzeilen_automatik")
+    private String automaticFlag;
+
+    /**
+     * Steering indicator (L/R).
+     */
+    @Column(name = "btzeilen_lenkg")
+    private String steering;
+
+    /**
+     * Start date/usage (Einsatz).
+     */
+    @Column(name = "btzeilen_eins")
+    private Integer startUsage;
+
+    /**
+     * End date/usage (Auslauf).
+     */
+    @Column(name = "btzeilen_auslf")
+    private Integer endUsage;
+
+    /**
+     * Condition code.
      */
     @Column(name = "btzeilen_bedkez")
     private String conditionCode;
 
     /**
-     * Text code used for line-specific annotation.
+     * Rule number.
      */
-    @Column(name = "btzeilen_textc")
-    private String textCode;
+    @Column(name = "btzeilen_regelnr")
+    private Integer ruleNumber;
 
     /**
-     * Change point identifier.
+     * Comment diagram reference.
      */
-    @Column(name = "btzeilen_cp")
-    private String changePoint;
+    @Column(name = "btzeilen_kommbt")
+    private Integer commentDiagram;
 
     /**
-     * Diagram panel this line belongs to.
+     * Pre-comment reference.
      */
-    @ManyToOne
-    @JoinColumn(name = "btzeilen_btnr", referencedColumnName = "bildtaf_btnr", insertable = false, updatable = false)
-    private DiagramPanel diagramPanel;
+    @Column(name = "btzeilen_kommvor")
+    private Integer preComment;
+
+    /**
+     * Post-comment reference.
+     */
+    @Column(name = "btzeilen_kommnach")
+    private Integer postComment;
+
+    /**
+     * Group ID.
+     */
+    @Column(name = "btzeilen_gruppeid")
+    private Integer groupId;
+
+    /**
+     * Block number.
+     */
+    @Column(name = "btzeilen_blocknr")
+    private Integer blockNumber;
+
+    /**
+     * PG condition code.
+     */
+    @Column(name = "btzeilen_bedkez_pg")
+    private String pgConditionCode;
 }
