@@ -63,7 +63,7 @@ public class NewsTextsRepository {
         """;
 
     private static final String INSERT_IMAGE = """
-        insert into w_news_grafik values (:marke, EMPTY_BLOB())
+        insert into w_news_grafik values (:marke, zeroblob(0))
         """;
 
     private static final String LOAD_IMAGE = """

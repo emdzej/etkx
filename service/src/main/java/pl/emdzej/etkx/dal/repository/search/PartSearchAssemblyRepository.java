@@ -170,7 +170,7 @@ public class PartSearchAssemblyRepository {
           and bildtaf_textc = ben_textcode
           and ben_iso = :iso
           and ben_regiso = :regiso
-          and upper(replace('i' by '\u0130' in replace('\u0131' by 'I' in ben_text))) like :suchstring
+          and UPPER(ben_text) like :suchstring
         """;
 
     private static final String SEARCH_BT_BEGRIFF = """
@@ -257,7 +257,7 @@ public class PartSearchAssemblyRepository {
         where btzeilenuv_marke_tps = :marke
           and bildtaf_produktart = :produktart
           and bildtaf_vbereich in ('BE', :katalogumfang)
-          and upper(replace('i' by '\u0130' in replace('\u0131' by 'I' in ben_teil.ben_text))) like :suchstring
+          and UPPER(ben_teil.ben_text) like :suchstring
         """;
 
     private static final String SEARCH_SNR_BEGRIFF = """
