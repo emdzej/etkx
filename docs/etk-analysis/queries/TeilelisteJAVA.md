@@ -11,6 +11,8 @@ Total queries: 56
 - w_teilelistepos ↔ w_teileinfo ↔ w_teil ↔ w_teil_marken
 
 ## RETRIEVE_LISTEN_IDS
+**Description:** Retrieves data from w_teileliste filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_user_id, teileliste_marke, teileliste_gesperrt_von. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste
@@ -23,6 +25,8 @@ select teileliste_marke Marke,  teileliste_filiale_id Filiale, teileliste_user_i
 ```
 
 ## RETRIEVE_BESTELLLISTEN_IDS
+**Description:** Retrieves data from w_bestellliste filtered by bestellliste_firma_id, bestellliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestellliste
@@ -35,6 +39,8 @@ select bestellliste_liste_id ListeId from w_bestellliste@etk_nutzer where bestel
 ```
 
 ## RETRIEVE_UEBERSICHT
+**Description:** Retrieves data from w_teileliste, w_auftrag, w_user, w_filiale filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_auftragsnr, user_id, user_firma_id, filiale_firma_id, filiale_id and ordered by UserId, Gesperrt, Auftragsnr, Erzeugt, ListeId. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste, w_auftrag, w_user, w_filiale
@@ -47,6 +53,8 @@ select teileliste_id ListeId, teileliste_user_id UserId, user_name UserName, tei
 ```
 
 ## RETRIEVE_UEBERSICHT_BESTELLLISTEN
+**Description:** Retrieves data from w_bestellliste filtered by bestellliste_firma_id, bestellliste_filiale_id and ordered by ListeId. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestellliste
@@ -59,6 +67,8 @@ select bestellliste_liste_id ListeId, bestellliste_gesperrt_von GesperrtVon, bes
 ```
 
 ## RETRIEVE_LISTE_ALLG
+**Description:** Retrieves data from w_teileliste, w_auftrag filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_auftragsnr, teileliste_id, teileliste_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste, w_auftrag
@@ -71,6 +81,8 @@ select teileliste_bemerkung Bemerkung, teileliste_erzeugt Erzeugt, teileliste_ge
 ```
 
 ## RETRIEVE_BESTELLLISTE_ALLG
+**Description:** Retrieves data from w_bestellliste filtered by bestellliste_firma_id, bestellliste_filiale_id, bestellliste_liste_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestellliste
@@ -83,6 +95,8 @@ select bestellliste_gesperrt_von GesperrtVon, bestellliste_gesperrt_am GesperrtA
 ```
 
 ## RETRIEVE_LISTE_POS
+**Description:** Retrieves data from w_teilelistepos, w_teileinfo, w_teil, w_teil_marken filtered by teilelistepos_sachnr, teilelistepos_user_id, teileinfo_allgemein, teileinfo_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_m, teilelistepos_lokalteil and ordered by 4, 5, 3. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos, w_teileinfo, w_teil, w_teil_marken
@@ -95,6 +109,8 @@ select teilelistepos_sachnr SachNr, teilelistepos_hgug HgUg, teilelistepos_posit
 ```
 
 ## RETRIEVE_MAX_POS
+**Description:** Retrieves data from w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos
@@ -107,6 +123,8 @@ select max (teilelistepos_position) Pos from w_teilelistepos@etk_nutzer where te
 ```
 
 ## RETRIEVE_BESTELLLISTE_POS
+**Description:** Retrieves data from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id and ordered by Pos. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestelllistepos
@@ -119,6 +137,8 @@ select bestelllistepos_sachnr SachNr, bestelllistepos_hgug HgUg, bestelllistepos
 ```
 
 ## RETRIEVE_TEIL_PREISE
+**Description:** Retrieves data from w_preise filtered by preise_sachnr, preise_firma. Used in the TeilelisteJAVA module to support ETK workflows for pricing.
+
 
 - Type: SELECT
 - Tables: w_preise
@@ -131,6 +151,8 @@ select NVL(preise_evpreis, 0) EVP, NVL(preise_nachbelastung, 0) Nachbelastung, p
 ```
 
 ## RETRIEVE_TEILELISTE_PREISE
+**Description:** Retrieves data from w_teilelistepos, w_preise filtered by teilelistepos_sachnr, teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id and ordered by teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos, w_preise
@@ -143,6 +165,8 @@ select teilelistepos_sachnr Sachnummer_TL, teilelistepos_position Pos, preise_sa
 ```
 
 ## RETRIEVE_TEILELISTE_PUBLDATEN
+**Description:** Retrieves data from w_teilelistepos, w_teil, w_ben_gk, w_teil_marken filtered by teilelistepos_sachnr, ben_iso, ben_regiso, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id and ordered by teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teilelistepos, w_teil, w_ben_gk, w_teil_marken
@@ -155,6 +179,8 @@ select teil_hauptgr Hg, teil_untergrup Ug, teilelistepos_sachnr Sachnummer_TL, b
 ```
 
 ## DELETE
+**Description:** Deletes records from w_teileliste filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_id, teileliste_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste
@@ -167,6 +193,8 @@ delete from w_teileliste@etk_nutzer where teileliste_firma_id = '&FIRMA&' and te
 ```
 
 ## DELETE_JOBS
+**Description:** Deletes records from w_teileliste_job filtered by teilelistejob_firma_id, teilelistejob_filiale_id, teilelistejob_teileliste_id, teilelistejob_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_job
@@ -179,6 +207,8 @@ delete from w_teileliste_job@etk_nutzer where teilelistejob_firma_id = '&FIRMA&'
 ```
 
 ## DELETE_SRPS
+**Description:** Deletes records from w_teileliste_srp filtered by teilelistesrp_firma_id, teilelistesrp_filiale_id, teilelistesrp_teileliste_id, teilelistesrp_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_srp
@@ -191,6 +221,8 @@ delete from w_teileliste_srp@etk_nutzer where teilelistesrp_firma_id = '&FIRMA&'
 ```
 
 ## DELETE_POS
+**Description:** Deletes records from w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teilelistepos
@@ -203,6 +235,8 @@ delete from w_teilelistepos@etk_nutzer where teilelistepos_firma_id = '&FIRMA&' 
 ```
 
 ## INSERT_BESTELLLISTE
+**Description:** Inserts records in w_bestellliste. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: INSERT
 - Tables: w_bestellliste
@@ -215,6 +249,8 @@ insert into w_bestellliste@etk_nutzer (bestellliste_firma_id, bestellliste_filia
 ```
 
 ## UPDATE_POS
+**Description:** Updates records in w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id, teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teilelistepos
@@ -227,6 +263,8 @@ update w_teilelistepos@etk_nutzer set teilelistepos_position = teilelistepos_pos
 ```
 
 ## UPDATE_BESTELL_POS
+**Description:** Updates records in w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id, bestelllistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: UPDATE
 - Tables: w_bestelllistepos
@@ -239,6 +277,8 @@ update w_bestelllistepos@etk_nutzer set bestelllistepos_position = bestelllistep
 ```
 
 ## DELETE_BESTELLLISTE_POS
+**Description:** Deletes records from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_bestelllistepos
@@ -251,6 +291,8 @@ delete from  w_bestelllistepos@etk_nutzer where bestelllistepos_firma_id = '&FIR
 ```
 
 ## DELETE_SINGLE_POS
+**Description:** Deletes records from w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_teileliste_id, teilelistepos_user_id, teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teilelistepos
@@ -263,6 +305,8 @@ delete from w_teilelistepos@etk_nutzer where teilelistepos_firma_id = '&FIRMA&' 
 ```
 
 ## DELETE_BESTELLLISTE_SINGLE_POS
+**Description:** Deletes records from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id, bestelllistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_bestelllistepos
@@ -275,6 +319,8 @@ delete from w_bestelllistepos@etk_nutzer where bestelllistepos_firma_id = '&FIRM
 ```
 
 ## INSERT_LISTE_ALLG
+**Description:** Inserts records in w_teileliste. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste
@@ -287,6 +333,8 @@ insert into w_teileliste@etk_nutzer (teileliste_firma_id, teileliste_filiale_id,
 ```
 
 ## COPY_LISTE_ALLG
+**Description:** Inserts records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste
@@ -299,6 +347,8 @@ insert into w_teileliste@etk_nutzer (teileliste_firma_id, teileliste_filiale_id,
 ```
 
 ## UPDATE_LISTE_ALLG
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -311,6 +361,8 @@ update w_teileliste@etk_nutzer set teileliste_bemerkung = '&BEMERKUNG&', teileli
 ```
 
 ## UPDATE_LISTE_AENDER_DAT
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -323,6 +375,8 @@ update w_teileliste@etk_nutzer set teileliste_geaendert = &GEAENDERT& where teil
 ```
 
 ## UPDATE_LISTE_SPERRE
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -335,6 +389,8 @@ update w_teileliste@etk_nutzer set teileliste_gesperrt = &GESPERRT& where teilel
 ```
 
 ## RETRIEVE_LISTE_SPERRE
+**Description:** Retrieves data from w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste
@@ -347,6 +403,8 @@ select teileliste_gesperrt_von GesperrtVon, teileliste_gesperrt_am GesperrtAm, t
 ```
 
 ## UPDATE_LISTE_SPERRE_NUTZER
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -359,6 +417,8 @@ update w_teileliste@etk_nutzer set teileliste_gesperrt_von = &NUTZER&, teilelist
 ```
 
 ## INSERT_SENDE_INFO
+**Description:** Inserts records in w_teileliste_sendeinfo. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste_sendeinfo
@@ -371,6 +431,8 @@ insert into w_teileliste_sendeinfo@etk_nutzer (teilelistesi_teileliste_id, teile
 ```
 
 ## DELETE_SENDE_INFO
+**Description:** Deletes records from w_teileliste_sendeinfo filtered by teilelistesi_teileliste_id, teilelistesi_user_id, teilelistesi_firma_id, teilelistesi_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileliste_sendeinfo
@@ -383,6 +445,8 @@ delete from w_teileliste_sendeinfo@etk_nutzer where teilelistesi_teileliste_id =
 ```
 
 ## RETRIEVE_SENDE_INFO
+**Description:** Retrieves data from w_teileliste_sendeinfo filtered by teilelistesi_teileliste_id, teilelistesi_user_id, teilelistesi_firma_id, teilelistesi_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste_sendeinfo
@@ -395,6 +459,8 @@ select teilelistesi_satzart Satzart, teilelistesi_auftragsnr AuftragsNr, teileli
 ```
 
 ## RETRIEVE_BESTELLLISTE_SPERRE_FOR_UPDATE
+**Description:** Retrieves data from w_bestellliste filtered by bestellliste_firma_id, bestellliste_filiale_id, bestellliste_liste_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestellliste
@@ -407,6 +473,8 @@ select bestellliste_gesperrt_von GesperrtVon, bestellliste_gesperrt_am GesperrtA
 ```
 
 ## UPDATE_BESTELLLISTE_SPERRE
+**Description:** Updates records in w_bestellliste filtered by bestellliste_liste_id, bestellliste_firma_id, bestellliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: UPDATE
 - Tables: w_bestellliste
@@ -419,6 +487,8 @@ update w_bestellliste@etk_nutzer set bestellliste_gesperrt_von = &NUTZER&, beste
 ```
 
 ## INSERT_LISTE_POS
+**Description:** Inserts records in w_teilelistepos. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teilelistepos
@@ -431,6 +501,8 @@ insert into w_teilelistepos@etk_nutzer (teilelistepos_firma_id, teilelistepos_fi
 ```
 
 ## COPY_LISTE_POSITIONEN
+**Description:** Inserts records in w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_user_id, teilelistepos_teileliste_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teilelistepos
@@ -443,6 +515,8 @@ insert into w_teilelistepos@etk_nutzer (teilelistepos_firma_id, teilelistepos_fi
 ```
 
 ## INSERT_BESTELLLISTE_POS
+**Description:** Inserts records in w_bestelllistepos. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: INSERT
 - Tables: w_bestelllistepos
@@ -455,6 +529,8 @@ insert into w_bestelllistepos@etk_nutzer (bestelllistepos_firma_id, bestellliste
 ```
 
 ## RETRIEVE_COUNT_BESTELLLISTEPOS
+**Description:** Retrieves data from w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: SELECT
 - Tables: w_bestelllistepos
@@ -467,6 +543,8 @@ select count(*) from w_bestelllistepos@etk_nutzer where bestelllistepos_firma_id
 ```
 
 ## UPDATE_LISTE_POS
+**Description:** Updates records in w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_user_id, teilelistepos_teileliste_id, teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teilelistepos
@@ -479,6 +557,8 @@ update w_teilelistepos@etk_nutzer set teilelistepos_hgug = '&HGUG&', teilelistep
 ```
 
 ## UPDATE_SCORELISTE_POS_STATUS
+**Description:** Updates records in w_teilelistepos filtered by teilelistepos_firma_id, teilelistepos_filiale_id, teilelistepos_user_id, teilelistepos_teileliste_id, teilelistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teilelistepos
@@ -491,6 +571,8 @@ update w_teilelistepos@etk_nutzer set teilelistepos_status = &STATUS& where teil
 ```
 
 ## UPDATE_BESTELLLISTE_POS
+**Description:** Updates records in w_bestelllistepos filtered by bestelllistepos_firma_id, bestelllistepos_filiale_id, bestelllistepos_liste_id, bestelllistepos_position. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: UPDATE
 - Tables: w_bestelllistepos
@@ -503,6 +585,8 @@ update w_bestelllistepos@etk_nutzer set bestelllistepos_hgug = '&HGUG&', bestell
 ```
 
 ## GET_TEILELISTE_ZU_AUFTRAG
+**Description:** Retrieves data from w_teileliste, w_auftrag filtered by teileliste_firma_id, teileliste_filiale_id, teileliste_auftragsnr, teileliste_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste, w_auftrag
@@ -515,6 +599,8 @@ select teileliste_id TeilelisteId, teileliste_user_id EigentuemerId, teileliste_
 ```
 
 ## INSERT_AUFTRAG
+**Description:** Inserts records in w_auftrag. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: INSERT
 - Tables: w_auftrag
@@ -527,6 +613,8 @@ insert into w_auftrag@etk_nutzer (auftrag_firma_id, auftrag_filiale_id, auftrag_
 ```
 
 ## UPDATE_AUFTRAG
+**Description:** Updates records in w_auftrag filtered by auftrag_firma_id, auftrag_filiale_id, auftrag_auftragsnr. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: UPDATE
 - Tables: w_auftrag
@@ -539,6 +627,8 @@ update w_auftrag@etk_nutzer  set auftrag_kundennr = &KUNDENNUMMER&, auftrag_kund
 ```
 
 ## DELETE_AUFTRAG
+**Description:** Deletes records from w_auftrag filtered by auftrag_firma_id, auftrag_filiale_id, auftrag_auftragsnr. Used in the TeilelisteJAVA module to support ETK workflows for orders.
+
 
 - Type: DELETE
 - Tables: w_auftrag
@@ -551,6 +641,8 @@ delete from w_auftrag@etk_nutzer where auftrag_firma_id = '&FIRMA&' and   auftra
 ```
 
 ## UPDATE_EIGENTUEMER
+**Description:** Updates records in w_teileliste filtered by teileliste_id, teileliste_user_id, teileliste_firma_id, teileliste_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teileliste
@@ -563,6 +655,8 @@ update w_teileliste@etk_nutzer set teileliste_user_id = '&NEWNUTZER&' where teil
 ```
 
 ## UPDATE_EIGENTUEMER_POS
+**Description:** Updates records in w_teilelistepos filtered by teilelistepos_teileliste_id, teilelistepos_user_id, teilelistepos_firma_id, teilelistepos_filiale_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: UPDATE
 - Tables: w_teilelistepos
@@ -575,6 +669,8 @@ update w_teilelistepos@etk_nutzer set teilelistepos_user_id = '&NEWNUTZER&' wher
 ```
 
 ## INSERT_JOB
+**Description:** Inserts records in w_teileliste_job. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste_job
@@ -587,6 +683,8 @@ insert into w_teileliste_job@etk_nutzer (teilelistejob_firma_id, teilelistejob_f
 ```
 
 ## INSERT_SRP
+**Description:** Inserts records in w_teileliste_srp. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileliste_srp
@@ -599,6 +697,8 @@ insert into w_teileliste_srp@etk_nutzer (teilelistesrp_firma_id, teilelistesrp_f
 ```
 
 ## RETRIEVE_JOBS
+**Description:** Retrieves data from w_teileliste_job filtered by teilelistejob_firma_id, teilelistejob_filiale_id, teilelistejob_teileliste_id, teilelistejob_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste_job
@@ -611,6 +711,8 @@ select teilelistejob_job_id id, teilelistejob_job_ben ben, teilelistejob_lock lo
 ```
 
 ## RETRIEVE_SRPS
+**Description:** Retrieves data from w_teileliste_srp filtered by teilelistesrp_firma_id, teilelistesrp_filiale_id, teilelistesrp_teileliste_id, teilelistesrp_user_id. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste_srp
@@ -623,6 +725,8 @@ select teilelistesrp_srp_id id, teilelistesrp_srp_ben ben, teilelistesrp_job_id 
 ```
 
 ## GET_NEXT_ID_SEQ_VAL
+**Description:** Retrieves data from teileliste_id_seq. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: teileliste_id_seq
@@ -636,6 +740,8 @@ select teileliste_id_seq.nextval from teileliste_id_seq
 ```
 
 ## GET_NEXT_SCOREID_SEQ_VAL
+**Description:** Retrieves data from teileliste_score_id_seq. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: teileliste_score_id_seq
@@ -649,6 +755,8 @@ select teileliste_score_id_seq.nextval from teileliste_score_id_seq
 ```
 
 ## GET_NEXT_RRSAPID_SEQ_VAL
+**Description:** Retrieves data from teileliste_rrsap_id_seq. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: teileliste_rrsap_id_seq
@@ -662,6 +770,8 @@ select teileliste_rrsap_id_seq.nextval from teileliste_rrsap_id_seq
 ```
 
 ## GET_RELEASED_SCORE_LISTS
+**Description:** Retrieves data from w_teileliste filtered by teileliste_firma_id, teileliste_user_id and ordered by fzgDlfID, geaendert, listeId. Used in the TeilelisteJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileliste
@@ -674,6 +784,8 @@ select teileliste_fzgdurchlauf fzgDlfID, teileliste_firma_id firmaId, teileliste
 ```
 
 ## LOAD_TC_INFO
+**Description:** Retrieves data from w_tc_performance filtered by tcp_mospid, tcp_sachnr, tcp_datum_von, tcp_datum_bis. Used in the TeilelisteJAVA module to support ETK workflows for technical campaigns.
+
 
 - Type: SELECT
 - Tables: w_tc_performance

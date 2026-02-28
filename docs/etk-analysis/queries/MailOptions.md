@@ -3,6 +3,8 @@
 Total queries: 5
 
 ## LOAD_ABSENDER_UND_EMPFAENGER
+**Description:** Retrieves data from w_user_mailoptions filtered by usermo_firma_id, usermo_user_id, usermo_krit_art. Used in the MailOptions module to support ETK workflows for user settings.
+
 
 - Type: SELECT
 - Tables: w_user_mailoptions
@@ -15,6 +17,8 @@ SELECT usermo_krit_art Kriterium, usermo_krit_wert Wert FROM w_user_mailoptions@
 ```
 
 ## INSERT_ABSENDER
+**Description:** Inserts records in w_user_mailoptions. Used in the MailOptions module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_mailoptions
@@ -27,6 +31,8 @@ INSERT INTO w_user_mailoptions@etk_nutzer (usermo_firma_id, usermo_user_id, user
 ```
 
 ## DELETE_ABSENDER
+**Description:** Deletes records from w_user_mailoptions filtered by usermo_firma_id, usermo_user_id, usermo_krit_art. Used in the MailOptions module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_mailoptions
@@ -39,6 +45,8 @@ DELETE FROM w_user_mailoptions@etk_nutzer WHERE  usermo_firma_id = ? AND  usermo
 ```
 
 ## INSERT_EMPFAENGER
+**Description:** Inserts records in w_user_mailoptions. Used in the MailOptions module to support ETK workflows for user settings.
+
 
 - Type: INSERT
 - Tables: w_user_mailoptions
@@ -51,6 +59,8 @@ INSERT INTO w_user_mailoptions@etk_nutzer (usermo_firma_id, usermo_user_id, user
 ```
 
 ## DELETE_EMPAENGER
+**Description:** Deletes records from w_user_mailoptions filtered by usermo_firma_id, usermo_user_id, usermo_krit_art. Used in the MailOptions module to support ETK workflows for user settings.
+
 
 - Type: DELETE
 - Tables: w_user_mailoptions

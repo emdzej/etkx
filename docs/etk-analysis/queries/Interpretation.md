@@ -7,6 +7,8 @@ Total queries: 3
 - w_hist ↔ w_teil ↔ w_ben_gk ↔ w_teil_marken
 
 ## EXIST_SACHNUMMER_MARKE
+**Description:** Retrieves data from w_teil_marken filtered by teilm_sachnr, teilm_marke_tps. Used in the Interpretation module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil_marken
@@ -19,6 +21,8 @@ select distinct teilm_marke_tps Marke from w_teil_marken where teilm_sachnr = '&
 ```
 
 ## LOAD_INTERPRETATION_EINSTIEG
+**Description:** Retrieves data from w_hist filtered by hist_sachnr_h. Used in the Interpretation module to support ETK workflows for hist data.
+
 
 - Type: SELECT
 - Tables: w_hist
@@ -31,6 +35,8 @@ select hist_sachnr Sachnummer, hist_zweig_nr ZweigNr, hist_struktur_nr StrukturN
 ```
 
 ## LOAD_INTERPRETATION
+**Description:** Retrieves data from w_hist, w_teil, w_ben_gk, w_teil_marken filtered by hist_sachnr, hist_sachnr_h, teil_textcode, ben_iso, ben_regiso, teilm_sachnr and ordered by ZweigNr, StrukturNr. Used in the Interpretation module to support ETK workflows for hist data.
+
 
 - Type: SELECT
 - Tables: w_hist, w_teil, w_ben_gk, w_teil_marken

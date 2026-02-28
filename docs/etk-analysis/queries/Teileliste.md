@@ -7,6 +7,8 @@ Total queries: 1
 - w_teil ↔ w_teil_marken ↔ w_ben_gk
 
 ## RETRIEVE_TEIL
+**Description:** Retrieves data from w_teil, w_teil_marken, w_ben_gk filtered by teil_sachnr, teil_textcode, ben_regiso, ben_iso. Used in the Teileliste module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken, w_ben_gk

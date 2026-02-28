@@ -7,6 +7,8 @@ Total queries: 1
 - w_kompl_satz ↔ w_markt_etk ↔ w_btzeilen_verbauung ↔ w_bildtaf ↔ w_ben_gk ↔ w_bildtaf_suche
 
 ## RETRIEVE_BTES_VALUE_LINE
+**Description:** Retrieves data from w_kompl_satz, w_markt_etk, w_btzeilen_verbauung, w_bildtaf, w_ben_gk, w_bildtaf_suche filtered by marktetk_lkz, tbildtaf_hg, tbildtaf_fg, tbildtafs_btnr, tbildtafs_hg, tbildtafs_mospid, tben_textcode, tben_iso, tben_regiso, ks_sachnr_satz, ks_hg, btzeilenv_btnr, btzeilenv_mospid, bildtafs_btnr, bildtafs_hg, bildtafs_mospid, ben_textcode, ben_iso, ben_regiso and ordered by BildtafelHG, BildtafelNr. Used in the TeilesucheSpezifischValueLineFzg module to support ETK workflows for kompl satz data.
+
 
 - Type: SELECT
 - Tables: w_kompl_satz, w_markt_etk, w_btzeilen_verbauung, w_bildtaf, w_ben_gk, w_bildtaf_suche

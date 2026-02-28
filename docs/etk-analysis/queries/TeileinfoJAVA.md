@@ -7,6 +7,8 @@ Total queries: 5
 - w_teileinfo ↔ w_publben ↔ w_ben_gk
 
 ## RETRIEVE_TEILEINFO_NOTIZ
+**Description:** Retrieves data from w_teileinfo, w_publben, w_ben_gk filtered by teileinfo_sachnr, teileinfo_user_id, teileinfo_firma_id, publben_art, teileinfo_gueltig_bis_monat, publben_textcode, ben_iso, ben_regiso. Used in the TeileinfoJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo, w_publben, w_ben_gk
@@ -19,6 +21,8 @@ select teileinfo_notiz Notiz, teileinfo_gueltig_bis_monat BisMonat, teileinfo_gu
 ```
 
 ## DELETE_TEILEINFO_NOTIZ
+**Description:** Deletes records from w_teileinfo filtered by teileinfo_sachnr, teileinfo_user_id, teileinfo_firma_id. Used in the TeileinfoJAVA module to support ETK workflows for part data.
+
 
 - Type: DELETE
 - Tables: w_teileinfo
@@ -31,6 +35,8 @@ delete from w_teileinfo@etk_nutzer where teileinfo_sachnr = '&SACHNR&' and teile
 ```
 
 ## INSERT_TEILEINFO_NOTIZ
+**Description:** Inserts records in w_teileinfo. Used in the TeileinfoJAVA module to support ETK workflows for part data.
+
 
 - Type: INSERT
 - Tables: w_teileinfo
@@ -43,6 +49,8 @@ insert into w_teileinfo@etk_nutzer (teileinfo_sachnr, teileinfo_user_id, teilein
 ```
 
 ## RETRIEVE_TEILEINFO_NOTIZEN_OTHERS
+**Description:** Retrieves data from w_teileinfo, w_publben, w_ben_gk filtered by teileinfo_sachnr, teileinfo_user_id, teileinfo_firma_id, teileinfo_allgemein, publben_art, teileinfo_gueltig_bis_monat, publben_textcode, ben_iso, ben_regiso. Used in the TeileinfoJAVA module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teileinfo, w_publben, w_ben_gk
@@ -55,6 +63,8 @@ select teileinfo_notiz Notiz, MBEN.ben_text Monat, teileinfo_gueltig_bis_jahr Bi
 ```
 
 ## RETRIEVE_COUNT_PREISE
+**Description:** Retrieves data from w_preise filtered by preise_firma. Used in the TeileinfoJAVA module to support ETK workflows for pricing.
+
 
 - Type: SELECT
 - Tables: w_preise

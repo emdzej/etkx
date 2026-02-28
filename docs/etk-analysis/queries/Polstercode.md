@@ -7,6 +7,8 @@ Total queries: 1
 - w_bed_aflpc ↔ w_ben_gk
 
 ## LOAD_POLSTERCODE
+**Description:** Retrieves data from w_bed_aflpc, w_ben_gk filtered by ben_textcode, ben_iso, ben_regiso and ordered by Pos. Used in the Polstercode module to support ETK workflows for option codes.
+
 
 - Type: SELECT
 - Tables: w_bed_aflpc, w_ben_gk

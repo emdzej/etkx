@@ -11,6 +11,8 @@ Total queries: 5
 - w_teil ↔ w_teil_marken ↔ w_ben_gk
 
 ## LOAD_HGS
+**Description:** Retrieves data from w_kompl_satz, w_ben_gk, w_hgfg filtered by ks_marke_tps, ks_ist_valueline, ks_produktart, hgfg_produktart, ks_hg, hgfg_fg, hgfg_textcode, ben_iso, ben_regiso and ordered by HG. Used in the ValueLine module to support ETK workflows for kompl satz data.
+
 
 - Type: SELECT
 - Tables: w_kompl_satz, w_ben_gk, w_hgfg
@@ -23,6 +25,8 @@ select distinct hgfg_hg HG, ben_text Benennung from w_kompl_satz, w_ben_gk, w_hg
 ```
 
 ## LOAD_SAETZE
+**Description:** Retrieves data from w_kompl_satz, w_teil, w_ben_gk, w_tc_performance_allg filtered by ks_sachnr_satz, ben_iso, ben_regiso, tcp_marke_tps, tcp_produktart, tcp_vbereich, tcp_datum_von, tcp_datum_bis, ks_produktart, ks_hg, ks_ist_valueline and ordered by HG, UG, Sachnummer. Used in the ValueLine module to support ETK workflows for kompl satz data.
+
 
 - Type: SELECT
 - Tables: w_kompl_satz, w_teil, w_ben_gk, w_tc_performance_allg
@@ -35,6 +39,8 @@ select distinct teil_hauptgr HG, teil_untergrup UG, teil_sachnr Sachnummer, ben_
 ```
 
 ## LOAD_BTE_BAUREIHEN
+**Description:** Retrieves data from w_hgfg, w_bildtaf, w_ben_gk, w_bildtaf_suche, w_baureihe, w_fztyp filtered by hgfg_bereich, hgfg_produktart, hgfg_ist_valueline, bildtaf_hg, bildtaf_fg, bildtafs_btnr, bildtafs_hg, fztyp_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, baureihe_baureihe, baureihe_marke_tps, baureihe_produktart, ben_textcode, ben_iso, ben_regiso and ordered by POS. Used in the ValueLine module to support ETK workflows for hgfg data.
+
 
 - Type: SELECT
 - Tables: w_hgfg, w_bildtaf, w_ben_gk, w_bildtaf_suche, w_baureihe, w_fztyp
@@ -47,6 +53,8 @@ select distinct baureihe_baureihe BAUREIHE, ben_text EXT_BAUREIHE, baureihe_posi
 ```
 
 ## LOAD_BILDTAFELN
+**Description:** Retrieves data from w_hgfg, w_bildtaf, w_ben_gk, w_publben, w_bildtaf_suche, w_baureihe, w_fztyp filtered by hgfg_ist_valueline, bildtaf_hg, bildtaf_fg, bildtafs_btnr, bildtafs_hg, fztyp_mospid, fztyp_vbereich, fztyp_sichtschutz, fztyp_ktlgausf, baureihe_baureihe, baureihe_marke_tps, baureihe_produktart, ben_textcode, ben_iso, ben_regiso, publben_bezeichnung, publben_art and ordered by Pos. Used in the ValueLine module to support ETK workflows for hgfg data.
+
 
 - Type: SELECT
 - Tables: w_hgfg, w_bildtaf, w_ben_gk, w_publben, w_bildtaf_suche, w_baureihe, w_fztyp
@@ -59,6 +67,8 @@ select distinct bildtaf_btnr BildtafelNr, B.ben_text Benennung, fztyp_erwvbez Mo
 ```
 
 ## LOAD_TEILENUMMERN
+**Description:** Retrieves data from w_teil, w_teil_marken, w_ben_gk filtered by teil_sachnr, teilm_marke_tps, ben_iso, ben_regiso, teil_verbaubar, teil_produktart and ordered by Benennung, Hauptgruppe, Untergruppe, Sachnummer. Used in the ValueLine module to support ETK workflows for part data.
+
 
 - Type: SELECT
 - Tables: w_teil, w_teil_marken, w_ben_gk

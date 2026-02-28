@@ -7,6 +7,8 @@ Total queries: 1
 - w_publben ↔ w_ben_gk
 
 ## RETRIEVE_WERTEBEREICH
+**Description:** Retrieves data from w_publben, w_ben_gk filtered by publben_art, publben_textcode, ben_iso, ben_regiso. Used in the Wertebereiche module to support ETK workflows for text/designations.
+
 
 - Type: SELECT
 - Tables: w_publben, w_ben_gk

@@ -3,6 +3,8 @@
 Total queries: 1
 
 ## RETRIEVE_FUELLMENGEN
+**Description:** Retrieves data from w_fuellmengen filtered by fuellmengen_typ, CAST and ordered by Typ, Getriebe. Used in the Fuellmengen module to support ETK workflows for fuellmengen data.
+
 
 - Type: SELECT
 - Tables: w_fuellmengen

@@ -8,6 +8,8 @@ Total queries: 2
 - w_bildtaf ↔ w_ben_gk ↔ w_komm
 
 ## RETRIEVE_BTEINFO
+**Description:** Retrieves data from w_bildtaf, w_ben_gk filtered by bildtaf_btnr, bildtaf_produktart, bildtaf_textc, ben_iso, ben_regiso. Used in the BTEInfo module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf, w_ben_gk
@@ -20,6 +22,8 @@ select ben.ben_text Ueberschrift from w_bildtaf, w_ben_gk ben where bildtaf_btnr
 ```
 
 ## RETRIEVE_BTEKOMMENTAR
+**Description:** Retrieves data from w_bildtaf, w_ben_gk, w_komm filtered by bildtaf_btnr, bildtaf_kommbt, komm_textcode, ben_iso, ben_regiso and ordered by KommId, Pos. Used in the BTEInfo module to support ETK workflows for illustration plates.
+
 
 - Type: SELECT
 - Tables: w_bildtaf, w_ben_gk, w_komm
