@@ -106,7 +106,7 @@ public class DiagramDisplayRepository {
         inner join w_ben_gk tben on (
             teil_textcode = tben.ben_textcode
             and tben.ben_iso = :iso
-            and tben.ben_regiso = :regiso
+            and TRIM(tben.ben_regiso) = TRIM(:regiso)
         )
         left join w_kompl_satz on (
             btzeilen_sachnr = ks_sachnr_satz
@@ -127,7 +127,7 @@ public class DiagramDisplayRepository {
         left join w_ben_gk tkben on (
             teil_textcode_kom = tkben.ben_textcode
             and tkben.ben_iso = :iso
-            and tkben.ben_regiso = :regiso
+            and TRIM(tkben.ben_regiso) = TRIM(:regiso)
         )
         left join w_si on (si_sachnr = teil_sachnr)
         left join w_bildtaf_bnbben on (
@@ -137,7 +137,7 @@ public class DiagramDisplayRepository {
         left join w_ben_gk bnbben on (
             bildtafb_textcode = bnbben.ben_textcode
             and bnbben.ben_iso = :iso
-            and bnbben.ben_regiso = :regiso
+            and TRIM(bnbben.ben_regiso) = TRIM(:regiso)
         )
         where btzeilenv_mospid = :mosp
           and btzeilenv_btnr = :btnr
@@ -201,7 +201,7 @@ public class DiagramDisplayRepository {
         inner join w_ben_gk tben on (
             teil_textcode = tben.ben_textcode
             and tben.ben_iso = :iso
-            and tben.ben_regiso = :regiso
+            and TRIM(tben.ben_regiso) = TRIM(:regiso)
         )
         left join w_kompl_satz on (
             btzeilenu_sachnr = ks_sachnr_satz
@@ -219,7 +219,7 @@ public class DiagramDisplayRepository {
         left join w_ben_gk tkben on (
             teil_textcode_kom = tkben.ben_textcode
             and tkben.ben_iso = :iso
-            and tkben.ben_regiso = :regiso
+            and TRIM(tkben.ben_regiso) = TRIM(:regiso)
         )
         left join w_si on (si_sachnr = teil_sachnr)
         left join w_bildtaf_bnbben on (
@@ -229,7 +229,7 @@ public class DiagramDisplayRepository {
         left join w_ben_gk bnbben on (
             bildtafb_textcode = bnbben.ben_textcode
             and bnbben.ben_iso = :iso
-            and bnbben.ben_regiso = :regiso
+            and TRIM(bnbben.ben_regiso) = TRIM(:regiso)
         )
         where btzeilenuv_marke_tps = :marke
           and btzeilenuv_btnr = :btnr
@@ -250,7 +250,7 @@ public class DiagramDisplayRepository {
           and kommh_id = komm_id
           and komm_textcode = ben_textcode
           and ben_iso = :iso
-          and ben_regiso = :regiso
+          and TRIM(ben_regiso) = TRIM(:regiso)
         order by KommId, Pos
         """;
 
@@ -264,7 +264,7 @@ public class DiagramDisplayRepository {
           and kommuh_id = komm_id
           and komm_textcode = ben_textcode
           and ben_iso = :iso
-          and ben_regiso = :regiso
+          and TRIM(ben_regiso) = TRIM(:regiso)
         order by KommId, Pos
         """;
 
@@ -363,11 +363,11 @@ public class DiagramDisplayRepository {
           and bv_kommid = komm_id
           and komm_textcode = bv.ben_textcode
           and bv.ben_iso = :iso
-          and bv.ben_regiso = :regiso
+          and TRIM(bv.ben_regiso) = TRIM(:regiso)
           and bv_btnr_nach = bildtaf_btnr
           and bildtaf_textc = bt.ben_textcode
           and bt.ben_iso = :iso
-          and bt.ben_regiso = :regiso
+          and TRIM(bt.ben_regiso) = TRIM(:regiso)
         order by Bildtafelnummer, Pos
         """;
 
@@ -383,12 +383,12 @@ public class DiagramDisplayRepository {
           and bv_kommid = komm_id
           and komm_textcode = bv.ben_textcode
           and bv.ben_iso = :iso
-          and bv.ben_regiso = :regiso
+          and TRIM(bv.ben_regiso) = TRIM(:regiso)
           and bv_btnr_nach = bildtaf_btnr
           and bildtaf_produktart = :produktart
           and bildtaf_textc = bt.ben_textcode
           and bt.ben_iso = :iso
-          and bt.ben_regiso = :regiso
+          and TRIM(bt.ben_regiso) = TRIM(:regiso)
         order by Bildtafelnummer, Pos
         """;
 
@@ -399,7 +399,7 @@ public class DiagramDisplayRepository {
         where publben_art = 'V'
           and publben_textcode = ben_textcode
           and ben_iso = :iso
-          and ben_regiso = :regiso
+          and TRIM(ben_regiso) = TRIM(:regiso)
         order by Bezeichnung
         """;
 
