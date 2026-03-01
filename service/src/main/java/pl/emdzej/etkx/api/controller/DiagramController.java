@@ -4,12 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
@@ -34,6 +40,7 @@ import pl.emdzej.etkx.dal.repository.diagram.PartVisualizationRepository;
 import pl.emdzej.etkx.dal.repository.diagram.SpringTableRepository;
 import pl.emdzej.etkx.dal.repository.vehicle.VehicleIdentificationRepository;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/diagrams")
 @Tag(name = "Diagrams", description = "Parts diagrams and visualizations")
@@ -334,13 +341,39 @@ public class DiagramController {
     }
 
     private ResponseEntity<byte[]> buildGraphicResponse(GraphicDto graphic) {
-        MediaType mediaType = resolveMediaType(graphic.getFormat());
+        String format = graphic.getFormat();
+        byte[] imageData = graphic.getGrafik();
+        MediaType mediaType;
+        
+        // Convert TIFF to PNG for browser compatibility (Chrome doesn't support TIFF)
+        if (StringUtils.hasText(format) && format.trim().toUpperCase().startsWith("TIF")) {
+            try {
+                imageData = convertTiffToPng(imageData);
+                mediaType = MediaType.IMAGE_PNG;
+            } catch (IOException e) {
+                log.warn("Failed to convert TIFF to PNG, returning original: {}", e.getMessage());
+                mediaType = MediaType.valueOf("image/tiff");
+            }
+        } else {
+            mediaType = resolveMediaType(format);
+        }
+        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
         headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(30)).cachePublic());
         return ResponseEntity.ok()
             .headers(headers)
-            .body(graphic.getGrafik());
+            .body(imageData);
+    }
+    
+    private byte[] convertTiffToPng(byte[] tiffData) throws IOException {
+        BufferedImage image = ImageIO.read(new ByteArrayInputStream(tiffData));
+        if (image == null) {
+            throw new IOException("Failed to read TIFF image");
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(image, "PNG", out);
+        return out.toByteArray();
     }
 
     private MediaType resolveMediaType(String format) {
