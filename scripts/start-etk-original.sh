@@ -52,7 +52,8 @@ start_client() {
     done
     
     # Start GUI
-    "$JAVA_HOME/bin/java" -cp "$CP" webetk.javaclient.Starter &
+    # Disable native medialib to avoid JAI ImagingException on macOS
+    "$JAVA_HOME/bin/java" -Dcom.sun.media.jai.disableMediaLib=true -cp "$CP" webetk.javaclient.Starter &
     
     echo "✓ ETK client started"
 }
