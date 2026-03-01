@@ -194,104 +194,21 @@ export type DiagramDetails = {
   yesNoTexts: DiagramYesNoText[];
 };
 
-export type DiagramLineFzg = {
+export type DiagramLine = {
   bildnummer: string;
-  teilHg: string;
-  teilUg: string;
   teilSachnummer: string;
   teilBenennung: string;
   teilZusatz: string;
-  teilEntfall: string;
-  teilKommentarId: string;
-  teilKommentar: string;
-  teilKommPi: string;
-  teilSi: string;
-  teilReach: string;
-  teilAspg: string;
-  teilStecker: string;
-  teilDiebstahlrelevant: string;
-  siDokArt: string;
-  teilTc: string;
-  teilTcProdDatRelevant: string;
-  grpPa: string;
-  grpHg: string;
-  grpUg: string;
-  grpLfdNr: string;
   menge: string;
-  katKz: string;
-  getriebeKz: string;
-  lenkungKz: string;
   einsatz: string;
   auslauf: string;
-  bedingungKz: string;
-  kommBt: string;
-  kommVor: string;
-  kommNach: string;
-  satzSachnummer: string;
-  gruppeId: string;
-  blockNr: string;
-  bnbBenText: string;
-  pos: string;
-  btzAlter: string;
-  teilBedkezPg: string;
-  bedingungArt: string;
-  bedingungAlter: string;
-};
-
-export type DiagramLineUgb = {
-  bildnummer: string;
-  teilHg: string;
-  teilUg: string;
-  teilSachnummer: string;
-  teilBenennung: string;
-  teilZusatz: string;
-  teilEntfall: string;
-  teilKommentarId: string;
-  teilKommentar: string;
-  teilKommPi: string;
-  teilSi: string;
-  teilReach: string;
-  teilAspg: string;
-  teilStecker: string;
-  teilDiebstahlrelevant: string;
-  siDokArt: string;
-  teilTc: string;
-  teilTcProdDatRelevant: string;
-  mmg: string;
-  emg: string;
-  einsatz: string;
-  auslauf: string;
-  kommBt: string;
-  kommVor: string;
-  kommNach: string;
-  satzSachnummer: string;
-  gruppeId: string;
-  blockNr: string;
-  bnbBenText: string;
   pos: string;
 };
 
-export type DiagramCpLine = {
-  pos: string;
-  typ: string;
-  werk: string;
-  art: string;
-  datum: string;
-  vin: string;
-  vinProddatum: string;
-  vinMin: string;
-  vinMax: string;
-  artNummer: string;
-  nummer: string;
-  cpAlter: string;
-};
-
-export type DiagramLine = DiagramLineFzg | DiagramLineUgb | DiagramCpLine;
-
-export type DiagramLinesResponse = {
-  vehicleLines: DiagramLineFzg[];
-  ugbLines: DiagramLineUgb[];
-  cpLines: DiagramCpLine[];
+export type DiagramLines = {
+  vehicleLines: DiagramLine[];
+  ugbLines: any[];
+  cpLines: any[];
 };
 
 export type MainGroup = {

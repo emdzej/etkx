@@ -1,8 +1,7 @@
 import type {
   DiagramDetails,
-  DiagramLine,
   Baujahr,
-  DiagramLinesResponse,
+  DiagramLines,
   Getriebe,
   Karosserie,
   Lenkung,
@@ -244,25 +243,16 @@ export const getPartUsage = (
 ): Promise<PartUsage[]> =>
   request(`/api/parts/${partNr}/usage/parts`, withLanguage({}, iso, regiso));
 
-export const getDiagram = (
-  btnr: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<DiagramDetails> => request(`/api/diagrams/${btnr}`, withLanguage({}, iso, regiso));
+export const getDiagramDetails = (btnr: string): Promise<DiagramDetails> =>
+  request(`/api/diagrams/${btnr}`);
 
-export const getDiagramLines = async (
+export const getDiagramLines = (
   btnr: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<DiagramLine[]> => {
-  const response = await request<DiagramLinesResponse>(
-    `/api/diagrams/${btnr}/lines`,
-    withLanguage({}, iso, regiso)
-  );
-  return [...response.vehicleLines, ...response.ugbLines, ...response.cpLines];
-};
+  mospId: string,
+  iso: string = DEFAULT_ISO
+): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso });
 
-export const getDiagramImage = (btnr: string): string =>
+export const getDiagramImageUrl = (btnr: string): string =>
   new URL(`/api/diagrams/${btnr}/image`, API_BASE_URL).toString();
 
 export const getMainGroups = (
