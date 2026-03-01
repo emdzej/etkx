@@ -117,7 +117,7 @@
     </div>
   {:else}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {#each pagedResults as part ('sachnummer' in part ? part.sachnummer : part.sachnr)}
+      {#each pagedResults as part, i (('sachnummer' in part ? part.sachnummer : part.sachnr) + '-' + i)}
         <PartCard {part} {mospId} />
       {/each}
     </div>

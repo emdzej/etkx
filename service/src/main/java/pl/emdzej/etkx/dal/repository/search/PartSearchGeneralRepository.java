@@ -29,7 +29,7 @@ public class PartSearchGeneralRepository {
         """;
 
     private static final String SEARCH_PARTS_BY_NUMBER = """
-        select t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr as sachnr,
+        select distinct t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr as sachnr,
                t2.ben_text as benennung,
                t1.teil_benennzus as zusatz,
                t1.teil_hauptgr as hauptgr,
