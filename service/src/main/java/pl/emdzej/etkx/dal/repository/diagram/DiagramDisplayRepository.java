@@ -87,7 +87,7 @@ public class DiagramDisplayRepository {
             btzeilen_lenkg Lenkung_KZ,
             btzeilen_eins Einsatz,
             btzeilen_auslf Auslauf,
-            btzeilen_bedkez || nvl(CAST(btzeilen_regelnr AS TEXT), '') Bedingung_KZ,
+            btzeilen_bedkez || COALESCE(CAST(btzeilen_regelnr AS TEXT), '') Bedingung_KZ,
             btzeilen_kommbt KommBT,
             btzeilen_kommvor KommVor,
             btzeilen_kommnach KommNach,
@@ -416,7 +416,7 @@ public class DiagramDisplayRepository {
         from w_tc_sachnummer, w_tc_kampagne_proddatum, w_tc_kampagne
         where tckp_mospid = :mospid
           and tckp_proddatum_von <= :proddatumMax
-          and nvl(tckp_proddatum_bis, 99999999) >= :proddatumMin
+          and COALESCE(tckp_proddatum_bis, 99999999) >= :proddatumMin
           and tcs_id = tckp_id
           and tcs_sachnr = :sachnummer
           and tck_id = tcs_id

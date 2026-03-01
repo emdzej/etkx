@@ -28,7 +28,7 @@ public class FillQuantitiesRepository {
         from w_fuellmengen
         where fuellmengen_typ in (:types)
           and cast(substr(CAST(fuellmengen_ab AS TEXT), 1, 6) as integer) <= :productionDate
-          and nvl(cast(substr(CAST(fuellmengen_bis AS TEXT), 1, 6) as integer), 999999) >= :productionDate
+          and COALESCE(cast(substr(CAST(fuellmengen_bis AS TEXT), 1, 6) as integer), 999999) >= :productionDate
         order by Typ, Getriebe
         """;
 
