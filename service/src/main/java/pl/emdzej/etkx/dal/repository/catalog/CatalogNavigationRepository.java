@@ -16,9 +16,9 @@ import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 @RequiredArgsConstructor
 public class CatalogNavigationRepository {
     private static final String RETRIEVE_MAIN_GROUPS = """
-        select distinct hgfgm_hg Hg,
-            ben_text Name,
-            hgthb_grafikid ThumbnailId
+        select hgfgm_hg Hg,
+            MIN(ben_text) Name,
+            MIN(hgthb_grafikid) ThumbnailId
         from w_hgfg_mosp
         inner join w_hgfg on (
             hgfg_hg = hgfgm_hg
@@ -30,13 +30,14 @@ public class CatalogNavigationRepository {
         )
         left join w_hg_thumbnail on (hgthb_hg = hgfgm_hg)
         where hgfgm_mospid = :mospId
+        group by hgfgm_hg
         order by hgfgm_hg
         """;
 
     private static final String RETRIEVE_SUB_GROUPS = """
         select hgfgm_hg Hg,
             hgfgm_fg Fg,
-            ben_text Name,
+            MIN(ben_text) Name,
             fgthb_grafikid ThumbnailId,
             bt.btnr Btnr
         from w_hgfg_mosp
@@ -61,6 +62,7 @@ public class CatalogNavigationRepository {
             and bt.bildtaf_fg = hgfgm_fg
         )
         where hgfgm_mospid = :mospId
+        group by hgfgm_hg
           and hgfgm_hg = :hg
         order by hgfgm_fg
         """;
