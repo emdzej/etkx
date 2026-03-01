@@ -217,4 +217,169 @@ public class VehicleController {
             .reduce("", (left, right) -> left + " " + right)
             .trim();
     }
+
+    // === NEW ENDPOINTS FOR CASCADING SELECTION ===
+
+    /**
+     * Lists body types (Karosserie) for a series.
+     */
+    @GetMapping("/bodies")
+    @Operation(summary = "List body types for a series")
+    @ApiResponse(responseCode = "200", description = "Body types loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.KarosserieDto> listBodies(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Region identifiers") @RequestParam List<String> regionen,
+        @Parameter(description = "ISO language code") @RequestParam String iso,
+        @Parameter(description = "Regional ISO language code") @RequestParam String regiso,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        return vehicleIdentificationRepository.findBodies(baureihe, katalogumfang, regionen, iso, regiso, lenkungClause, extraParams);
+    }
+
+    /**
+     * Lists models for a series.
+     */
+    @GetMapping("/models")
+    @Operation(summary = "List models for a series")
+    @ApiResponse(responseCode = "200", description = "Models loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.ModellDto> listModels(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Region identifiers") @RequestParam List<String> regionen,
+        @Parameter(description = "Optional body type filter") @RequestParam(required = false) String karosserie,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String karosserieClause = optionalClause("and fztyp_karosserie = :karosserie", karosserie, "karosserie", extraParams);
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        return vehicleIdentificationRepository.findModels(baureihe, katalogumfang, regionen, karosserieClause, lenkungClause, extraParams);
+    }
+
+    /**
+     * Lists available regions for a model.
+     */
+    @GetMapping("/regions")
+    @Operation(summary = "List regions for a model")
+    @ApiResponse(responseCode = "200", description = "Regions loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.RegionDto> listRegions(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region identifiers") @RequestParam List<String> regionen,
+        @Parameter(description = "Optional body type filter") @RequestParam(required = false) String karosserie,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String karosserieClause = optionalClause("and fztyp_karosserie = :karosserie", karosserie, "karosserie", extraParams);
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        return vehicleIdentificationRepository.findRegions(baureihe, katalogumfang, modell, regionen, karosserieClause, lenkungClause, extraParams);
+    }
+
+    /**
+     * Lists steering options for a model selection.
+     */
+    @GetMapping("/steerings")
+    @Operation(summary = "List steering options")
+    @ApiResponse(responseCode = "200", description = "Steering options loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.LenkungDto> listSteerings(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Body type") @RequestParam String karosserie,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region") @RequestParam String region,
+        @Parameter(description = "ISO language code") @RequestParam String iso,
+        @Parameter(description = "Regional ISO language code") @RequestParam String regiso
+    ) {
+        return vehicleIdentificationRepository.findSteerings(baureihe, katalogumfang, karosserie, modell, region, iso, regiso);
+    }
+
+    /**
+     * Lists transmission options for a model selection.
+     */
+    @GetMapping("/transmissions")
+    @Operation(summary = "List transmission options")
+    @ApiResponse(responseCode = "200", description = "Transmission options loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.GetriebeDto> listTransmissions(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Body type") @RequestParam String karosserie,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region") @RequestParam String region,
+        @Parameter(description = "ISO language code") @RequestParam String iso,
+        @Parameter(description = "Regional ISO language code") @RequestParam String regiso,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        return vehicleIdentificationRepository.findTransmissions(baureihe, katalogumfang, karosserie, modell, region, iso, regiso, lenkungClause, extraParams);
+    }
+
+    /**
+     * Lists production years for a vehicle selection.
+     */
+    @GetMapping("/years")
+    @Operation(summary = "List production years")
+    @ApiResponse(responseCode = "200", description = "Production years loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.BaujahrDto> listProductionYears(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region") @RequestParam String region,
+        @Parameter(description = "Optional body type filter") @RequestParam(required = false) String karosserie,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung,
+        @Parameter(description = "Optional transmission filter") @RequestParam(required = false) String getriebe
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String karosserieClause = optionalClause("and fztyp_karosserie = :karosserie", karosserie, "karosserie", extraParams);
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        String getriebeClause = optionalClause("and fztyp_getriebe = :getriebe", getriebe, "getriebe", extraParams);
+        return vehicleIdentificationRepository.findProductionYears(baureihe, katalogumfang, modell, region, karosserieClause, lenkungClause, getriebeClause, extraParams);
+    }
+
+    /**
+     * Lists registration months for a production year.
+     */
+    @GetMapping("/months")
+    @Operation(summary = "List registration months")
+    @ApiResponse(responseCode = "200", description = "Registration months loaded")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.ZulassungsmonatDto> listRegistrationMonths(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Catalog scope") @RequestParam String katalogumfang,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region") @RequestParam String region,
+        @Parameter(description = "Production year") @RequestParam String baujahr,
+        @Parameter(description = "ISO language code") @RequestParam String iso,
+        @Parameter(description = "Regional ISO language code") @RequestParam String regiso,
+        @Parameter(description = "Optional body type filter") @RequestParam(required = false) String karosserie,
+        @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung,
+        @Parameter(description = "Optional transmission filter") @RequestParam(required = false) String getriebe
+    ) {
+        Map<String, Object> extraParams = new HashMap<>();
+        String karosserieClause = optionalClause("and fztyp_karosserie = :karosserie", karosserie, "karosserie", extraParams);
+        String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
+        String getriebeClause = optionalClause("and fztyp_getriebe = :getriebe", getriebe, "getriebe", extraParams);
+        return vehicleIdentificationRepository.findRegistrationMonthsForYear(baureihe, katalogumfang, modell, region, baujahr, iso, regiso, karosserieClause, lenkungClause, getriebeClause, extraParams);
+    }
+
+    /**
+     * Resolves model column (mospId) from selection attributes.
+     */
+    @GetMapping("/resolve")
+    @Operation(summary = "Resolve model column from attributes")
+    @ApiResponse(responseCode = "200", description = "Model column resolved")
+    public List<pl.emdzej.etkx.dal.dto.vehicle.MospIdDto> resolveModelColumn(
+        @Parameter(description = "Model series") @RequestParam String baureihe,
+        @Parameter(description = "Model name") @RequestParam String modell,
+        @Parameter(description = "Region") @RequestParam String region,
+        @Parameter(description = "Body type (required for cars)") @RequestParam(required = false) String karosserie,
+        @Parameter(description = "Product type (P=car, M=motorcycle)") @RequestParam(defaultValue = "P") String produktart
+    ) {
+        if ("M".equalsIgnoreCase(produktart)) {
+            return vehicleIdentificationRepository.findModelColumnsForMotorcycles(baureihe, modell, region);
+        }
+        return vehicleIdentificationRepository.findModelColumnsForPassengerCars(baureihe, karosserie, modell, region);
+    }
 }
