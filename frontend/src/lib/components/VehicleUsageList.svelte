@@ -14,18 +14,14 @@
           <th class="px-4 py-3">Series</th>
           <th class="px-4 py-3">Model</th>
           <th class="px-4 py-3">Body</th>
-          <th class="px-4 py-3">From</th>
-          <th class="px-4 py-3">To</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-100 bg-white dark:divide-slate-800 dark:bg-slate-950">
-        {#each usage as entry (entry.baureihe + entry.modell + entry.karosserie + entry.einsatz)}
+        {#each usage as entry (entry.baureihe + entry.modell + entry.karosserie)}
           <tr>
             <td class="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">{entry.baureihe}</td>
             <td class="px-4 py-3 text-slate-700 dark:text-slate-200">{entry.modell}</td>
             <td class="px-4 py-3 text-slate-700 dark:text-slate-200">{entry.karosserie}</td>
-            <td class="px-4 py-3 text-slate-500 dark:text-slate-400">{entry.einsatz}</td>
-            <td class="px-4 py-3 text-slate-500 dark:text-slate-400">{entry.auslauf}</td>
           </tr>
         {/each}
       </tbody>

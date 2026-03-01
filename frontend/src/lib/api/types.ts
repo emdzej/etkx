@@ -127,8 +127,6 @@ export type PartUsageVehicle = {
   baureihe: string;
   modell: string;
   karosserie: string;
-  einsatz: string;
-  auslauf: string;
 };
 
 export type DiagramHotspot = {
