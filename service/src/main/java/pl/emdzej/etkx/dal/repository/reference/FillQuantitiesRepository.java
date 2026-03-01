@@ -27,8 +27,8 @@ public class FillQuantitiesRepository {
             fuellmengen_hw___LANG__ Hinweis
         from w_fuellmengen
         where fuellmengen_typ in (:types)
-          and cast(substr(to_char(fuellmengen_ab), 1, 6) as integer) <= :productionDate
-          and nvl(cast(substr(to_char(fuellmengen_bis), 1, 6) as integer), 999999) >= :productionDate
+          and cast(substr(CAST(fuellmengen_ab AS TEXT), 1, 6) as integer) <= :productionDate
+          and nvl(cast(substr(CAST(fuellmengen_bis AS TEXT), 1, 6) as integer), 999999) >= :productionDate
         order by Typ, Getriebe
         """;
 

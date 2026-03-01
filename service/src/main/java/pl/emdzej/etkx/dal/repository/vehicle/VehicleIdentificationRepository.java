@@ -188,7 +188,7 @@ public class VehicleIdentificationRepository {
         """;
 
     private static final String RETRIEVE_BAUJAHRE = """
-        select distinct substr(to_char(fgstnr_prod), 1, 4) Baujahr
+        select distinct SUBSTR(CAST(fgstnr_prod AS TEXT), 1, 4) Baujahr
         from w_fztyp, w_fgstnr
         where fztyp_baureihe = :baureihe
           and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
@@ -203,7 +203,7 @@ public class VehicleIdentificationRepository {
         """;
 
     private static final String RETRIEVE_ZULASSMONATE = """
-        select distinct substr(to_char(fgstnr_prod), 5, 2) Zulassungsmonat,
+        select distinct SUBSTR(CAST(fgstnr_prod AS TEXT), 5, 2) Zulassungsmonat,
             ben_text ExtZulassungsmonat
         from w_fztyp, w_ben_gk, w_publben, w_fgstnr
         where fztyp_baureihe = :baureihe
@@ -215,8 +215,8 @@ public class VehicleIdentificationRepository {
           __GETRIEBE_STMT__
           and fztyp_sichtschutz = 'N'
           and fztyp_typschl = fgstnr_typschl
-          and substr(to_char(fgstnr_prod), 1, 4) = :baujahr
-          and substr(to_char(fgstnr_prod), 5, 2) = publben_bezeichnung
+          and SUBSTR(CAST(fgstnr_prod AS TEXT), 1, 4) = :baujahr
+          and SUBSTR(CAST(fgstnr_prod AS TEXT), 5, 2) = publben_bezeichnung
           and publben_art = 'M'
           and publben_textcode = ben_textcode
           and ben_iso = :iso
@@ -225,7 +225,7 @@ public class VehicleIdentificationRepository {
         """;
 
     private static final String RETRIEVE_ZULASSMONATE2 = """
-        select distinct substr(to_char(fgstnr_prod), 5, 2) Zulassungsmonat,
+        select distinct SUBSTR(CAST(fgstnr_prod AS TEXT), 5, 2) Zulassungsmonat,
             ben_text ExtZulassungsmonat
         from w_fztyp, w_ben_gk, w_publben, w_fgstnr
         where fztyp_baureihe = :baureihe
@@ -237,7 +237,7 @@ public class VehicleIdentificationRepository {
           __GETRIEBE_STMT__
           and fztyp_sichtschutz = 'N'
           and fztyp_typschl = fgstnr_typschl
-          and substr(to_char(fgstnr_prod), 5, 2) = publben_bezeichnung
+          and SUBSTR(CAST(fgstnr_prod AS TEXT), 5, 2) = publben_bezeichnung
           and publben_art = 'M'
           and publben_textcode = ben_textcode
           and ben_iso = :iso
