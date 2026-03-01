@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -175,8 +176,32 @@ public class DiagramController {
         @Parameter(description = "Graphic type")
         @RequestParam(defaultValue = "Z") String art
     ) {
-        GraphicDto graphic = diagramDisplayRepository.loadDiagramGraphic(btnr, art);
-        return buildGraphicResponse(graphic);
+        try {
+            GraphicDto graphic = diagramDisplayRepository.loadDiagramGraphic(btnr, art);
+            return buildGraphicResponse(graphic);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Loads the diagram graphic by grafikId as a binary payload.
+     */
+    @GetMapping("/graphics/{grafikId}/image")
+    @Operation(summary = "Load diagram graphic by grafikId")
+    @ApiResponse(responseCode = "200", description = "Diagram graphic loaded")
+    public ResponseEntity<byte[]> loadDiagramImageByGrafikId(
+        @Parameter(description = "Graphic identifier")
+        @PathVariable Long grafikId,
+        @Parameter(description = "Graphic type")
+        @RequestParam(defaultValue = "T") String art
+    ) {
+        try {
+            GraphicDto graphic = diagramDisplayRepository.loadGraphicById(grafikId, art);
+            return buildGraphicResponse(graphic);
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     /**
