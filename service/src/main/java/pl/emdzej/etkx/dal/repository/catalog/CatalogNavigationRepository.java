@@ -62,8 +62,8 @@ public class CatalogNavigationRepository {
             and bt.bildtaf_fg = hgfgm_fg
         )
         where hgfgm_mospid = :mospId
-        group by hgfgm_hg
           and hgfgm_hg = :hg
+        group by hgfgm_hg, hgfgm_fg
         order by hgfgm_fg
         """;
 
