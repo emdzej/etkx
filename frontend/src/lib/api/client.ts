@@ -272,8 +272,9 @@ export const getDiagramDetails = (btnr: string): Promise<DiagramDetails> =>
 export const getDiagramLines = (
   btnr: string,
   mospId: string,
-  iso: string = DEFAULT_ISO
-): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso });
+  iso: string = DEFAULT_ISO,
+  datum?: string
+): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso, datum });
 
 export const getDiagramImageUrl = (btnr: string): string =>
   new URL(`/api/diagrams/${btnr}/image`, API_BASE_URL).toString();

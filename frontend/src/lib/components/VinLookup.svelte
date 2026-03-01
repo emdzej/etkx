@@ -37,8 +37,11 @@
   const saveAndNavigate = () => {
     if (!result) return;
     
+    const datum = result.produktionsdatum || '99991231';
+
     myVehicles.add({
       mospId: result.modellspalte,
+      datum,
       label: `${result.baureihe} ${result.modell} ${result.produktionsdatum || ''}`.trim(),
       series: result.baureihe,
       model: result.modell,

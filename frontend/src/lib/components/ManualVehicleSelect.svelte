@@ -455,9 +455,11 @@
     const regionLabel = getLabel(regionOptions, region);
 
     const labelParts = [DEFAULT_BRAND, seriesLabel, modelLabel, regionLabel, `${year}-${month}`];
+    const datum = `${year}${month.padStart(2, '0')}01`;
 
     myVehicles.add({
       mospId,
+      datum,
       label: labelParts.filter(Boolean).join(' '),
       series,
       model: modelLabel,

@@ -3,6 +3,7 @@ import { writable } from 'svelte/store';
 
 export type MyVehicle = {
   mospId: string;
+  datum: string;
   label: string;
   series: string;
   model: string;
@@ -23,7 +24,11 @@ const readInitial = (): MyVehicle[] => {
   }
 
   try {
-    return JSON.parse(raw) as MyVehicle[];
+    const parsed = JSON.parse(raw) as MyVehicle[];
+    return parsed.map((vehicle) => ({
+      ...vehicle,
+      datum: vehicle.datum || '99991231'
+    }));
   } catch {
     return [];
   }
