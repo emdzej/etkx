@@ -1,12 +1,14 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { DEFAULT_ISO, searchParts, type PartSearchLine } from '$lib/api';
+  import { DEFAULT_ISO, searchByPartNumber, searchParts, type PartByNumber, type PartSearchLine } from '$lib/api';
   import PartCard from '$lib/components/PartCard.svelte';
   import SearchInput from '$lib/components/SearchInput.svelte';
   import { myVehicles } from '$lib/stores/myVehicles';
 
+  type PartSearchResult = PartSearchLine | PartByNumber;
+
   let query = $state('');
-  let results = $state<PartSearchLine[]>([]);
+  let results = $state<PartSearchResult[]>([]);
   let loading = $state(false);
   let pageIndex = $state(0);
   const pageSize = 20;
@@ -15,6 +17,7 @@
   let requestId = 0;
 
   const mospId = $derived($page.url.searchParams.get('mospId') ?? $myVehicles[0]?.mospId ?? '');
+  const isPartNumber = (value: string) => /^\d/.test(value) && !value.includes(' ');
 
   $effect(() => {
     const urlQuery = $page.url.searchParams.get('q') ?? '';
@@ -29,7 +32,9 @@
     }
 
     const trimmed = query.trim();
-    if (!mospId || trimmed.length < 3) {
+    const partNumberQuery = isPartNumber(trimmed);
+
+    if (trimmed.length < 3 || (!mospId && !partNumberQuery)) {
       results = [];
       pageIndex = 0;
       loading = false;
@@ -41,7 +46,9 @@
 
     debounceTimer = setTimeout(async () => {
       try {
-        const data = await searchParts(mospId, trimmed, DEFAULT_ISO);
+        const data = partNumberQuery
+          ? await searchByPartNumber(trimmed, DEFAULT_ISO)
+          : await searchParts(mospId, trimmed, DEFAULT_ISO);
         if (currentRequest !== requestId) {
           return;
         }
@@ -85,13 +92,13 @@
       {#if mospId}
         Searching within vehicle <span class="font-mono">{mospId}</span>.
       {:else}
-        Select a vehicle from "My Vehicles" to enable search.
+        Search by part number (e.g. 11127...) or select a vehicle to search by description.
       {/if}
     </p>
   </div>
 
   <div class="max-w-2xl">
-    <SearchInput bind:value={query} placeholder="Search by part description..." />
+    <SearchInput bind:value={query} placeholder="Search by part number or description..." />
   </div>
 
   {#if query.trim().length < 3}
@@ -100,13 +107,17 @@
     </p>
   {:else if loading}
     <p class="text-sm text-slate-500 dark:text-slate-400">Searching parts...</p>
+  {:else if !mospId && !isPartNumber(query.trim())}
+    <p class="text-sm text-slate-500 dark:text-slate-400">
+      Select a vehicle to search by description, or enter a part number.
+    </p>
   {:else if results.length === 0}
     <div class="rounded-lg border border-slate-200 bg-slate-50 p-8 text-center dark:border-slate-700 dark:bg-slate-900">
       <p class="text-slate-500 dark:text-slate-400">No parts found for "{query.trim()}".</p>
     </div>
   {:else}
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {#each pagedResults as part (part.sachnummer)}
+      {#each pagedResults as part ('sachnummer' in part ? part.sachnummer : part.sachnr)}
         <PartCard {part} {mospId} />
       {/each}
     </div>

@@ -99,6 +99,14 @@ export type PartSearchLine = {
   pos: number;
 };
 
+export type PartByNumber = {
+  sachnr: string;
+  benennung: string;
+  zusatz: string;
+  hauptgr: string;
+  untergrup: string;
+};
+
 export type PartReplacement = {
   sachnummer: string;
   sachnummerAlt: string;
