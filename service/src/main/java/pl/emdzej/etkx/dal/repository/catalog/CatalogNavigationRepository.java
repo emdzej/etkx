@@ -76,23 +76,19 @@ public class CatalogNavigationRepository {
         """;
 
     private static final String RETRIEVE_DIAGRAMS = """
-        select distinct bildtaf_btnr Btnr,
-            bildtaf_grafikid GrafikId,
+        select distinct b.bildtaf_btnr Btnr,
+            b.bildtaf_grafikid GrafikId,
             ben_text Name
-        from w_bildtaf
-        inner join w_hgfg_mosp on (
-            hgfgm_hg = bildtaf_hg
-            and hgfgm_fg = bildtaf_fg
-            and hgfgm_produktart = bildtaf_produktart
-            and hgfgm_mospid = :mospId
-        )
+        from w_btzeilen_verbauung v
+        inner join w_bildtaf b on (v.btzeilenv_btnr = b.bildtaf_btnr)
         left join w_ben_gk on (
-            bildtaf_textc = ben_textcode
+            b.bildtaf_textc = ben_textcode
             and ben_iso = :iso and ben_regiso = ''
         )
-        where bildtaf_hg = :hg
-          and bildtaf_fg = :fg
-        order by bildtaf_btnr
+        where v.btzeilenv_mospid = :mospId
+          and b.bildtaf_hg = :hg
+          and b.bildtaf_fg = :fg
+        order by b.bildtaf_btnr
         """;
 
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
