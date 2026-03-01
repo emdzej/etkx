@@ -90,6 +90,13 @@ public class VehicleIdentificationRepository {
         limit 1
         """;
 
+    private static final String FIND_TYP_BY_MOSPID = """
+        select fztyp_typschl Typ
+        from w_fztyp
+        where fztyp_mospid = :mospId
+        limit 1
+        """;
+
     private static final String GET_GRAFIKID_FOR_BAUREIHE_KAROSSERIE = """
         select grafik_grafikid GrafikId,
             grafik_moddate ModStamp
@@ -727,6 +734,13 @@ public class VehicleIdentificationRepository {
      */
     public String findMarkeByMospId(long mospId) {
         return jdbc.queryForObject(FIND_MARKE_BY_MOSPID, Map.of("mospId", mospId), String.class);
+    }
+
+    /**
+     * Resolves vehicle type for the given MOSP id.
+     */
+    public String findTypByMospId(long mospId) {
+        return jdbc.queryForObject(FIND_TYP_BY_MOSPID, Map.of("mospId", mospId), String.class);
     }
 
     /**

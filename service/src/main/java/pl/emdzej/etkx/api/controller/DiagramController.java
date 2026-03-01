@@ -135,8 +135,9 @@ public class DiagramController {
             resolvedMarke = vehicleIdentificationRepository.findMarkeByMospId(mosp);
         }
         if (mosp != null) {
-            if (!StringUtils.hasText(typ)) {
-                throw new IllegalArgumentException("Vehicle context requires typ parameter");
+            String resolvedTyp = typ;
+            if (!StringUtils.hasText(resolvedTyp)) {
+                resolvedTyp = vehicleIdentificationRepository.findTypByMospId(mosp);
             }
             builder.vehicleLines(diagramDisplayRepository.findVehicleDiagramLines(
                     mosp,
@@ -144,11 +145,11 @@ public class DiagramController {
                     resolvedMarke,
                     normalizedIso,
                     regiso,
-                    typ,
+                    resolvedTyp,
                     datum,
                     landkuerzel
                 ))
-                .cpLines(diagramDisplayRepository.findVehicleCpLines(mosp, btnr, typ, werk))
+                .cpLines(diagramDisplayRepository.findVehicleCpLines(mosp, btnr, resolvedTyp, werk))
                 .ugbLines(List.of());
         } else {
             if (!StringUtils.hasText(resolvedMarke)) {
