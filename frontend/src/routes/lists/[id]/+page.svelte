@@ -113,7 +113,23 @@
   };
 
   const handleExport = () => {
-    window.alert('Export is coming soon.');
+    if (!browser || !list) {
+      return;
+    }
+
+    const exportData = {
+      exportedAt: new Date().toISOString(),
+      version: '1.0',
+      list
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${list.name.replace(/[^a-z0-9]/gi, '-')}-${Date.now()}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
   };
 
   $effect(() => {
@@ -172,6 +188,19 @@
           class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-500 shadow-sm transition hover:border-blue-200 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
           onclick={handleExport}
         >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-4 w-4"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
           Export
         </button>
       </div>
