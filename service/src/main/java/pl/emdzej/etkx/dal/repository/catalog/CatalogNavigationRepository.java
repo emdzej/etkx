@@ -27,7 +27,7 @@ public class CatalogNavigationRepository {
         )
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
-            and ben_iso = :iso
+            and ben_iso = :iso and ben_regiso = ''
         )
         inner join w_fztyp f on (f.fztyp_mospid = m.hgfgm_mospid)
         inner join w_baureihe b on (f.fztyp_baureihe = b.baureihe_baureihe)
@@ -59,7 +59,7 @@ public class CatalogNavigationRepository {
         )
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
-            and ben_iso = :iso
+            and ben_iso = :iso and ben_regiso = ''
         )
         left join (
             select bildtaf_hg, bildtaf_fg, min(bildtaf_btnr) as btnr
@@ -87,7 +87,7 @@ public class CatalogNavigationRepository {
         )
         left join w_ben_gk on (
             bildtaf_textc = ben_textcode
-            and ben_iso = :iso
+            and ben_iso = :iso and ben_regiso = ''
         )
         where bildtaf_hg = :hg
           and bildtaf_fg = :fg
