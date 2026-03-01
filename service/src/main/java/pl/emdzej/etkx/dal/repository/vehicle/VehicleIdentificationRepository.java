@@ -94,6 +94,7 @@ public class VehicleIdentificationRepository {
         select fztyp_typschl Typ
         from w_fztyp
         where fztyp_mospid = :mospId
+          and fztyp_einsatz <= :datum
         order by fztyp_einsatz desc
         limit 1
         """;
@@ -740,8 +741,12 @@ public class VehicleIdentificationRepository {
     /**
      * Resolves vehicle type for the given MOSP id.
      */
-    public String findTypByMospId(long mospId) {
-        return jdbc.queryForObject(FIND_TYP_BY_MOSPID, Map.of("mospId", mospId), String.class);
+    public String findTypByMospId(long mospId, long datum) {
+        return jdbc.queryForObject(
+            FIND_TYP_BY_MOSPID,
+            Map.of("mospId", mospId, "datum", datum),
+            String.class
+        );
     }
 
     /**

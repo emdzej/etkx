@@ -3,11 +3,15 @@
   import { getDiagramDetails, getDiagramLines, type DiagramDetails, type DiagramLine } from '$lib/api';
   import DiagramViewer from '$lib/components/DiagramViewer.svelte';
   import PartsTable from '$lib/components/PartsTable.svelte';
+  import { myVehicles } from '$lib/stores/myVehicles';
 
   const DEFAULT_ISO = 'EN';
 
   const mospId = $derived($page.params.mospId ?? '');
   const btnr = $derived($page.params.btnr ?? '');
+  const vehicleDatum = $derived(
+    $myVehicles.find((vehicle) => vehicle.mospId === mospId)?.datum
+  );
 
   let details = $state<DiagramDetails | null>(null);
   let lines = $state<DiagramLine[]>([]);
@@ -27,7 +31,7 @@
     try {
       const [diagramDetails, diagramLines] = await Promise.all([
         getDiagramDetails(btnr),
-        getDiagramLines(btnr, mospId, DEFAULT_ISO)
+        getDiagramLines(btnr, mospId, DEFAULT_ISO, vehicleDatum)
       ]);
       details = diagramDetails;
       lines = diagramLines.vehicleLines;

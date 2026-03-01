@@ -144,7 +144,7 @@ public class DiagramController {
         if (mospId != null) {
             String resolvedTyp = typ;
             if (!StringUtils.hasText(resolvedTyp)) {
-                resolvedTyp = vehicleIdentificationRepository.findTypByMospId(mospId);
+                resolvedTyp = vehicleIdentificationRepository.findTypByMospId(mospId, datum);
             }
             builder.vehicleLines(diagramDisplayRepository.findVehicleDiagramLines(
                     mospId,
