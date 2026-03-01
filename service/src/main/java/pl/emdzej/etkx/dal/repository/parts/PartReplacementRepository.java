@@ -76,19 +76,19 @@ public class PartReplacementRepository {
         """;
 
     private static final String RETRIEVE_SUPERSESSION_CHAIN = """
-        select e.ersetzung_sachnr as sachnummer,
-            e.ersetzung_sachnr_alt as sachnummerAlt,
+        select teil_hauptgr || teil_untergrup || teil_sachnr as sachnummer,
+            teil_alt as sachnummerAlt,
             b.ben_text as benennung,
-            t.teil_benennzus as zusatz,
-            e.ersetzung_ersatzkez as ersatzKez
-        from w_teileersetzung e
-        join w_teil t
-            on t.teil_hauptgr || t.teil_untergrup || t.teil_sachnr = e.ersetzung_sachnr
+            teil_benennzus as zusatz,
+            teil_austausch_alt as ersatzKez
+        from w_teil
         left join w_ben_gk b
-            on t.teil_textcode = b.ben_textcode
+            on teil_textcode = b.ben_textcode
             and lower(b.ben_iso) = :iso
-        where e.ersetzung_sachnr_alt = :partNumber
-           or e.ersetzung_sachnr = :partNumber
+        where (teil_hauptgr || teil_untergrup || teil_sachnr = :partNumber
+            and teil_alt != '')
+           or teil_alt = :partNumber
+           or teil_tausch = :partNumber
         """;
 
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
