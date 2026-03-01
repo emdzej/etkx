@@ -83,7 +83,7 @@ public class CatalogNavigationRepository {
         inner join w_bildtaf b on (v.btzeilenv_btnr = b.bildtaf_btnr)
         left join w_ben_gk on (
             b.bildtaf_textc = ben_textcode
-            and ben_iso = :iso and ben_regiso = ''
+            and ben_iso = :iso and TRIM(ben_regiso) = ''
         )
         where v.btzeilenv_mospid = :mospId
           and b.bildtaf_hg = :hg
