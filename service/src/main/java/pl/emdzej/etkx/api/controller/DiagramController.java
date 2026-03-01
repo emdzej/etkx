@@ -68,7 +68,7 @@ public class DiagramController {
         @Parameter(description = "ISO language code")
         @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
-        @RequestParam String regiso
+        @RequestParam(defaultValue = "") String regiso
     ) {
         String normalizedIso = normalizeIso(iso);
         DiagramDetailsDto.DiagramDetailsDtoBuilder builder = DiagramDetailsDto.builder()
@@ -118,7 +118,7 @@ public class DiagramController {
         @Parameter(description = "ISO language code")
         @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
-        @RequestParam String regiso,
+        @RequestParam(defaultValue = "") String regiso,
         @Parameter(description = "Vehicle type (vehicle context)")
         @RequestParam(required = false) String typ,
         @Parameter(description = "Production date (YYYYMMDD)")
@@ -227,7 +227,7 @@ public class DiagramController {
         @Parameter(description = "ISO language code")
         @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
-        @RequestParam String regiso
+        @RequestParam(defaultValue = "") String regiso
     ) {
         String normalizedIso = normalizeIso(iso);
         return DiagramInfoDto.builder()
@@ -252,7 +252,7 @@ public class DiagramController {
         @Parameter(description = "ISO language code")
         @RequestParam String iso,
         @Parameter(description = "Regional ISO language code")
-        @RequestParam String regiso
+        @RequestParam(defaultValue = "") String regiso
     ) {
         String normalizedIso = normalizeIso(iso);
         return PartVisualizationResponseDto.builder()
@@ -285,7 +285,7 @@ public class DiagramController {
         @Parameter(description = "ISO language code")
         @RequestParam String iso,
         @Parameter(description = "Regional ISO language code")
-        @RequestParam String regiso,
+        @RequestParam(defaultValue = "") String regiso,
         @Parameter(description = "Production date (YYYYMMDD)")
         @RequestParam(required = false) Long prodDatum,
         @Parameter(description = "SALA identifiers")
