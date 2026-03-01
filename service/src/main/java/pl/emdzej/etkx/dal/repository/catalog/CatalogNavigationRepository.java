@@ -83,6 +83,7 @@ public class CatalogNavigationRepository {
         inner join w_hgfg_mosp on (
             hgfgm_hg = bildtaf_hg
             and hgfgm_fg = bildtaf_fg
+            and hgfgm_produktart = bildtaf_produktart
             and hgfgm_mospid = :mospId
         )
         left join w_ben_gk on (
