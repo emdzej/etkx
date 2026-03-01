@@ -16,33 +16,33 @@ import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 @RequiredArgsConstructor
 public class CatalogNavigationRepository {
     private static final String RETRIEVE_MAIN_GROUPS = """
-        select distinct hgfgmo_hg Hg,
+        select distinct hgfgm_hg Hg,
             ben_text Name,
             hgthb_grafikid ThumbnailId
         from w_hgfg_mosp
         inner join w_hgfg on (
-            hgfg_hg = hgfgmo_hg
-            and hgfg_fg = hgfgmo_fg
+            hgfg_hg = hgfgm_hg
+            and hgfg_fg = hgfgm_fg
         )
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
             and ben_iso = :iso
         )
         left join w_hg_thumbnail on (hgthb_hg = hgfg_hg)
-        where hgfgmo_modellspalte = :mospId
-        order by hgfgmo_hg
+        where hgfgm_mospid = :mospId
+        order by hgfgm_hg
         """;
 
     private static final String RETRIEVE_SUB_GROUPS = """
-        select hgfgmo_hg Hg,
-            hgfgmo_fg Fg,
+        select hgfgm_hg Hg,
+            hgfgm_fg Fg,
             ben_text Name,
             fgthb_grafikid ThumbnailId,
             hgfgmo_btnr Btnr
         from w_hgfg_mosp
         inner join w_hgfg on (
-            hgfg_hg = hgfgmo_hg
-            and hgfg_fg = hgfgmo_fg
+            hgfg_hg = hgfgm_hg
+            and hgfg_fg = hgfgm_fg
         )
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
@@ -52,9 +52,9 @@ public class CatalogNavigationRepository {
             fgthb_hg = hgfg_hg
             and fgthb_fg = hgfg_fg
         )
-        where hgfgmo_modellspalte = :mospId
-          and hgfgmo_hg = :hg
-        order by hgfgmo_fg
+        where hgfgm_mospid = :mospId
+          and hgfgm_hg = :hg
+        order by hgfgm_fg
         """;
 
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
