@@ -16,21 +16,20 @@ import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 @RequiredArgsConstructor
 public class CatalogNavigationRepository {
     private static final String RETRIEVE_MAIN_GROUPS = """
-        select hgfgm_hg Hg,
-            min(ben_text) Name,
-            min(hgthb_grafikid) ThumbnailId
+        select distinct hgfgm_hg Hg,
+            ben_text Name,
+            hgthb_grafikid ThumbnailId
         from w_hgfg_mosp
         inner join w_hgfg on (
             hgfg_hg = hgfgm_hg
-            and hgfg_fg = hgfgm_fg
+            and hgfg_fg = '00'
         )
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
             and ben_iso = :iso
         )
-        left join w_hg_thumbnail on (hgthb_hg = hgfg_hg)
+        left join w_hg_thumbnail on (hgthb_hg = hgfgm_hg)
         where hgfgm_mospid = :mospId
-        group by hgfgm_hg
         order by hgfgm_hg
         """;
 
