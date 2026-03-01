@@ -295,12 +295,15 @@ export type DiagramLinesResponse = {
 };
 
 export type MainGroup = {
-  hauptgruppe: string;
-  benennung: string;
+  hg: string;
+  name: string;
+  thumbnailId: number | null;
 };
 
 export type SubGroup = {
-  hauptgruppe: string;
-  funktionsgruppe: string;
-  benennung: string;
+  hg: string;
+  fg: string;
+  name: string;
+  thumbnailId: number | null;
+  btnr: string;
 };

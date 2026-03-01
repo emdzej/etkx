@@ -266,14 +266,14 @@ export const getDiagramImage = (btnr: string): string =>
   new URL(`/api/diagrams/${btnr}/image`, API_BASE_URL).toString();
 
 export const getMainGroups = (
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<MainGroup[]> => request('/api/parts/groups', withLanguage({}, iso, regiso));
+  mospId: string,
+  iso: string = DEFAULT_ISO
+): Promise<MainGroup[]> => request('/api/catalog/groups', { mospId, iso });
 
 export const getSubGroups = (
+  mospId: string,
   hg: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<SubGroup[]> => request(`/api/parts/groups/${hg}`, withLanguage({}, iso, regiso));
+  iso: string = DEFAULT_ISO
+): Promise<SubGroup[]> => request(`/api/catalog/groups/${hg}/subgroups`, { mospId, iso });
 
 export { API_BASE_URL, DEFAULT_ISO, DEFAULT_REGISO };
