@@ -9,8 +9,8 @@ import type {
   Modell,
   MospId,
   PartReplacement,
-  PartSearchResult,
-  PartUsage,
+  PartSearchLine,
+  PartUsageVehicle,
   Region,
   Series,
   SeriesParams,
@@ -223,25 +223,30 @@ export const resolveMospId = (
   request('/api/vehicles/resolve', { baureihe, modell, region, karosserie, produktart });
 
 export const searchParts = (
-  query: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<PartSearchResult[]> =>
-  request('/api/parts/search/vehicle', withLanguage({ query }, iso, regiso));
+  mospId: string,
+  designation: string,
+  iso: string = DEFAULT_ISO
+): Promise<PartSearchLine[]> =>
+  request('/api/parts/search/vehicle', { mospId, designation, iso });
 
 export const getPartReplacements = (
-  partNr: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
+  partNumber: string,
+  iso: string = DEFAULT_ISO
 ): Promise<PartReplacement[]> =>
-  request(`/api/parts/${partNr}/replacements`, withLanguage({}, iso, regiso));
+  request(`/api/parts/${partNumber}/replacements`, { iso });
 
-export const getPartUsage = (
-  partNr: string,
-  iso: string = DEFAULT_ISO,
-  regiso: string = DEFAULT_REGISO
-): Promise<PartUsage[]> =>
-  request(`/api/parts/${partNr}/usage/parts`, withLanguage({}, iso, regiso));
+export const getPartVehicleUsage = (
+  partNumber: string,
+  mospId: string,
+  iso: string = DEFAULT_ISO
+): Promise<PartUsageVehicle[]> =>
+  request(`/api/parts/${partNumber}/usage/vehicle`, { mospId, iso });
+
+export const getPartDiagrams = (
+  partNumber: string,
+  mospId: string
+): Promise<{ btnr: string; name: string }[]> =>
+  request(`/api/diagrams/part/${partNumber}`, { mospId });
 
 export const getDiagramDetails = (btnr: string): Promise<DiagramDetails> =>
   request(`/api/diagrams/${btnr}`);
