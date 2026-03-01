@@ -94,6 +94,7 @@ public class VehicleIdentificationRepository {
         select fztyp_typschl Typ
         from w_fztyp
         where fztyp_mospid = :mospId
+        order by fztyp_einsatz desc
         limit 1
         """;
 
