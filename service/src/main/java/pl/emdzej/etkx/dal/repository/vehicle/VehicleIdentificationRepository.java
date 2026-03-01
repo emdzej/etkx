@@ -82,6 +82,14 @@ public class VehicleIdentificationRepository {
           and grafik_art = 'T'
         """;
 
+    private static final String FIND_MARKE_BY_MOSPID = """
+        select distinct baureihe_marke_tps Marke
+        from w_fztyp
+        join w_baureihe on fztyp_baureihe = baureihe_baureihe
+        where fztyp_mospid = :mospId
+        limit 1
+        """;
+
     private static final String GET_GRAFIKID_FOR_BAUREIHE_KAROSSERIE = """
         select grafik_grafikid GrafikId,
             grafik_moddate ModStamp
@@ -712,6 +720,13 @@ public class VehicleIdentificationRepository {
             params.putAll(extraParams);
         }
         return jdbc.query(sql, params, BAUREIHE_MAPPER);
+    }
+
+    /**
+     * Resolves brand identifier for the given MOSP id.
+     */
+    public String findMarkeByMospId(long mospId) {
+        return jdbc.queryForObject(FIND_MARKE_BY_MOSPID, Map.of("mospId", mospId), String.class);
     }
 
     /**

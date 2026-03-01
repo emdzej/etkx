@@ -32,6 +32,7 @@ import pl.emdzej.etkx.dal.repository.diagram.DiagramDisplayRepository;
 import pl.emdzej.etkx.dal.repository.diagram.DiagramInfoRepository;
 import pl.emdzej.etkx.dal.repository.diagram.PartVisualizationRepository;
 import pl.emdzej.etkx.dal.repository.diagram.SpringTableRepository;
+import pl.emdzej.etkx.dal.repository.vehicle.VehicleIdentificationRepository;
 
 @RestController
 @RequestMapping("/api/diagrams")
@@ -43,6 +44,7 @@ public class DiagramController {
     private final DiagramInfoRepository diagramInfoRepository;
     private final PartVisualizationRepository partVisualizationRepository;
     private final SpringTableRepository springTableRepository;
+    private final VehicleIdentificationRepository vehicleIdentificationRepository;
 
     /**
      * Loads diagram hotspots, comments, references, and condition metadata.
@@ -62,9 +64,9 @@ public class DiagramController {
         @Parameter(description = "Brand identifier (UGB context)")
         @RequestParam(required = false) String marke,
         @Parameter(description = "Product type (UGB context)")
-        @RequestParam(required = false) String produktart,
+        @RequestParam(defaultValue = "P") String produktart,
         @Parameter(description = "ISO language code")
-        @RequestParam String iso,
+        @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
@@ -108,13 +110,13 @@ public class DiagramController {
         @Parameter(description = "Model column identifier (vehicle context)")
         @RequestParam(required = false) Long mosp,
         @Parameter(description = "Brand identifier")
-        @RequestParam String marke,
+        @RequestParam(required = false) String marke,
         @Parameter(description = "Product type (UGB context)")
-        @RequestParam(required = false) String produktart,
+        @RequestParam(defaultValue = "P") String produktart,
         @Parameter(description = "Catalog scope (UGB context)")
         @RequestParam(required = false) String katalogumfang,
         @Parameter(description = "ISO language code")
-        @RequestParam String iso,
+        @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso,
         @Parameter(description = "Vehicle type (vehicle context)")
@@ -128,6 +130,10 @@ public class DiagramController {
     ) {
         String normalizedIso = normalizeIso(iso);
         DiagramLinesDto.DiagramLinesDtoBuilder builder = DiagramLinesDto.builder();
+        String resolvedMarke = marke;
+        if (mosp != null && !StringUtils.hasText(resolvedMarke)) {
+            resolvedMarke = vehicleIdentificationRepository.findMarkeByMospId(mosp);
+        }
         if (mosp != null) {
             if (!StringUtils.hasText(typ)) {
                 throw new IllegalArgumentException("Vehicle context requires typ parameter");
@@ -135,7 +141,7 @@ public class DiagramController {
             builder.vehicleLines(diagramDisplayRepository.findVehicleDiagramLines(
                     mosp,
                     btnr,
-                    marke,
+                    resolvedMarke,
                     normalizedIso,
                     regiso,
                     typ,
@@ -145,11 +151,14 @@ public class DiagramController {
                 .cpLines(diagramDisplayRepository.findVehicleCpLines(mosp, btnr, typ, werk))
                 .ugbLines(List.of());
         } else {
+            if (!StringUtils.hasText(resolvedMarke)) {
+                throw new IllegalArgumentException("UGB context requires marke parameter");
+            }
             if (!StringUtils.hasText(produktart) || !StringUtils.hasText(katalogumfang)) {
                 throw new IllegalArgumentException("UGB context requires produktart and katalogumfang parameters");
             }
             builder.ugbLines(diagramDisplayRepository.findUgbDiagramLines(
-                    marke,
+                    resolvedMarke,
                     btnr,
                     produktart,
                     katalogumfang,
@@ -214,9 +223,9 @@ public class DiagramController {
         @Parameter(description = "Diagram number")
         @PathVariable String btnr,
         @Parameter(description = "Product type")
-        @RequestParam String produktart,
+        @RequestParam(defaultValue = "P") String produktart,
         @Parameter(description = "ISO language code")
-        @RequestParam String iso,
+        @RequestParam(defaultValue = "en") String iso,
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
