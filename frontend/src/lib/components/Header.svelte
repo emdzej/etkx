@@ -17,6 +17,15 @@
       BMW ETKx
     </a>
 
+    <nav class="flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
+      <a
+        href="/lists"
+        class="rounded-lg px-2 py-1 transition hover:text-blue-600 dark:hover:text-blue-400"
+      >
+        Lists
+      </a>
+    </nav>
+
     <div class="flex flex-1 flex-wrap items-center gap-3">
       <VehicleDropdown />
       <div class="min-w-[220px] flex-1">
