@@ -222,3 +222,9 @@ export type SubGroup = {
   thumbnailId: number | null;
   btnr: string;
 };
+
+export type DiagramSummary = {
+  btnr: string;
+  grafikId: number | null;
+  name: string;
+};
