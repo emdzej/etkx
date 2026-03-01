@@ -9,8 +9,16 @@
 
   const mospId = $derived($page.params.mospId ?? '');
   const btnr = $derived($page.params.btnr ?? '');
-  const vehicleDatum = $derived(
-    $myVehicles.find((vehicle) => vehicle.mospId === mospId)?.datum
+  const currentVehicle = $derived($myVehicles.find((vehicle) => vehicle.mospId === mospId));
+  const vehicleDatum = $derived(currentVehicle?.datum);
+  const vehicleInfo = $derived(
+    currentVehicle
+      ? {
+          mospId: currentVehicle.mospId,
+          name: currentVehicle.label,
+          datum: currentVehicle.datum
+        }
+      : undefined
   );
 
   let details = $state<DiagramDetails | null>(null);
@@ -80,7 +88,13 @@
         highlightedNr={highlightedNr}
         on:highlight={handleHighlight}
       />
-      <PartsTable lines={lines} highlightedNr={highlightedNr} on:highlight={handleHighlight} />
+      <PartsTable
+        lines={lines}
+        highlightedNr={highlightedNr}
+        vehicle={vehicleInfo}
+        btnr={btnr}
+        on:highlight={handleHighlight}
+      />
     </div>
   {/if}
 </div>

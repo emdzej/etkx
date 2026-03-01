@@ -194,6 +194,8 @@ export type DiagramDetails = {
 
 export type DiagramLine = {
   bildnummer: string;
+  teilHg?: string;
+  teilUg?: string;
   teilSachnummer: string;
   teilBenennung: string;
   teilZusatz: string;

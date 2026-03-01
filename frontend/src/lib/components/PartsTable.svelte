@@ -2,9 +2,12 @@
   import { createEventDispatcher } from 'svelte';
   import { goto } from '$app/navigation';
   import type { DiagramLine } from '$lib/api';
+  import QuickAddButton from '$lib/components/QuickAddButton.svelte';
 
   export let lines: DiagramLine[] = [];
   export let highlightedNr: string | null = null;
+  export let vehicle: { mospId: string; name: string; datum?: string } | undefined = undefined;
+  export let btnr: string;
 
   const dispatch = createEventDispatcher<{ highlight: { bildnummer: string | null } }>();
 
@@ -15,6 +18,18 @@
   const handlePartClick = (partNr: string, event: MouseEvent) => {
     event.stopPropagation();
     void goto(`/parts/${partNr}`);
+  };
+
+  const getFullPartNumber = (line: DiagramLine) => {
+    const hg = line.teilHg?.trim() ?? '';
+    const ug = line.teilUg?.trim() ?? '';
+    const sachnr = line.teilSachnummer?.trim() ?? '';
+    return `${hg}${ug}${sachnr}` || sachnr;
+  };
+
+  const getDefaultQuantity = (line: DiagramLine) => {
+    const quantity = Number(line.menge);
+    return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
   };
 </script>
 
@@ -30,12 +45,13 @@
           <th class="px-3 py-2">From</th>
           <th class="px-3 py-2">To</th>
           <th class="px-3 py-2">Part Number</th>
+          <th class="px-3 py-2">Actions</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-slate-200 text-slate-700 dark:divide-slate-800 dark:text-slate-200">
         {#if lines.length === 0}
           <tr>
-            <td class="px-3 py-4 text-center text-slate-500 dark:text-slate-400" colspan="7">
+            <td class="px-3 py-4 text-center text-slate-500 dark:text-slate-400" colspan="8">
               No parts found for this diagram.
             </td>
           </tr>
@@ -65,6 +81,16 @@
                 >
                   {line.teilSachnummer}
                 </button>
+              </td>
+              <td class="px-3 py-2">
+                <QuickAddButton
+                  partNumber={line.teilSachnummer}
+                  fullPartNumber={getFullPartNumber(line)}
+                  partName={line.teilBenennung}
+                  defaultQuantity={getDefaultQuantity(line)}
+                  {vehicle}
+                  diagramRef={{ btnr, bildnummer: line.bildnummer }}
+                />
               </td>
             </tr>
           {/each}
