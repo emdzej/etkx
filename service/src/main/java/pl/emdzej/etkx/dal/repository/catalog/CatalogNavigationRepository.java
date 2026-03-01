@@ -38,7 +38,7 @@ public class CatalogNavigationRepository {
             hgfgm_fg Fg,
             ben_text Name,
             fgthb_grafikid ThumbnailId,
-            hgfgmo_btnr Btnr
+            bt.btnr Btnr
         from w_hgfg_mosp
         inner join w_hgfg on (
             hgfg_hg = hgfgm_hg
@@ -51,6 +51,14 @@ public class CatalogNavigationRepository {
         left join w_fg_thumbnail on (
             fgthb_hg = hgfg_hg
             and fgthb_fg = hgfg_fg
+        )
+        left join (
+            select bildtaf_hg, bildtaf_fg, min(bildtaf_btnr) as btnr
+            from w_bildtaf
+            group by bildtaf_hg, bildtaf_fg
+        ) bt on (
+            bt.bildtaf_hg = hgfgm_hg
+            and bt.bildtaf_fg = hgfgm_fg
         )
         where hgfgm_mospid = :mospId
           and hgfgm_hg = :hg
