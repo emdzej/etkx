@@ -22,19 +22,14 @@
   let loading = $state(false);
   let errorMessage = $state<string | null>(null);
 
-  const partName = $derived(() => {
-    const match =
-      replacements.find((item) => item.sachnummer === partNumber) ??
-      replacements.find((item) => item.sachnummerAlt === partNumber);
-    return match?.benennung ?? '';
-  });
+  const matchedPart = $derived(
+    replacements.find((item) => item.sachnummer === partNumber) ??
+      replacements.find((item) => item.sachnummerAlt === partNumber)
+  );
 
-  const partSupplement = $derived(() => {
-    const match =
-      replacements.find((item) => item.sachnummer === partNumber) ??
-      replacements.find((item) => item.sachnummerAlt === partNumber);
-    return match?.zusatz ?? '';
-  });
+  const partName = $derived(matchedPart?.benennung ?? '');
+
+  const partSupplement = $derived(matchedPart?.zusatz ?? '');
 
   const loadPartDetails = async () => {
     if (!partNumber) {
