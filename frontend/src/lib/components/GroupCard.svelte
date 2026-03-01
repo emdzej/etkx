@@ -6,7 +6,7 @@
     href: string;
   }>();
 
-  const imageUrl = $derived(thumbnailId ? `/api/diagrams/${thumbnailId}/image` : null);
+  const imageUrl = $derived(thumbnailId ? `/api/diagrams/graphics/${thumbnailId}/image` : null);
 </script>
 
 <a
