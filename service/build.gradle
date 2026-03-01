@@ -24,6 +24,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.xerial:sqlite-jdbc:3.46.1.0'
     implementation 'org.hibernate.orm:hibernate-community-dialects'
+    
+    // TwelveMonkeys ImageIO for TIFF support
+    implementation 'com.twelvemonkeys.imageio:imageio-tiff:3.10.1'
+    
     api 'org.springframework.boot:spring-boot-starter-data-jpa'
     api 'org.springframework.boot:spring-boot-starter-jdbc'
     compileOnly 'org.projectlombok:lombok'
