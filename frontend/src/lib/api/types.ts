@@ -115,6 +115,14 @@ export type PartReplacement = {
   at: string;
 };
 
+export type SimpleReplacement = {
+  sachnummer: string;
+  sachnummerAlt: string;
+  benennung: string;
+  zusatz: string;
+  ersatzKez: string;
+};
+
 export type PartUsageVehicle = {
   baureihe: string;
   modell: string;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pl.emdzej.etkx.dal.dto.parts.MainGroupDto;
 import pl.emdzej.etkx.dal.dto.parts.PartReplacementDto;
+import pl.emdzej.etkx.dal.dto.parts.SimpleReplacementDto;
 
 /**
  * Repository for part replacement (supersession) data.
@@ -74,6 +75,22 @@ public class PartReplacementRepository {
         order by HGALT, UGALT, SACHNRALT, HG, UG, SACHNR
         """;
 
+    private static final String RETRIEVE_SUPERSESSION_CHAIN = """
+        select e.ersetzung_sachnr as sachnummer,
+            e.ersetzung_sachnr_alt as sachnummerAlt,
+            b.ben_text as benennung,
+            t.teil_benennzus as zusatz,
+            e.ersetzung_ersatzkez as ersatzKez
+        from w_teileersetzung e
+        join w_teil t
+            on t.teil_hauptgr || t.teil_untergrup || t.teil_sachnr = e.ersetzung_sachnr
+        left join w_ben_gk b
+            on t.teil_textcode = b.ben_textcode
+            and lower(b.ben_iso) = :iso
+        where e.ersetzung_sachnr_alt = :partNumber
+           or e.ersetzung_sachnr = :partNumber
+        """;
+
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
         MainGroupDto.builder()
             .hg(rs.getString("HG"))
@@ -98,6 +115,15 @@ public class PartReplacementRepository {
             .aspg(rs.getString("ASPG"))
             .tc(rs.getString("TC"))
             .teilDiebstahlrelevant(rs.getString("Teil_Diebstahlrelevant"))
+            .build();
+
+    private static final RowMapper<SimpleReplacementDto> SIMPLE_REPLACEMENT_MAPPER = (rs, rowNum) ->
+        SimpleReplacementDto.builder()
+            .sachnummer(rs.getString("sachnummer"))
+            .sachnummerAlt(rs.getString("sachnummerAlt"))
+            .benennung(rs.getString("benennung"))
+            .zusatz(rs.getString("zusatz"))
+            .ersatzKez(rs.getString("ersatzKez"))
             .build();
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -184,6 +210,21 @@ public class PartReplacementRepository {
             params.putAll(extraParams);
         }
         return jdbc.query(sql, params, PART_REPLACEMENT_MAPPER);
+    }
+
+    /**
+     * Retrieves the supersession chain for a part number without vehicle context.
+     *
+     * @param partNumber part number
+     * @param iso ISO language code (lowercase)
+     * @return list of supersession entries
+     */
+    public List<SimpleReplacementDto> findSupersessionChain(String partNumber, String iso) {
+        return jdbc.query(
+            RETRIEVE_SUPERSESSION_CHAIN,
+            Map.of("partNumber", partNumber, "iso", iso),
+            SIMPLE_REPLACEMENT_MAPPER
+        );
     }
 
     private static String applyClauses(String sql, Map<String, String> replacements) {
