@@ -69,18 +69,14 @@
   {#if loading}
     <p class="text-sm text-slate-500 dark:text-slate-400">Loading diagram...</p>
   {:else}
-    <div class="flex flex-col gap-6 lg:flex-row">
-      <div class="lg:w-2/3">
-        <DiagramViewer
-          btnr={btnr}
-          hotspots={details?.hotspots ?? []}
-          highlightedNr={highlightedNr}
-          on:highlight={handleHighlight}
-        />
-      </div>
-      <div class="lg:w-1/3">
-        <PartsTable lines={lines} highlightedNr={highlightedNr} on:highlight={handleHighlight} />
-      </div>
+    <div class="space-y-6">
+      <DiagramViewer
+        btnr={btnr}
+        hotspots={details?.hotspots ?? []}
+        highlightedNr={highlightedNr}
+        on:highlight={handleHighlight}
+      />
+      <PartsTable lines={lines} highlightedNr={highlightedNr} on:highlight={handleHighlight} />
     </div>
   {/if}
 </div>
