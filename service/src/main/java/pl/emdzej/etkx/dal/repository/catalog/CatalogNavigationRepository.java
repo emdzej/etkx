@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+import pl.emdzej.etkx.dal.dto.catalog.DiagramSummaryDto;
 import pl.emdzej.etkx.dal.dto.catalog.MainGroupDto;
 import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 
@@ -44,7 +45,12 @@ public class CatalogNavigationRepository {
         select hgfgm_hg Hg,
             hgfgm_fg Fg,
             MIN(ben_text) Name,
-            fgthb_grafikid ThumbnailId,
+            (
+                select MIN(bildtaf_grafikid)
+                from w_bildtaf
+                where bildtaf_hg = hgfgm_hg
+                  and bildtaf_fg = hgfgm_fg
+            ) ThumbnailId,
             bt.btnr Btnr
         from w_hgfg_mosp
         inner join w_hgfg on (
@@ -54,10 +60,6 @@ public class CatalogNavigationRepository {
         inner join w_ben_gk on (
             hgfg_textcode = ben_textcode
             and ben_iso = :iso
-        )
-        left join w_fg_thumbnail on (
-            fgthb_hg = hgfg_hg
-            and fgthb_fg = hgfg_fg
         )
         left join (
             select bildtaf_hg, bildtaf_fg, min(bildtaf_btnr) as btnr
@@ -71,6 +73,25 @@ public class CatalogNavigationRepository {
           and hgfgm_hg = :hg
         group by hgfgm_hg, hgfgm_fg
         order by hgfgm_fg
+        """;
+
+    private static final String RETRIEVE_DIAGRAMS = """
+        select distinct bildtaf_btnr Btnr,
+            bildtaf_grafikid GrafikId,
+            ben_text Name
+        from w_bildtaf
+        inner join w_hgfg_mosp on (
+            hgfgm_hg = bildtaf_hg
+            and hgfgm_fg = bildtaf_fg
+            and hgfgm_mospid = :mospId
+        )
+        left join w_ben_gk on (
+            bildtaf_textc = ben_textcode
+            and ben_iso = :iso
+        )
+        where bildtaf_hg = :hg
+          and bildtaf_fg = :fg
+        order by bildtaf_btnr
         """;
 
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
@@ -89,6 +110,13 @@ public class CatalogNavigationRepository {
             .btnr(rs.getString("Btnr"))
             .build();
 
+    private static final RowMapper<DiagramSummaryDto> DIAGRAM_SUMMARY_MAPPER = (rs, rowNum) ->
+        DiagramSummaryDto.builder()
+            .btnr(rs.getString("Btnr"))
+            .grafikId(getInteger(rs, "GrafikId"))
+            .name(rs.getString("Name"))
+            .build();
+
     private final NamedParameterJdbcTemplate jdbc;
 
     /**
@@ -103,6 +131,17 @@ public class CatalogNavigationRepository {
      */
     public List<SubGroupDto> findSubGroups(String mospId, String hg, String iso) {
         return jdbc.query(RETRIEVE_SUB_GROUPS, Map.of("mospId", mospId, "hg", hg, "iso", iso), SUB_GROUP_MAPPER);
+    }
+
+    /**
+     * Retrieves diagram summaries for a subgroup within a model column (MOSP).
+     */
+    public List<DiagramSummaryDto> findDiagrams(String mospId, String hg, String fg, String iso) {
+        return jdbc.query(
+            RETRIEVE_DIAGRAMS,
+            Map.of("mospId", mospId, "hg", hg, "fg", fg, "iso", iso),
+            DIAGRAM_SUMMARY_MAPPER
+        );
     }
 
     private static Integer getInteger(java.sql.ResultSet rs, String column) {

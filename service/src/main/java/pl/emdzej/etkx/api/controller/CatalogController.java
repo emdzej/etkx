@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.emdzej.etkx.dal.dto.catalog.DiagramSummaryDto;
 import pl.emdzej.etkx.dal.dto.catalog.MainGroupDto;
 import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 import pl.emdzej.etkx.dal.repository.catalog.CatalogNavigationRepository;
@@ -54,6 +55,25 @@ public class CatalogController {
         @RequestParam(defaultValue = "en") String iso
     ) {
         return catalogNavigationRepository.findSubGroups(mospId, hg, normalizeIso(iso));
+    }
+
+    /**
+     * Loads diagrams for a subgroup.
+     */
+    @GetMapping("/diagrams")
+    @Operation(summary = "Load diagrams for a subgroup")
+    @ApiResponse(responseCode = "200", description = "Diagrams loaded")
+    public List<DiagramSummaryDto> getDiagrams(
+        @Parameter(description = "Model column identifier (MOSP)")
+        @RequestParam String mospId,
+        @Parameter(description = "Main group identifier")
+        @RequestParam String hg,
+        @Parameter(description = "Subgroup identifier")
+        @RequestParam String fg,
+        @Parameter(description = "ISO language code")
+        @RequestParam(defaultValue = "en") String iso
+    ) {
+        return catalogNavigationRepository.findDiagrams(mospId, hg, fg, normalizeIso(iso));
     }
 
     private static String normalizeIso(String iso) {

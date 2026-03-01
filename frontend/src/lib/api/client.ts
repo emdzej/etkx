@@ -2,6 +2,7 @@ import type {
   DiagramDetails,
   Baujahr,
   DiagramLines,
+  DiagramSummary,
   Getriebe,
   Karosserie,
   Lenkung,
@@ -287,5 +288,12 @@ export const getSubGroups = (
   hg: string,
   iso: string = DEFAULT_ISO
 ): Promise<SubGroup[]> => request(`/api/catalog/groups/${hg}/subgroups`, { mospId, iso });
+
+export const getDiagrams = (
+  mospId: string,
+  hg: string,
+  fg: string,
+  iso: string = DEFAULT_ISO
+): Promise<DiagramSummary[]> => request('/api/catalog/diagrams', { mospId, hg, fg, iso });
 
 export { API_BASE_URL, DEFAULT_ISO, DEFAULT_REGISO };
