@@ -27,9 +27,9 @@ public class VehicleScopeRepository {
         from w_baureihe, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = :produktart
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           and fztyp_sichtschutz = 'N'
         order by Region
@@ -41,9 +41,9 @@ public class VehicleScopeRepository {
         from w_baureihe, w_ben_gk, w_publben, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = 'P'
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           and fztyp_lenkung = publben_bezeichnung
           and publben_art = 'L'
@@ -60,9 +60,9 @@ public class VehicleScopeRepository {
         from w_baureihe, w_bauart, w_ben_gk, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = 'M'
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           and fztyp_sichtschutz = 'N'
           and bauart_bauart = baureihe_bauart
@@ -79,10 +79,10 @@ public class VehicleScopeRepository {
         from w_baureihe, w_ben_gk, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = :produktart
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           __BAUART_STMT__
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           __LENKUNG_STMT__
           and fztyp_sichtschutz = 'N'
@@ -97,7 +97,7 @@ public class VehicleScopeRepository {
             ben_text ExtKarosserie
         from w_fztyp, w_ben_gk, w_publben
         where fztyp_baureihe IN (:baureihen)
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           and fztyp_lenkung IN (:lenkungen)
           and fztyp_sichtschutz = 'N'
@@ -115,7 +115,7 @@ public class VehicleScopeRepository {
         from w_vbez_pos, w_baureihe, w_fztyp
         where baureihe_baureihe IN (:baureihen)
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __BAUART_STMT__
           __KAROSSERIE_STMT__
           and fztyp_ktlgausf in (:regionen)
@@ -131,7 +131,7 @@ public class VehicleScopeRepository {
         from w_baureihe, w_fztyp
         where baureihe_baureihe IN (:baureihen)
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __MODELL_STMT__
           __BAUART_STMT__
           __KAROSSERIE_STMT__
