@@ -41,9 +41,9 @@ public class VehicleIdentificationRepository {
         from w_baureihe, w_bauart, w_ben_gk, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = :produktart
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           and fztyp_baureihe = baureihe_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           and fztyp_sichtschutz = 'N'
           and bauart_bauart = baureihe_bauart
@@ -60,10 +60,10 @@ public class VehicleIdentificationRepository {
         from w_baureihe, w_ben_gk, w_fztyp
         where baureihe_marke_tps = :marke
           and baureihe_produktart = :produktart
-          and baureihe_vbereich in ('BE', :katalogumfang)
+          and (:katalogumfang = 'BE' OR baureihe_vbereich in ('BE', :katalogumfang))
           __BAUART_STMT__
           and baureihe_baureihe = fztyp_baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           __LENKUNG_STMT__
           and fztyp_sichtschutz = 'N'
@@ -100,7 +100,7 @@ public class VehicleIdentificationRepository {
         where etkgraf_ablauf = 'FI'
           and etkgraf_marke = :marke
           and etkgraf_produktart = :produktart
-          and etkgraf_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR etkgraf_vbereich = :katalogumfang)
           and etkgraf_grafikid = grafik_grafikid
           and grafik_art = 'T'
         """;
@@ -110,7 +110,7 @@ public class VehicleIdentificationRepository {
             ben_text ExtKarosserie
         from w_fztyp, w_ben_gk, w_publben
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_ktlgausf in (:regionen)
           __LENKUNG_STMT__
           and fztyp_sichtschutz = 'N'
@@ -127,7 +127,7 @@ public class VehicleIdentificationRepository {
             vbezp_pos Pos
         from w_vbez_pos, w_fztyp
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __KAROSSERIE_STMT__
           and fztyp_ktlgausf in (:regionen)
           __LENKUNG_STMT__
@@ -141,7 +141,7 @@ public class VehicleIdentificationRepository {
         select distinct fztyp_ktlgausf Region
         from w_fztyp
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __KAROSSERIE_STMT__
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf in (:regionen)
@@ -155,7 +155,7 @@ public class VehicleIdentificationRepository {
             ben_text ExtLenkung
         from w_fztyp, w_ben_gk, w_publben
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_karosserie = :karosserie
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf = :region
@@ -173,7 +173,7 @@ public class VehicleIdentificationRepository {
             ben_text ExtGetriebe
         from w_fztyp, w_ben_gk, w_publben
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           and fztyp_karosserie = :karosserie
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf = :region
@@ -191,7 +191,7 @@ public class VehicleIdentificationRepository {
         select distinct substr(to_char(fgstnr_prod), 1, 4) Baujahr
         from w_fztyp, w_fgstnr
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __KAROSSERIE_STMT__
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf = :region
@@ -207,7 +207,7 @@ public class VehicleIdentificationRepository {
             ben_text ExtZulassungsmonat
         from w_fztyp, w_ben_gk, w_publben, w_fgstnr
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __KAROSSERIE_STMT__
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf = :region
@@ -229,7 +229,7 @@ public class VehicleIdentificationRepository {
             ben_text ExtZulassungsmonat
         from w_fztyp, w_ben_gk, w_publben, w_fgstnr
         where fztyp_baureihe = :baureihe
-          and fztyp_vbereich = :katalogumfang
+          and (:katalogumfang = 'BE' OR fztyp_vbereich = :katalogumfang)
           __KAROSSERIE_STMT__
           and fztyp_erwvbez = :modell
           and fztyp_ktlgausf = :region
