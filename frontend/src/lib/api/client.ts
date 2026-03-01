@@ -1,17 +1,25 @@
 import type {
   DiagramDetails,
   DiagramLine,
+  Baujahr,
   DiagramLinesResponse,
+  Getriebe,
+  Karosserie,
+  Lenkung,
   MainGroup,
+  Modell,
+  MospId,
   PartReplacement,
   PartSearchResult,
   PartUsage,
+  Region,
   Series,
   SeriesParams,
   SubGroup,
   TypesParams,
   VehicleIdentification,
-  VehicleType
+  VehicleType,
+  Zulassungsmonat
 } from './types';
 
 const DEFAULT_ISO = 'EN';
@@ -101,6 +109,119 @@ export const getSeries = (params: SeriesParams): Promise<Series[]> =>
 
 export const getTypes = (params: TypesParams): Promise<VehicleType[]> =>
   request('/api/vehicles/types', withLanguage(params, params.iso, params.regiso));
+
+export const getBodies = (
+  baureihe: string,
+  katalogumfang: string,
+  regionen: string[],
+  iso: string = DEFAULT_ISO,
+  regiso: string = DEFAULT_REGISO,
+  lenkung?: string
+): Promise<Karosserie[]> =>
+  request(
+    '/api/vehicles/bodies',
+    withLanguage({ baureihe, katalogumfang, regionen, lenkung }, iso, regiso)
+  );
+
+export const getModels = (
+  baureihe: string,
+  katalogumfang: string,
+  regionen: string[],
+  karosserie?: string,
+  lenkung?: string
+): Promise<Modell[]> =>
+  request('/api/vehicles/models', { baureihe, katalogumfang, regionen, karosserie, lenkung });
+
+export const getRegions = (
+  baureihe: string,
+  katalogumfang: string,
+  modell: string,
+  regionen: string[],
+  karosserie?: string,
+  lenkung?: string
+): Promise<Region[]> =>
+  request('/api/vehicles/regions', {
+    baureihe,
+    katalogumfang,
+    modell,
+    regionen,
+    karosserie,
+    lenkung
+  });
+
+export const getSteerings = (
+  baureihe: string,
+  katalogumfang: string,
+  karosserie: string,
+  modell: string,
+  region: string,
+  iso: string = DEFAULT_ISO,
+  regiso: string = DEFAULT_REGISO
+): Promise<Lenkung[]> =>
+  request(
+    '/api/vehicles/steerings',
+    withLanguage({ baureihe, katalogumfang, karosserie, modell, region }, iso, regiso)
+  );
+
+export const getTransmissions = (
+  baureihe: string,
+  katalogumfang: string,
+  karosserie: string,
+  modell: string,
+  region: string,
+  iso: string = DEFAULT_ISO,
+  regiso: string = DEFAULT_REGISO,
+  lenkung?: string
+): Promise<Getriebe[]> =>
+  request(
+    '/api/vehicles/transmissions',
+    withLanguage({ baureihe, katalogumfang, karosserie, modell, region, lenkung }, iso, regiso)
+  );
+
+export const getYears = (
+  baureihe: string,
+  katalogumfang: string,
+  modell: string,
+  region: string,
+  karosserie?: string,
+  lenkung?: string,
+  getriebe?: string
+): Promise<Baujahr[]> =>
+  request('/api/vehicles/years', {
+    baureihe,
+    katalogumfang,
+    modell,
+    region,
+    karosserie,
+    lenkung,
+    getriebe
+  });
+
+export const getMonths = (
+  baureihe: string,
+  katalogumfang: string,
+  modell: string,
+  region: string,
+  baujahr: string,
+  iso: string = DEFAULT_ISO,
+  regiso: string = DEFAULT_REGISO,
+  karosserie?: string,
+  lenkung?: string,
+  getriebe?: string
+): Promise<Zulassungsmonat[]> =>
+  request(
+    '/api/vehicles/months',
+    withLanguage({ baureihe, katalogumfang, modell, region, baujahr, karosserie, lenkung, getriebe }, iso, regiso)
+  );
+
+export const resolveMospId = (
+  baureihe: string,
+  modell: string,
+  region: string,
+  karosserie?: string,
+  produktart?: string
+): Promise<MospId[]> =>
+  request('/api/vehicles/resolve', { baureihe, modell, region, karosserie, produktart });
 
 export const searchParts = (
   query: string,

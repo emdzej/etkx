@@ -48,6 +48,43 @@ export type Series = {
   pos: string;
 };
 
+export type Karosserie = {
+  karosserie: string;
+  extKarosserie: string;
+};
+
+export type Modell = {
+  modell: string;
+  pos: string;
+};
+
+export type Region = {
+  region: string;
+};
+
+export type Lenkung = {
+  lenkung: string;
+  extLenkung: string;
+};
+
+export type Getriebe = {
+  getriebe: string;
+  extGetriebe: string;
+};
+
+export type Baujahr = {
+  baujahr: string;
+};
+
+export type Zulassungsmonat = {
+  zulassungsmonat: string;
+  extZulassungsmonat: string;
+};
+
+export type MospId = {
+  mospId: string;
+};
+
 export type VehicleType = {
   typ: string;
 };
