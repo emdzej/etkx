@@ -60,7 +60,7 @@ public class DiagramController {
         @Parameter(description = "Graphic type")
         @RequestParam(defaultValue = "Z") String art,
         @Parameter(description = "Model column identifier (vehicle context)")
-        @RequestParam(required = false) Long mosp,
+        @RequestParam(required = false) Long mospId,
         @Parameter(description = "Brand identifier (UGB context)")
         @RequestParam(required = false) String marke,
         @Parameter(description = "Product type (UGB context)")
@@ -75,11 +75,11 @@ public class DiagramController {
             .hotspots(grafikId != null ? diagramDisplayRepository.findHotspots(grafikId, art) : List.of())
             .yesNoTexts(diagramDisplayRepository.findYesNoTexts(normalizedIso, regiso));
 
-        if (mosp != null) {
-            builder.vehicleComments(diagramDisplayRepository.findVehicleComments(mosp, btnr, normalizedIso, regiso))
-                .conditions(diagramDisplayRepository.findVehicleConditions(btnr, mosp))
-                .overConditions(diagramDisplayRepository.findVehicleOverConditions(btnr, mosp))
-                .references(diagramDisplayRepository.findVehicleReferences(btnr, mosp, normalizedIso, regiso))
+        if (mospId != null) {
+            builder.vehicleComments(diagramDisplayRepository.findVehicleComments(mospId, btnr, normalizedIso, regiso))
+                .conditions(diagramDisplayRepository.findVehicleConditions(btnr, mospId))
+                .overConditions(diagramDisplayRepository.findVehicleOverConditions(btnr, mospId))
+                .references(diagramDisplayRepository.findVehicleReferences(btnr, mospId, normalizedIso, regiso))
                 .ugbComments(List.of());
         } else if (StringUtils.hasText(marke) && StringUtils.hasText(produktart)) {
             builder.ugbComments(diagramDisplayRepository.findUgbComments(marke, btnr, normalizedIso, regiso))
@@ -108,7 +108,7 @@ public class DiagramController {
         @Parameter(description = "Diagram number")
         @PathVariable String btnr,
         @Parameter(description = "Model column identifier (vehicle context)")
-        @RequestParam(required = false) Long mosp,
+        @RequestParam(required = false) Long mospId,
         @Parameter(description = "Brand identifier")
         @RequestParam(required = false) String marke,
         @Parameter(description = "Product type (UGB context)")
@@ -131,16 +131,16 @@ public class DiagramController {
         String normalizedIso = normalizeIso(iso);
         DiagramLinesDto.DiagramLinesDtoBuilder builder = DiagramLinesDto.builder();
         String resolvedMarke = marke;
-        if (mosp != null && !StringUtils.hasText(resolvedMarke)) {
-            resolvedMarke = vehicleIdentificationRepository.findMarkeByMospId(mosp);
+        if (mospId != null && !StringUtils.hasText(resolvedMarke)) {
+            resolvedMarke = vehicleIdentificationRepository.findMarkeByMospId(mospId);
         }
-        if (mosp != null) {
+        if (mospId != null) {
             String resolvedTyp = typ;
             if (!StringUtils.hasText(resolvedTyp)) {
-                resolvedTyp = vehicleIdentificationRepository.findTypByMospId(mosp);
+                resolvedTyp = vehicleIdentificationRepository.findTypByMospId(mospId);
             }
             builder.vehicleLines(diagramDisplayRepository.findVehicleDiagramLines(
-                    mosp,
+                    mospId,
                     btnr,
                     resolvedMarke,
                     normalizedIso,
@@ -149,7 +149,7 @@ public class DiagramController {
                     datum,
                     landkuerzel
                 ))
-                .cpLines(diagramDisplayRepository.findVehicleCpLines(mosp, btnr, resolvedTyp, werk))
+                .cpLines(diagramDisplayRepository.findVehicleCpLines(mospId, btnr, resolvedTyp, werk))
                 .ugbLines(List.of());
         } else {
             if (!StringUtils.hasText(resolvedMarke)) {
