@@ -2,11 +2,13 @@
   import '../app.css';
   import { onMount } from 'svelte';
   import Header from '$lib/components/Header.svelte';
+  import { theme } from '$lib/stores';
 
   let { children } = $props();
 
   onMount(() => {
-    document.documentElement.classList.add('dark');
+    const unsubscribe = theme.subscribe(() => undefined);
+    return () => unsubscribe();
   });
 </script>
 
