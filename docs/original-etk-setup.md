@@ -130,3 +130,13 @@ If you see "Connection reset" errors:
                                       │   (etk_publ)    │
                                       └─────────────────┘
 ```
+
+## sun-jpeg-codec.jar
+
+Temurin/OpenJDK 8 nie zawiera proprietary `com.sun.image.codec.jpeg` API które JAI używa do dekodowania JPEG.
+
+Jar `sun-jpeg-codec.jar` zawiera te klasy wyekstrahowane ze starego JRE 1.5. Skopiuj do `libs/`:
+
+```bash
+cp scripts/sun-jpeg-codec.jar ~/Documents/etk/javaclient/libs/
+```
