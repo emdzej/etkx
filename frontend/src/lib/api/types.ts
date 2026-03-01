@@ -89,46 +89,30 @@ export type VehicleType = {
   typ: string;
 };
 
-export type PartSearchResult = {
+export type PartSearchLine = {
   hauptgruppe: string;
   untergruppe: string;
   sachnummer: string;
   benennung: string;
   zusatz: string;
-  benennungKommentar: string;
-  btZeilenAlter: string;
-  pos: number | null;
   btNummer: string;
-  teilDiebstahlrelevant: string;
+  pos: number;
 };
 
 export type PartReplacement = {
-  hg: string;
-  ug: string;
   sachnummer: string;
   sachnummerAlt: string;
-  hgAlt: string;
-  ugAlt: string;
-  at: string;
   benennung: string;
   zusatz: string;
-  si: string;
-  lzb: string;
-  pi: string;
-  benKommentarId: string;
-  reach: string;
-  aspg: string;
-  tc: string;
-  teilDiebstahlrelevant: string;
+  at: string;
 };
 
-export type PartUsage = {
-  hg: string;
-  ug: string;
-  marke: string;
-  produktart: string;
-  ben: string;
-  teilDiebstahlrelevant: string;
+export type PartUsageVehicle = {
+  baureihe: string;
+  modell: string;
+  karosserie: string;
+  einsatz: string;
+  auslauf: string;
 };
 
 export type DiagramHotspot = {
