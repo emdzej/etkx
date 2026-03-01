@@ -49,6 +49,15 @@ public class DiagramDisplayRepository {
           and grafik_art = :art
         """;
 
+    private static final String LOAD_GRAFIK_BY_ID = """
+        select grafik_blob Grafik,
+            grafik_format Format,
+            grafik_moddate ModStamp
+        from w_grafik
+        where grafik_grafikid = :grafikId
+          and grafik_art = :art
+        """;
+
     private static final String LOAD_BTZEILEN_FZG = """
         select distinct btzeilen_bildposnr Bildnummer,
             teil_hauptgr Teil_HG,
@@ -601,6 +610,13 @@ public class DiagramDisplayRepository {
      */
     public GraphicDto loadDiagramGraphic(String btnr, String art) {
         return jdbc.queryForObject(LOAD_DIAGRAM_GRAFIK, Map.of("btnr", btnr, "art", art), GRAPHIC_MAPPER);
+    }
+
+    /**
+     * Loads the graphic for a grafik identifier.
+     */
+    public GraphicDto loadGraphicById(Long grafikId, String art) {
+        return jdbc.queryForObject(LOAD_GRAFIK_BY_ID, Map.of("grafikId", grafikId, "art", art), GRAPHIC_MAPPER);
     }
 
     /**
