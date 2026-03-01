@@ -3,10 +3,10 @@
   import {
     DEFAULT_ISO,
     getPartDiagrams,
-    getPartReplacements,
+    getPartSupersession,
     getPartVehicleUsage,
-    type PartReplacement,
-    type PartUsageVehicle
+    type PartUsageVehicle,
+    type SimpleReplacement
   } from '$lib/api';
   import SupersessionChain from '$lib/components/SupersessionChain.svelte';
   import VehicleUsageList from '$lib/components/VehicleUsageList.svelte';
@@ -15,7 +15,7 @@
   const partNumber = $derived($page.params.nr ?? '');
   const mospId = $derived($page.url.searchParams.get('mospId') ?? $myVehicles[0]?.mospId ?? '');
 
-  let replacements = $state<PartReplacement[]>([]);
+  let replacements = $state<SimpleReplacement[]>([]);
   let vehicleUsage = $state<PartUsageVehicle[]>([]);
   let diagrams = $state<{ btnr: string; name: string }[]>([]);
 
@@ -41,7 +41,7 @@
 
     try {
       const [replacementData, usageData, diagramData] = await Promise.all([
-        getPartReplacements(partNumber, DEFAULT_ISO),
+        getPartSupersession(partNumber, DEFAULT_ISO),
         mospId ? getPartVehicleUsage(partNumber, mospId, DEFAULT_ISO) : Promise.resolve([]),
         mospId ? getPartDiagrams(partNumber, mospId) : Promise.resolve([])
       ]);

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.emdzej.etkx.dal.dto.parts.PartReplacementDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsagePartSummaryDto;
+import pl.emdzej.etkx.dal.dto.parts.SimpleReplacementDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageReductionUsageDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageSeriesDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageVehiclePartDto;
@@ -75,6 +76,22 @@ public class PartDataController {
             tcCheckClause,
             null
         );
+    }
+
+    /**
+     * Loads global supersession data for the provided part number.
+     */
+    @GetMapping("/{partNumber}/supersession")
+    @Operation(summary = "Load supersession chain for a part (global, no vehicle context)")
+    @ApiResponse(responseCode = "200", description = "Supersession data loaded")
+    public List<SimpleReplacementDto> loadSupersession(
+        @Parameter(description = "Part number")
+        @PathVariable String partNumber,
+        @Parameter(description = "ISO language code")
+        @RequestParam(defaultValue = "en") String iso
+    ) {
+        String normalizedIso = normalizeIso(iso);
+        return partReplacementRepository.findSupersessionChain(partNumber, normalizedIso);
     }
 
     /**

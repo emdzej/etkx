@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PartReplacement } from '$lib/api';
+  import type { SimpleReplacement } from '$lib/api';
 
   type ReplacementNode = {
     partNumber: string;
@@ -13,28 +13,28 @@
     replacements = []
   } = $props<{
     current: string;
-    replacements?: PartReplacement[];
+    replacements?: SimpleReplacement[];
   }>();
 
   const previousParts = $derived<ReplacementNode[]>(
     replacements
-      .filter((item: PartReplacement) => item.sachnummer === current)
-      .map((item: PartReplacement) => ({
+      .filter((item: SimpleReplacement) => item.sachnummer === current)
+      .map((item: SimpleReplacement) => ({
         partNumber: item.sachnummerAlt,
         description: item.benennung,
         supplement: item.zusatz,
-        type: item.at
+        type: item.ersatzKez
       }))
   );
 
   const nextParts = $derived<ReplacementNode[]>(
     replacements
-      .filter((item: PartReplacement) => item.sachnummerAlt === current)
-      .map((item: PartReplacement) => ({
+      .filter((item: SimpleReplacement) => item.sachnummerAlt === current)
+      .map((item: SimpleReplacement) => ({
         partNumber: item.sachnummer,
         description: item.benennung,
         supplement: item.zusatz,
-        type: item.at
+        type: item.ersatzKez
       }))
   );
 

@@ -10,6 +10,7 @@ import type {
   MospId,
   PartByNumber,
   PartReplacement,
+  SimpleReplacement,
   PartSearchLine,
   PartUsageVehicle,
   Region,
@@ -241,6 +242,12 @@ export const getPartReplacements = (
   iso: string = DEFAULT_ISO
 ): Promise<PartReplacement[]> =>
   request(`/api/parts/${partNumber}/replacements`, { iso });
+
+export const getPartSupersession = (
+  partNumber: string,
+  iso: string = DEFAULT_ISO
+): Promise<SimpleReplacement[]> =>
+  request(`/api/parts/${partNumber}/supersession`, { iso });
 
 export const getPartVehicleUsage = (
   partNumber: string,
