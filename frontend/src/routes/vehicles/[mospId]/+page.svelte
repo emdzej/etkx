@@ -57,7 +57,7 @@
       <p class="text-slate-500 dark:text-slate-400">No groups found for this vehicle.</p>
     </div>
   {:else}
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {#each groups as group}
         <GroupCard
           code={group.hg}
