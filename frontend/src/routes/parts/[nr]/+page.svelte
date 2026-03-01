@@ -10,9 +10,12 @@
   } from '$lib/api';
   import SupersessionChain from '$lib/components/SupersessionChain.svelte';
   import VehicleUsageList from '$lib/components/VehicleUsageList.svelte';
+  import QuickAddButton from '$lib/components/QuickAddButton.svelte';
   import { myVehicles } from '$lib/stores/myVehicles';
 
-  const partNumber = $derived($page.params.nr ?? '');
+  const rawPartNumber = $derived($page.params.nr ?? '');
+  const partNumber = $derived(rawPartNumber.length > 7 ? rawPartNumber.slice(-7) : rawPartNumber);
+  const fullPartNumber = $derived(rawPartNumber.length === 11 ? rawPartNumber : partNumber);
   const mospId = $derived($page.url.searchParams.get('mospId') ?? $myVehicles[0]?.mospId ?? '');
 
   let replacements = $state<SimpleReplacement[]>([]);
@@ -73,23 +76,40 @@
 </script>
 
 <svelte:head>
-  <title>Part {partNumber} | BMW ETKx</title>
+  <title>Part {fullPartNumber} | BMW ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl space-y-8">
-  <header class="space-y-1">
-    <div class="text-sm text-slate-500 dark:text-slate-400">Part Number</div>
-    <h1 class="text-3xl font-semibold text-slate-900 dark:text-white">{partNumber}</h1>
-    {#if partName}
-      <p class="text-lg text-slate-700 dark:text-slate-300">
-        {partName}
-        {#if partSupplement}
-          <span class="text-slate-500 dark:text-slate-400"> · {partSupplement}</span>
+  <header class="space-y-3">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div class="space-y-1">
+        <div class="text-sm text-slate-500 dark:text-slate-400">Part Number</div>
+        <h1 class="text-3xl font-semibold text-slate-900 dark:text-white">{fullPartNumber}</h1>
+        {#if partName}
+          <p class="text-lg text-slate-700 dark:text-slate-300">
+            {partName}
+            {#if partSupplement}
+              <span class="text-slate-500 dark:text-slate-400"> · {partSupplement}</span>
+            {/if}
+          </p>
+        {:else}
+          <p class="text-sm text-slate-500 dark:text-slate-400">Description unavailable.</p>
         {/if}
-      </p>
-    {:else}
-      <p class="text-sm text-slate-500 dark:text-slate-400">Description unavailable.</p>
-    {/if}
+      </div>
+
+      {#if partNumber}
+        <div class="mt-1">
+          <QuickAddButton
+            partNumber={partNumber}
+            fullPartNumber={fullPartNumber}
+            partName={partName}
+            defaultQuantity={1}
+            vehicle={undefined}
+            diagramRef={undefined}
+          />
+        </div>
+      {/if}
+    </div>
   </header>
 
   <!-- errors handled per-section -->
