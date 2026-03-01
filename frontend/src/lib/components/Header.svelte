@@ -2,6 +2,11 @@
   import SearchInput from './SearchInput.svelte';
   import SettingsPanel from './SettingsPanel.svelte';
   import VehicleDropdown from './VehicleDropdown.svelte';
+  import * as partsLists from '$lib/stores/partsLists';
+
+  const activeList = $derived(partsLists.getActiveList());
+  const itemCount = $derived(partsLists.getItemCount());
+  const listHref = $derived(activeList ? `/lists/${activeList.id}` : '/lists');
 
   let settingsOpen = false;
 </script>
@@ -18,12 +23,26 @@
     </a>
 
     <nav class="flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
-      <a
-        href="/lists"
-        class="rounded-lg px-2 py-1 transition hover:text-blue-600 dark:hover:text-blue-400"
-      >
-        Lists
-      </a>
+      {#if itemCount > 0}
+        <a
+          href={listHref}
+          class="relative rounded-lg px-2 py-1 transition hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          <span>Lists</span>
+          <span
+            class="absolute -top-1 -right-2 min-w-[1.25rem] rounded-full bg-blue-500 px-1.5 py-0.5 text-center text-xs text-white"
+          >
+            {itemCount}
+          </span>
+        </a>
+      {:else}
+        <a
+          href={listHref}
+          class="rounded-lg px-2 py-1 transition hover:text-blue-600 dark:hover:text-blue-400"
+        >
+          Lists
+        </a>
+      {/if}
     </nav>
 
     <div class="flex flex-1 flex-wrap items-center gap-3">
