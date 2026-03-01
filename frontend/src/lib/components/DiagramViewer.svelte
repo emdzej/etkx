@@ -58,18 +58,17 @@
 </script>
 
 <div
-  class="relative h-full min-h-[420px] w-full overflow-hidden rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900"
+  class="relative min-h-[420px] w-full overflow-auto rounded-lg border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-900"
 >
   <div
     bind:this={panzoomEl}
     class="relative origin-top-left"
-    style={`width: ${renderedWidth}px; height: ${renderedHeight}px;`}
   >
     <img
       bind:this={imageEl}
       src={getDiagramImageUrl(btnr)}
       alt={`Diagram ${btnr}`}
-      class="block h-auto w-full select-none"
+      class="block max-w-full select-none"
       on:load={() => {
         imageLoaded = true;
         updateImageSize();
