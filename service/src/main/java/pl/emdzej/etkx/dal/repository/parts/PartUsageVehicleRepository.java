@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 import pl.emdzej.etkx.dal.dto.parts.MainGroupDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageVehiclePartDto;
+import pl.emdzej.etkx.dal.dto.parts.SimpleUsageDto;
 
 /**
  * Repository for part usage in vehicles (TeilevwdgFzg).
@@ -137,6 +138,22 @@ public class PartUsageVehicleRepository {
           and btzeilenv_mospid NOT IN (:mospids)
         """;
 
+    private static final String RETRIEVE_SIMPLE_USAGE = """
+        select distinct BR.ben_text Baureihe,
+            fztyp_erwvbez Modell,
+            KAR.ben_text Karosserie
+        from w_btzeilen_verbauung
+        inner join w_fztyp on (btzeilenv_mospid = fztyp_mospid)
+        inner join w_baureihe on (fztyp_baureihe = baureihe_baureihe)
+        inner join w_ben_gk BR on (baureihe_textcode = BR.ben_textcode and BR.ben_iso = :iso)
+        inner join w_publben on (fztyp_karosserie = publben_bezeichnung and publben_art = 'K')
+        inner join w_ben_gk KAR on (publben_textcode = KAR.ben_textcode and KAR.ben_iso = :iso)
+        where btzeilenv_sachnr = :sachnummer
+          and fztyp_sichtschutz = 'N'
+          __MOSPID__
+        order by Baureihe, Modell, Karosserie
+        """;
+
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->
         MainGroupDto.builder()
             .hg(rs.getString("HG"))
@@ -162,6 +179,13 @@ public class PartUsageVehicleRepository {
             .stecker(rs.getString("STECKER"))
             .tc(rs.getString("TC"))
             .teilDiebstahlrelevant(rs.getString("Teil_Diebstahlrelevant"))
+            .build();
+
+    private static final RowMapper<SimpleUsageDto> SIMPLE_USAGE_MAPPER = (rs, rowNum) ->
+        SimpleUsageDto.builder()
+            .baureihe(rs.getString("Baureihe"))
+            .karosserie(rs.getString("Karosserie"))
+            .modell(rs.getString("Modell"))
             .build();
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -254,6 +278,19 @@ public class PartUsageVehicleRepository {
             params.putAll(extraParams);
         }
         return jdbc.query(sql, params, PART_USAGE_PART_MAPPER);
+    }
+
+    /**
+     * Retrieves simplified vehicle usage data for a part.
+     */
+    public List<SimpleUsageDto> findSimpleUsage(String sachnummer, String mospId, String iso) {
+        String mospClause = StringUtils.hasText(mospId) ? "and btzeilenv_mospid = :mospId" : null;
+        String sql = applyClauses(RETRIEVE_SIMPLE_USAGE, Map.of("__MOSPID__", mospClause));
+        Map<String, Object> params = new HashMap<>(Map.of("sachnummer", sachnummer, "iso", iso));
+        if (StringUtils.hasText(mospId)) {
+            params.put("mospId", mospId);
+        }
+        return jdbc.query(sql, params, SIMPLE_USAGE_MAPPER);
     }
 
     /**

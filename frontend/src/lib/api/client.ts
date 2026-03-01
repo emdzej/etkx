@@ -251,10 +251,13 @@ export const getPartSupersession = (
 
 export const getPartVehicleUsage = (
   partNumber: string,
-  mospId: string,
+  mospId: string | null,
   iso: string = DEFAULT_ISO
 ): Promise<PartUsageVehicle[]> =>
-  request(`/api/parts/${partNumber}/usage/vehicle`, { mospId, iso });
+  request(`/api/parts/${partNumber}/usage/simple`, {
+    ...(mospId && { mospId }),
+    iso
+  });
 
 export const getPartDiagrams = (
   partNumber: string,

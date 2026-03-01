@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.emdzej.etkx.dal.dto.parts.PartReplacementDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsagePartSummaryDto;
 import pl.emdzej.etkx.dal.dto.parts.SimpleReplacementDto;
+import pl.emdzej.etkx.dal.dto.parts.SimpleUsageDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageReductionUsageDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageSeriesDto;
 import pl.emdzej.etkx.dal.dto.parts.PartUsageVehiclePartDto;
@@ -126,6 +127,24 @@ public class PartDataController {
             normalizedIso,
             regiso
         );
+    }
+
+    /**
+     * Retrieves simplified vehicle usage data for the provided part number.
+     */
+    @GetMapping("/{partNumber}/usage/simple")
+    @Operation(summary = "Simple vehicle usage lookup")
+    @ApiResponse(responseCode = "200", description = "Vehicle usage loaded")
+    public List<SimpleUsageDto> getSimpleUsage(
+        @Parameter(description = "Part number")
+        @PathVariable String partNumber,
+        @Parameter(description = "MOSP identifier")
+        @RequestParam(required = false) String mospId,
+        @Parameter(description = "ISO language code")
+        @RequestParam(defaultValue = "en") String iso
+    ) {
+        String normalizedIso = normalizeIso(iso);
+        return partUsageVehicleRepository.findSimpleUsage(partNumber, mospId, normalizedIso);
     }
 
     /**

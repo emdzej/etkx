@@ -20,7 +20,6 @@
   let diagrams = $state<{ btnr: string; name: string }[]>([]);
 
   let loading = $state(false);
-  let errorMessage = $state<string | null>(null);
 
   const matchedPart = $derived(
     replacements.find((item) => item.sachnummer === partNumber) ??
@@ -37,27 +36,35 @@
     }
 
     loading = true;
-    errorMessage = null;
 
-    try {
-      const [replacementData, usageData, diagramData] = await Promise.all([
-        getPartSupersession(partNumber, DEFAULT_ISO),
-        mospId ? getPartVehicleUsage(partNumber, mospId, DEFAULT_ISO) : Promise.resolve([]),
-        mospId ? getPartDiagrams(partNumber, mospId) : Promise.resolve([])
-      ]);
+    const [replacementResult, usageResult, diagramResult] = await Promise.allSettled([
+      getPartSupersession(partNumber, DEFAULT_ISO),
+      mospId ? getPartVehicleUsage(partNumber, mospId || null, DEFAULT_ISO) : Promise.resolve([]),
+      mospId ? getPartDiagrams(partNumber, mospId) : Promise.resolve([])
+    ]);
 
-      replacements = replacementData;
-      vehicleUsage = usageData;
-      diagrams = diagramData;
-    } catch (e) {
-      console.error('Failed to load part details:', e);
-      errorMessage = 'Failed to load part details.';
+    if (replacementResult.status === 'fulfilled') {
+      replacements = replacementResult.value;
+    } else {
+      console.error('Failed to load supersession data:', replacementResult.reason);
       replacements = [];
-      vehicleUsage = [];
-      diagrams = [];
-    } finally {
-      loading = false;
     }
+
+    if (usageResult.status === 'fulfilled') {
+      vehicleUsage = usageResult.value;
+    } else {
+      console.error('Failed to load vehicle usage data:', usageResult.reason);
+      vehicleUsage = [];
+    }
+
+    if (diagramResult.status === 'fulfilled') {
+      diagrams = diagramResult.value;
+    } else {
+      console.error('Failed to load diagram data:', diagramResult.reason);
+      diagrams = [];
+    }
+
+    loading = false;
   };
 
   $effect(() => {
@@ -85,9 +92,7 @@
     {/if}
   </header>
 
-  {#if errorMessage}
-    <p class="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
-  {/if}
+  <!-- errors handled per-section -->
 
   {#if loading}
     <p class="text-sm text-slate-500 dark:text-slate-400">Loading part data...</p>
