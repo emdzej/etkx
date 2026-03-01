@@ -1,8 +1,12 @@
 name: Docker Build & Push
 
 on:
-  push:
-    branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      version_override:
+        description: 'Version override (leave empty for build.gradle version)'
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -17,7 +21,11 @@ jobs:
       - name: Resolve version
         id: version
         run: |
-          VERSION=$(grep "^version" backend/build.gradle | head -1 | sed "s/.*'//;s/'//")
+          if [ -n "${{ inputs.version_override }}" ]; then
+            VERSION="${{ inputs.version_override }}"
+          else
+            VERSION=$(grep "^version" backend/build.gradle | head -1 | sed "s/.*'//;s/'//")
+          fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
       - uses: docker/login-action@v3
