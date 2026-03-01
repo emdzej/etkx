@@ -78,7 +78,7 @@ public class DiagramDisplayRepository {
             btzeilen_lenkg Lenkung_KZ,
             btzeilen_eins Einsatz,
             btzeilen_auslf Auslauf,
-            btzeilen_bedkez || nvl(to_char(btzeilen_regelnr), '') Bedingung_KZ,
+            btzeilen_bedkez || nvl(CAST(btzeilen_regelnr AS TEXT), '') Bedingung_KZ,
             btzeilen_kommbt KommBT,
             btzeilen_kommvor KommVor,
             btzeilen_kommnach KommNach,

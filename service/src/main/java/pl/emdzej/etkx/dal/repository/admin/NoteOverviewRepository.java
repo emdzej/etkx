@@ -56,8 +56,8 @@ public class NoteOverviewRepository {
           and tben.ben_regiso = :regiso
           and publben_art = 'M'
           and (
-              to_char(teileinfo_gueltig_bis_monat) = publben_bezeichnung
-              or '0' || to_char(teileinfo_gueltig_bis_monat) = publben_bezeichnung
+              CAST(teileinfo_gueltig_bis_monat AS TEXT) = publben_bezeichnung
+              or '0' || CAST(teileinfo_gueltig_bis_monat AS TEXT) = publben_bezeichnung
           )
           and publben_textcode = mben.ben_textcode
           and mben.ben_iso = :iso
