@@ -205,7 +205,7 @@ public class VehicleController {
 
     private static String optionalClause(String clause, String value, String paramName, Map<String, Object> params) {
         if (!StringUtils.hasText(value)) {
-            return null;
+            return "";
         }
         params.put(paramName, value);
         return clause;
