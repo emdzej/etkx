@@ -122,7 +122,7 @@ public class DiagramController {
         @Parameter(description = "Vehicle type (vehicle context)")
         @RequestParam(required = false) String typ,
         @Parameter(description = "Production date (YYYYMMDD)")
-        @RequestParam Long datum,
+        @RequestParam(defaultValue = "99991231") Long datum,
         @Parameter(description = "Assembly plant (vehicle context)")
         @RequestParam(required = false) String werk,
         @Parameter(description = "Optional market code filter")
