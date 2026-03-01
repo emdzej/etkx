@@ -19,7 +19,7 @@ public class CatalogNavigationRepository {
         select hgfgm_hg Hg,
             MIN(ben_text) Name,
             MIN(hgthb_grafikid) ThumbnailId
-        from w_hgfg_mosp
+        from w_hgfg_mosp m
         inner join w_hgfg on (
             hgfg_hg = hgfgm_hg
             and hgfg_fg = '00'
@@ -28,8 +28,14 @@ public class CatalogNavigationRepository {
             hgfg_textcode = ben_textcode
             and ben_iso = :iso
         )
-        left join w_hg_thumbnail on (hgthb_hg = hgfgm_hg AND hgthb_produktart = hgfgm_produktart)
-        where hgfgm_mospid = :mospId
+        inner join w_fztyp f on (f.fztyp_mospid = m.hgfgm_mospid)
+        inner join w_baureihe b on (f.fztyp_baureihe = b.baureihe_baureihe)
+        left join w_hg_thumbnail on (
+            hgthb_hg = hgfgm_hg 
+            AND hgthb_produktart = hgfgm_produktart
+            AND hgthb_marke_tps = b.baureihe_marke_tps
+        )
+        where m.hgfgm_mospid = :mospId
         group by hgfgm_hg
         order by hgfgm_hg
         """;
