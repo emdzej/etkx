@@ -24,7 +24,7 @@ jobs:
           if [ -n "${{ inputs.version_override }}" ]; then
             VERSION="${{ inputs.version_override }}"
           else
-            VERSION=$(grep "^version" backend/build.gradle | head -1 | sed "s/.*'//;s/'//")
+            VERSION=$(grep "^version" service/build.gradle | head -1 | sed "s/.*'//;s/'//")
           fi
           echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
 
@@ -55,7 +55,7 @@ jobs:
       - name: Build & push backend
         uses: docker/build-push-action@v6
         with:
-          context: ./backend
+          context: ./service
           push: true
           tags: ${{ steps.meta_backend.outputs.tags }}
           labels: ${{ steps.meta_backend.outputs.labels }}
