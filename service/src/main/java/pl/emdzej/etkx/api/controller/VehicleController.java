@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -60,6 +61,7 @@ public class VehicleController {
         @Parameter(description = "Optional steering filter")
         @RequestParam(required = false) String lenkung
     ) {
+        String normalizedIso = normalizeIso(iso);
         Map<String, Object> extraParams = new HashMap<>();
         String bauartClause = optionalClause("and baureihe_bauart = :bauart", bauart, "bauart", extraParams);
         String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
@@ -68,7 +70,7 @@ public class VehicleController {
             produktart,
             katalogumfang,
             regionen,
-            iso,
+            normalizedIso,
             regiso,
             bauartClause,
             lenkungClause,
@@ -115,7 +117,7 @@ public class VehicleController {
         @RequestParam String regiso
     ) {
         String prefix = vin.length() >= 2 ? vin.substring(0, 2) : vin;
-        return vehicleIdentificationRepository.findByVin(vin, prefix, iso, regiso);
+        return vehicleIdentificationRepository.findByVin(vin, prefix, normalizeIso(iso), regiso);
     }
 
     /**
@@ -180,12 +182,13 @@ public class VehicleController {
         @Parameter(description = "Optional brand filters")
         @RequestParam(required = false) List<String> marken
     ) {
+        String normalizedIso = normalizeIso(iso);
         if (marken != null && !marken.isEmpty()) {
             if (interpretationRepository.findPartBrands(sachnummer, marken).isEmpty()) {
                 return List.of();
             }
         }
-        return interpretationRepository.loadInterpretationDetails(sachnummer, iso, regiso);
+        return interpretationRepository.loadInterpretationDetails(sachnummer, normalizedIso, regiso);
     }
 
     /**
@@ -234,9 +237,10 @@ public class VehicleController {
         @Parameter(description = "Regional ISO language code") @RequestParam String regiso,
         @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
     ) {
+        String normalizedIso = normalizeIso(iso);
         Map<String, Object> extraParams = new HashMap<>();
         String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
-        return vehicleIdentificationRepository.findBodies(baureihe, katalogumfang, regionen, iso, regiso, lenkungClause, extraParams);
+        return vehicleIdentificationRepository.findBodies(baureihe, katalogumfang, regionen, normalizedIso, regiso, lenkungClause, extraParams);
     }
 
     /**
@@ -293,7 +297,7 @@ public class VehicleController {
         @Parameter(description = "ISO language code") @RequestParam String iso,
         @Parameter(description = "Regional ISO language code") @RequestParam String regiso
     ) {
-        return vehicleIdentificationRepository.findSteerings(baureihe, katalogumfang, karosserie, modell, region, iso, regiso);
+        return vehicleIdentificationRepository.findSteerings(baureihe, katalogumfang, karosserie, modell, region, normalizeIso(iso), regiso);
     }
 
     /**
@@ -312,9 +316,10 @@ public class VehicleController {
         @Parameter(description = "Regional ISO language code") @RequestParam String regiso,
         @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung
     ) {
+        String normalizedIso = normalizeIso(iso);
         Map<String, Object> extraParams = new HashMap<>();
         String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
-        return vehicleIdentificationRepository.findTransmissions(baureihe, katalogumfang, karosserie, modell, region, iso, regiso, lenkungClause, extraParams);
+        return vehicleIdentificationRepository.findTransmissions(baureihe, katalogumfang, karosserie, modell, region, normalizedIso, regiso, lenkungClause, extraParams);
     }
 
     /**
@@ -357,11 +362,12 @@ public class VehicleController {
         @Parameter(description = "Optional steering filter") @RequestParam(required = false) String lenkung,
         @Parameter(description = "Optional transmission filter") @RequestParam(required = false) String getriebe
     ) {
+        String normalizedIso = normalizeIso(iso);
         Map<String, Object> extraParams = new HashMap<>();
         String karosserieClause = optionalClause("and fztyp_karosserie = :karosserie", karosserie, "karosserie", extraParams);
         String lenkungClause = optionalClause("and fztyp_lenkung = :lenkung", lenkung, "lenkung", extraParams);
         String getriebeClause = optionalClause("and fztyp_getriebe = :getriebe", getriebe, "getriebe", extraParams);
-        return vehicleIdentificationRepository.findRegistrationMonthsForYear(baureihe, katalogumfang, modell, region, baujahr, iso, regiso, karosserieClause, lenkungClause, getriebeClause, extraParams);
+        return vehicleIdentificationRepository.findRegistrationMonthsForYear(baureihe, katalogumfang, modell, region, baujahr, normalizedIso, regiso, karosserieClause, lenkungClause, getriebeClause, extraParams);
     }
 
     /**
@@ -381,5 +387,9 @@ public class VehicleController {
             return vehicleIdentificationRepository.findModelColumnsForMotorcycles(baureihe, modell, region);
         }
         return vehicleIdentificationRepository.findModelColumnsForPassengerCars(baureihe, karosserie, modell, region);
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }

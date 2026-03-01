@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +34,9 @@ public class CatalogController {
         @Parameter(description = "Model column identifier (MOSP)")
         @RequestParam String mospId,
         @Parameter(description = "ISO language code")
-        @RequestParam(defaultValue = "EN") String iso
+        @RequestParam(defaultValue = "en") String iso
     ) {
-        return catalogNavigationRepository.findMainGroups(mospId, iso);
+        return catalogNavigationRepository.findMainGroups(mospId, normalizeIso(iso));
     }
 
     /**
@@ -50,8 +51,12 @@ public class CatalogController {
         @Parameter(description = "Main group identifier")
         @PathVariable String hg,
         @Parameter(description = "ISO language code")
-        @RequestParam(defaultValue = "EN") String iso
+        @RequestParam(defaultValue = "en") String iso
     ) {
-        return catalogNavigationRepository.findSubGroups(mospId, hg, iso);
+        return catalogNavigationRepository.findSubGroups(mospId, hg, normalizeIso(iso));
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }

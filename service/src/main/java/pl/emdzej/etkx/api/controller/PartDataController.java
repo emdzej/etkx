@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,11 +62,12 @@ public class PartDataController {
         @Parameter(description = "Optional TC performance clause")
         @RequestParam(required = false) String tcCheckClause
     ) {
-        String hg = resolveHg(partNumber, iso, regiso);
+        String normalizedIso = normalizeIso(iso);
+        String hg = resolveHg(partNumber, normalizedIso, regiso);
         return partReplacementRepository.findPartReplacements(
             hg,
             mospids,
-            iso,
+            normalizedIso,
             regiso,
             datum,
             steeringClause,
@@ -97,13 +99,14 @@ public class PartDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
+        String normalizedIso = normalizeIso(iso);
         return partUsageDesignationRepository.findModelSeriesByPartNumbers(
             List.of(partNumber),
             katalogumfang,
             regionen,
             marke,
             produktart,
-            iso,
+            normalizedIso,
             regiso
         );
     }
@@ -132,13 +135,14 @@ public class PartDataController {
         @Parameter(description = "Optional TC performance clause")
         @RequestParam(required = false) String tcCheckClause
     ) {
-        String hg = resolveHg(partNumber, iso, regiso);
+        String normalizedIso = normalizeIso(iso);
+        String hg = resolveHg(partNumber, normalizedIso, regiso);
         if (lenkung != null && !lenkung.isBlank()) {
             return partUsageVehicleRepository.findPartsWithSteering(
                 hg,
                 lenkung,
                 mospids,
-                iso,
+                normalizedIso,
                 regiso,
                 datum,
                 dataSeriesClause,
@@ -149,7 +153,7 @@ public class PartDataController {
         return partUsageVehicleRepository.findPartsWithoutSteering(
             hg,
             mospids,
-            iso,
+            normalizedIso,
             regiso,
             datum,
             dataSeriesClause,
@@ -174,7 +178,7 @@ public class PartDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return partUsageReductionRepository.findUsage(partNumber, mospids, iso, regiso);
+        return partUsageReductionRepository.findUsage(partNumber, mospids, normalizeIso(iso), regiso);
     }
 
     /**
@@ -191,7 +195,7 @@ public class PartDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return partUsagePartRepository.findPart(partNumber, iso, regiso);
+        return partUsagePartRepository.findPart(partNumber, normalizeIso(iso), regiso);
     }
 
     /**
@@ -218,11 +222,12 @@ public class PartDataController {
         @Parameter(description = "Optional TC performance clause")
         @RequestParam(required = false) String tcCheckClause
     ) {
+        String normalizedIso = normalizeIso(iso);
         return setIndividualPartsRepository.loadIndividualParts(
             partNumber,
             marke,
             produktart,
-            iso,
+            normalizedIso,
             regiso,
             katalogumfaenge,
             datum,
@@ -241,5 +246,9 @@ public class PartDataController {
             .filter(hg -> hg != null && !hg.isBlank())
             .findFirst()
             .orElse(partNumber);
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }
