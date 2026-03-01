@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import pl.emdzej.etkx.dal.dto.search.MarketDescriptionDto;
+import pl.emdzej.etkx.dal.dto.search.PartByNumberDto;
 
 /**
  * Repository for general part search operations.
@@ -27,9 +28,31 @@ public class PartSearchGeneralRepository {
           and t1.bildtaf_produktart = :produktart
         """;
 
+    private static final String SEARCH_PARTS_BY_NUMBER = """
+        select t1.teil_sachnr as sachnr,
+               t2.ben_text as benennung,
+               t1.teil_benennzus as zusatz,
+               t1.teil_hauptgr as hauptgr,
+               t1.teil_untergrup as untergrup
+        from w_teil t1
+        join w_ben_gk t2 on (t1.teil_textcode = t2.ben_textcode and t2.ben_iso = :iso)
+        where t1.teil_sachnr like :pattern
+        order by t1.teil_sachnr
+        limit 100
+        """;
+
     private static final RowMapper<MarketDescriptionDto> MARKET_DESCRIPTION_MAPPER = (rs, rowNum) ->
         MarketDescriptionDto.builder()
             .marketDescription(rs.getString("MarktBen"))
+            .build();
+
+    private static final RowMapper<PartByNumberDto> PART_BY_NUMBER_MAPPER = (rs, rowNum) ->
+        PartByNumberDto.builder()
+            .sachnr(rs.getString("sachnr"))
+            .benennung(rs.getString("benennung"))
+            .zusatz(rs.getString("zusatz"))
+            .hauptgr(rs.getString("hauptgr"))
+            .untergrup(rs.getString("untergrup"))
             .build();
 
     private final NamedParameterJdbcTemplate jdbc;
@@ -53,6 +76,24 @@ public class PartSearchGeneralRepository {
                 "regiso", regiso
             ),
             MARKET_DESCRIPTION_MAPPER
+        );
+    }
+
+    /**
+     * Searches parts by part number across the entire catalog.
+     *
+     * @param partNumber part number prefix or full number
+     * @param iso ISO language code
+     * @return list of matching parts
+     */
+    public List<PartByNumberDto> searchByPartNumber(String partNumber, String iso) {
+        return jdbc.query(
+            SEARCH_PARTS_BY_NUMBER,
+            Map.of(
+                "pattern", partNumber + "%",
+                "iso", iso
+            ),
+            PART_BY_NUMBER_MAPPER
         );
     }
 }

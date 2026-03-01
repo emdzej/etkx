@@ -8,6 +8,7 @@ import type {
   MainGroup,
   Modell,
   MospId,
+  PartByNumber,
   PartReplacement,
   PartSearchLine,
   PartUsageVehicle,
@@ -225,9 +226,15 @@ export const resolveMospId = (
 export const searchParts = (
   mospId: string,
   designation: string,
-  iso: string = DEFAULT_ISO
+  iso: string = DEFAULT_ISO,
+  regiso: string = DEFAULT_REGISO
 ): Promise<PartSearchLine[]> =>
-  request('/api/parts/search/vehicle', { mospId, designation, iso });
+  request('/api/parts/search/vehicle', { mosp: mospId, query: designation, iso, regiso });
+
+export const searchByPartNumber = (
+  partNumber: string,
+  iso: string = DEFAULT_ISO
+): Promise<PartByNumber[]> => request('/api/parts/search/by-number', { partNumber, iso });
 
 export const getPartReplacements = (
   partNumber: string,

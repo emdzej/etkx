@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.emdzej.etkx.dal.dto.search.MarketDescriptionDto;
+import pl.emdzej.etkx.dal.dto.search.PartByNumberDto;
 import pl.emdzej.etkx.dal.dto.search.PartSearchLineDto;
 import pl.emdzej.etkx.dal.dto.search.PlateSearchResultDto;
 import pl.emdzej.etkx.dal.repository.search.PartSearchAssemblyRepository;
@@ -82,6 +83,21 @@ public class PartSearchController {
             null
         );
         return paginate(results, page, size);
+    }
+
+    /**
+     * Searches parts by part number across the entire catalog.
+     */
+    @GetMapping("/by-number")
+    @Operation(summary = "Search parts by part number (global)")
+    @ApiResponse(responseCode = "200", description = "Global part number search results")
+    public List<PartByNumberDto> searchByPartNumber(
+        @Parameter(description = "Part number or prefix")
+        @RequestParam String partNumber,
+        @Parameter(description = "ISO language code")
+        @RequestParam(defaultValue = "EN") String iso
+    ) {
+        return generalRepository.searchByPartNumber(partNumber, iso);
     }
 
     /**
