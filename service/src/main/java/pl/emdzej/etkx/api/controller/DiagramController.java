@@ -342,14 +342,17 @@ public class DiagramController {
 
     private ResponseEntity<byte[]> buildGraphicResponse(GraphicDto graphic) {
         String format = graphic.getFormat();
+        log.info("Image format from DB: '{}', length: {}", format, format != null ? format.length() : 0);
         byte[] imageData = graphic.getGrafik();
         MediaType mediaType;
         
         // Convert TIFF to PNG for browser compatibility (Chrome doesn't support TIFF)
         if (StringUtils.hasText(format) && format.trim().toUpperCase().startsWith("TIF")) {
+            log.info("Converting TIFF to PNG...");
             try {
                 imageData = convertTiffToPng(imageData);
                 mediaType = MediaType.IMAGE_PNG;
+                log.info("TIFF conversion successful, returning PNG");
             } catch (IOException e) {
                 log.warn("Failed to convert TIFF to PNG, returning original: {}", e.getMessage());
                 mediaType = MediaType.valueOf("image/tiff");
