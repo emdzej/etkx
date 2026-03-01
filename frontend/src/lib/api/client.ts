@@ -20,7 +20,7 @@ const DEFAULT_REGISO = 'US';
 const API_BASE_URL =
   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) ||
   (typeof import.meta !== 'undefined' && import.meta.env?.API_BASE_URL) ||
-  (typeof process !== 'undefined' ? process.env.API_BASE_URL : undefined) ||
+  
   'http://localhost:8080';
 
 type QueryValue = string | number | boolean | null | undefined;
