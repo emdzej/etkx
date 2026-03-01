@@ -29,15 +29,16 @@ public class PartSearchGeneralRepository {
         """;
 
     private static final String SEARCH_PARTS_BY_NUMBER = """
-        select t1.teil_sachnr as sachnr,
+        select t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr as sachnr,
                t2.ben_text as benennung,
                t1.teil_benennzus as zusatz,
                t1.teil_hauptgr as hauptgr,
                t1.teil_untergrup as untergrup
         from w_teil t1
-        join w_ben_gk t2 on (t1.teil_textcode = t2.ben_textcode and t2.ben_iso = :iso)
-        where t1.teil_sachnr like :pattern
-        order by t1.teil_sachnr
+        left join w_ben_gk t2 on (t1.teil_textcode = t2.ben_textcode and t2.ben_iso = :iso)
+        where t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr like :pattern
+           or t1.teil_sachnr like :pattern
+        order by t1.teil_hauptgr, t1.teil_untergrup, t1.teil_sachnr
         limit 100
         """;
 
