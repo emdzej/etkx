@@ -1,25 +1,24 @@
 services:
   backend:
-    build: ./backend
+    build: ./service
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:sqlite:/app/data/etkx.db
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.sqlite.JDBC
-      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_DATASOURCE_URL: jdbc:sqlite:/app/data/etk.sqlite
     volumes:
       - ./data:/app/data
     networks:
       - etkx
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        PUBLIC_API_BASE_URL: http://backend:8080
     ports:
-      - "3000:80"
+      - "3000:3000"
     depends_on:
       - backend
-    environment:
-      API_BASE_URL: http://backend:8080
     networks:
       - etkx
 

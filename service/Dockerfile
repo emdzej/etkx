@@ -1,23 +1,32 @@
-FROM eclipse-temurin:21-jdk AS build
+# Build stage
+FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /app
 
-COPY gradle gradle
-COPY gradlew build.gradle settings.gradle ./
-RUN ./gradlew --no-daemon dependencies
+# Copy gradle files
+COPY gradlew ./
+COPY gradle ./gradle
+COPY build.gradle.kts settings.gradle.kts ./
+COPY service/build.gradle.kts ./service/
 
-COPY src src
-RUN ./gradlew --no-daemon bootJar
+# Download dependencies (cache layer)
+RUN ./gradlew dependencies --no-daemon || true
 
+# Copy source
+COPY service/src ./service/src
+
+# Build
+RUN ./gradlew :service:bootJar --no-daemon
+
+# Runtime stage
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-RUN apt-get update \
-    && apt-get install -y curl \
-    && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=builder /app/service/build/libs/*.jar app.jar
+
+# SQLite database will be mounted
+VOLUME /app/data
+
+ENV SPRING_DATASOURCE_URL=jdbc:sqlite:/app/data/etk.sqlite
 EXPOSE 8080
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
-  CMD curl -fsS http://localhost:8080/health || exit 1
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

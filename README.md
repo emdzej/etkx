@@ -2,18 +2,22 @@
 
 BMW ETK (Electronic Parts Catalog) data extraction and analysis tools.
 
-## Deployment
+## Docker
 
-### Docker Compose
-
+### Build and run
 ```bash
-# build + run
-mkdir -p data
-
-docker compose up --build
+# Place your etk.sqlite in ./data/
+docker-compose up --build
 ```
 
-Backend is available at `http://localhost:8080` and frontend at `http://localhost:3000`.
+Frontend: http://localhost:3000
+Backend API: http://localhost:8080
+
+### Environment Variables
+- `PUBLIC_API_BASE_URL` - Backend API URL (build-time for frontend)
+- `SPRING_DATASOURCE_URL` - SQLite database path
+
+## Deployment
 
 ### Kubernetes (production)
 

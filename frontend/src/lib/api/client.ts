@@ -25,9 +25,9 @@ const DEFAULT_ISO = 'EN';
 const DEFAULT_REGISO = 'US';
 
 const API_BASE_URL =
+  (typeof import.meta !== 'undefined' && import.meta.env?.PUBLIC_API_BASE_URL) ||
   (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_BASE_URL) ||
   (typeof import.meta !== 'undefined' && import.meta.env?.API_BASE_URL) ||
-  
   'http://localhost:8080';
 
 type QueryValue = string | number | boolean | null | undefined;
