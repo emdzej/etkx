@@ -28,7 +28,7 @@ public class CatalogNavigationRepository {
             hgfg_textcode = ben_textcode
             and ben_iso = :iso
         )
-        left join w_hg_thumbnail on (hgthb_hg = hgfgm_hg)
+        left join w_hg_thumbnail on (hgthb_hg = hgfgm_hg AND hgthb_produktart = hgfgm_produktart)
         where hgfgm_mospid = :mospId
         group by hgfgm_hg
         order by hgfgm_hg
