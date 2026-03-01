@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -99,6 +100,7 @@ public class AccessoriesController {
         @Parameter(description = "Optional variant identifier")
         @RequestParam(required = false) Integer variantId
     ) {
+        String normalizedIso = normalizeIso(iso);
         List<AccessoriesDiagramMarketingDto> diagramMarketing =
             accessoriesMarketingRepository.findDiagramMarketingLinks(diagramNumber);
         List<AccessoriesVariantMarketingDto> variantMarketing = variantId == null
@@ -121,8 +123,8 @@ public class AccessoriesController {
         List<AccessoriesMarketingRelatedDto> relatedProducts = new ArrayList<>();
 
         for (ProductMarketKey key : productMarkets) {
-            texts.addAll(accessoriesMarketingRepository.findMarketingTexts(key.productId(), key.marketId(), iso, regiso));
-            keywords.addAll(accessoriesMarketingRepository.findMarketingKeywords(key.productId(), key.marketId(), iso, regiso));
+            texts.addAll(accessoriesMarketingRepository.findMarketingTexts(key.productId(), key.marketId(), normalizedIso, regiso));
+            keywords.addAll(accessoriesMarketingRepository.findMarketingKeywords(key.productId(), key.marketId(), normalizedIso, regiso));
             graphics.addAll(accessoriesMarketingRepository.findMarketingGraphics(key.productId(), key.marketId()));
             relatedProducts.addAll(accessoriesMarketingRepository.findRelatedMarketingProducts(key.productId(), key.marketId()));
         }
@@ -230,5 +232,9 @@ public class AccessoriesController {
     }
 
     private record ProductMarketKey(Integer productId, Integer marketId) {
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }

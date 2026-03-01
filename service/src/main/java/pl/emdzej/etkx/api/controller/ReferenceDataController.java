@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -71,7 +72,7 @@ public class ReferenceDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return etkTextRepository.loadEtkTextComments(iso, regiso);
+        return etkTextRepository.loadEtkTextComments(normalizeIso(iso), regiso);
     }
 
     /**
@@ -86,7 +87,7 @@ public class ReferenceDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return upholsteryCodeRepository.loadUpholsteryCodes(iso, regiso);
+        return upholsteryCodeRepository.loadUpholsteryCodes(normalizeIso(iso), regiso);
     }
 
     /**
@@ -151,11 +152,12 @@ public class ReferenceDataController {
         @Parameter(description = "Optional TC performance clause")
         @RequestParam(required = false) String tcCheckClause
     ) {
+        String normalizedIso = normalizeIso(iso);
         return storageTimeRepository.loadParts(
             hg,
             marke,
             produktart,
-            iso,
+            normalizedIso,
             regiso,
             katalogumfaenge,
             datum,
@@ -208,12 +210,13 @@ public class ReferenceDataController {
         @Parameter(description = "Optional TC performance clause")
         @RequestParam(required = false) String tcCheckClause
     ) {
+        String normalizedIso = normalizeIso(iso);
         Map<String, Object> extraParams = new HashMap<>();
         String lenkungClause = optionalClause("and eb_lenkung = :lenkung", lenkung, "lenkung", extraParams);
         return initialStockRepository.loadParts(
             hg,
             mospids,
-            iso,
+            normalizedIso,
             regiso,
             datum,
             lenkungClause,
@@ -263,7 +266,7 @@ public class ReferenceDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return aspgRepository.loadConnectors(sachnr, gruppe, iso, regiso);
+        return aspgRepository.loadConnectors(sachnr, gruppe, normalizeIso(iso), regiso);
     }
 
     /**
@@ -280,7 +283,7 @@ public class ReferenceDataController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
-        return newsTextsRepository.loadNewsTexts(marke, iso, regiso);
+        return newsTextsRepository.loadNewsTexts(marke, normalizeIso(iso), regiso);
     }
 
     private static String optionalClause(String clause, String value, String paramName, Map<String, Object> params) {
@@ -289,5 +292,9 @@ public class ReferenceDataController {
         }
         params.put(paramName, value);
         return clause;
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }

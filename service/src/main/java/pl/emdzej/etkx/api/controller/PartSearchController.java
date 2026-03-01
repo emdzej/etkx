@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +51,8 @@ public class PartSearchController {
         @Parameter(description = "Page size")
         @RequestParam(required = false) Integer size
     ) {
-        List<MarketDescriptionDto> results = generalRepository.loadMarketDescription(btnr, produktart, iso, regiso);
+        String normalizedIso = normalizeIso(iso);
+        List<MarketDescriptionDto> results = generalRepository.loadMarketDescription(btnr, produktart, normalizedIso, regiso);
         return paginate(results, page, size);
     }
 
@@ -74,9 +76,10 @@ public class PartSearchController {
         @Parameter(description = "Page size")
         @RequestParam(required = false) Integer size
     ) {
+        String normalizedIso = normalizeIso(iso);
         List<PartSearchLineDto> results = vehicleRepository.searchPartsByDesignation(
             mosp,
-            iso,
+            normalizedIso,
             regiso,
             query,
             null,
@@ -95,9 +98,9 @@ public class PartSearchController {
         @Parameter(description = "Part number or prefix")
         @RequestParam String partNumber,
         @Parameter(description = "ISO language code")
-        @RequestParam(defaultValue = "EN") String iso
+        @RequestParam(defaultValue = "en") String iso
     ) {
-        return generalRepository.searchByPartNumber(partNumber, iso);
+        return generalRepository.searchByPartNumber(partNumber, normalizeIso(iso));
     }
 
     /**
@@ -124,11 +127,12 @@ public class PartSearchController {
         @Parameter(description = "Page size")
         @RequestParam(required = false) Integer size
     ) {
+        String normalizedIso = normalizeIso(iso);
         List<PartSearchLineDto> results = assemblyRepository.searchPartsByDesignation(
             marke,
             produktart,
             katalogumfang,
-            iso,
+            normalizedIso,
             regiso,
             query,
             null
@@ -154,7 +158,8 @@ public class PartSearchController {
         @Parameter(description = "Page size")
         @RequestParam(required = false) Integer size
     ) {
-        List<PlateSearchResultDto> results = valueLineRepository.findValueLinePlates(mosp, iso, regiso);
+        String normalizedIso = normalizeIso(iso);
+        List<PlateSearchResultDto> results = valueLineRepository.findValueLinePlates(mosp, normalizedIso, regiso);
         return paginate(results, page, size);
     }
 
@@ -170,5 +175,9 @@ public class PartSearchController {
         }
         int toIndex = Math.min(fromIndex + resolvedSize, results.size());
         return results.subList(fromIndex, toIndex);
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }

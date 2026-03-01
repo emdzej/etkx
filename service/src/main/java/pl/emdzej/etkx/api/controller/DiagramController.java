@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.CacheControl;
@@ -66,19 +67,20 @@ public class DiagramController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
+        String normalizedIso = normalizeIso(iso);
         DiagramDetailsDto.DiagramDetailsDtoBuilder builder = DiagramDetailsDto.builder()
             .hotspots(grafikId != null ? diagramDisplayRepository.findHotspots(grafikId, art) : List.of())
-            .yesNoTexts(diagramDisplayRepository.findYesNoTexts(iso, regiso));
+            .yesNoTexts(diagramDisplayRepository.findYesNoTexts(normalizedIso, regiso));
 
         if (mosp != null) {
-            builder.vehicleComments(diagramDisplayRepository.findVehicleComments(mosp, btnr, iso, regiso))
+            builder.vehicleComments(diagramDisplayRepository.findVehicleComments(mosp, btnr, normalizedIso, regiso))
                 .conditions(diagramDisplayRepository.findVehicleConditions(btnr, mosp))
                 .overConditions(diagramDisplayRepository.findVehicleOverConditions(btnr, mosp))
-                .references(diagramDisplayRepository.findVehicleReferences(btnr, mosp, iso, regiso))
+                .references(diagramDisplayRepository.findVehicleReferences(btnr, mosp, normalizedIso, regiso))
                 .ugbComments(List.of());
         } else if (StringUtils.hasText(marke) && StringUtils.hasText(produktart)) {
-            builder.ugbComments(diagramDisplayRepository.findUgbComments(marke, btnr, iso, regiso))
-                .references(diagramDisplayRepository.findUgbReferences(btnr, marke, produktart, iso, regiso))
+            builder.ugbComments(diagramDisplayRepository.findUgbComments(marke, btnr, normalizedIso, regiso))
+                .references(diagramDisplayRepository.findUgbReferences(btnr, marke, produktart, normalizedIso, regiso))
                 .vehicleComments(List.of())
                 .conditions(List.of())
                 .overConditions(List.of());
@@ -123,6 +125,7 @@ public class DiagramController {
         @Parameter(description = "Optional market code filter")
         @RequestParam(required = false) String landkuerzel
     ) {
+        String normalizedIso = normalizeIso(iso);
         DiagramLinesDto.DiagramLinesDtoBuilder builder = DiagramLinesDto.builder();
         if (mosp != null) {
             if (!StringUtils.hasText(typ)) {
@@ -132,7 +135,7 @@ public class DiagramController {
                     mosp,
                     btnr,
                     marke,
-                    iso,
+                    normalizedIso,
                     regiso,
                     typ,
                     datum,
@@ -149,7 +152,7 @@ public class DiagramController {
                     btnr,
                     produktart,
                     katalogumfang,
-                    iso,
+                    normalizedIso,
                     regiso,
                     datum,
                     landkuerzel
@@ -192,9 +195,10 @@ public class DiagramController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
+        String normalizedIso = normalizeIso(iso);
         return DiagramInfoDto.builder()
-            .title(diagramInfoRepository.findDiagramTitle(btnr, produktart, iso, regiso).orElse(null))
-            .comments(diagramInfoRepository.findDiagramComments(btnr, iso, regiso))
+            .title(diagramInfoRepository.findDiagramTitle(btnr, produktart, normalizedIso, regiso).orElse(null))
+            .comments(diagramInfoRepository.findDiagramComments(btnr, normalizedIso, regiso))
             .build();
     }
 
@@ -216,19 +220,20 @@ public class DiagramController {
         @Parameter(description = "Regional ISO language code")
         @RequestParam String regiso
     ) {
+        String normalizedIso = normalizeIso(iso);
         return PartVisualizationResponseDto.builder()
             .vehicleVisualizations(partVisualizationRepository.findVehicleVisualizations(
                 partNumber,
                 marken,
                 produktarten,
-                iso,
+                normalizedIso,
                 regiso
             ))
             .ugbVisualizations(partVisualizationRepository.findUgbVisualizations(
                 partNumber,
                 marken,
                 produktarten,
-                iso,
+                normalizedIso,
                 regiso
             ))
             .build();
@@ -258,6 +263,7 @@ public class DiagramController {
         @Parameter(description = "Points value")
         @RequestParam(required = false) Long punkte
     ) {
+        String normalizedIso = normalizeIso(iso);
         String productionDateClause = null;
         Map<String, Object> extraParams = new HashMap<>();
         if (prodDatum != null) {
@@ -268,7 +274,7 @@ public class DiagramController {
         List<String> resolvedSalaIds = CollectionUtils.isEmpty(salaIds) ? List.of() : salaIds;
 
         SpringTableResponseDto.SpringTableResponseDtoBuilder builder = SpringTableResponseDto.builder()
-            .salas(springTableRepository.findSalas(typen, iso, regiso, productionDateClause, extraParams))
+            .salas(springTableRepository.findSalas(typen, normalizedIso, regiso, productionDateClause, extraParams))
             .pointsByType(springTableRepository.findPointsByType(typen, productionDateClause, extraParams))
             .pointsBySala(resolvedSalaIds.isEmpty()
                 ? List.of()
@@ -313,5 +319,9 @@ public class DiagramController {
             case "TIF", "TIFF" -> MediaType.valueOf("image/tiff");
             default -> MediaType.APPLICATION_OCTET_STREAM;
         };
+    }
+
+    private static String normalizeIso(String iso) {
+        return iso == null ? null : iso.toLowerCase(Locale.ROOT);
     }
 }
