@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { getDiagramDetails, getDiagramLines, type DiagramDetails, type DiagramLine } from '$lib/api';
+  import Breadcrumb from '$lib/components/Breadcrumb.svelte';
   import DiagramViewer from '$lib/components/DiagramViewer.svelte';
   import PartsTable from '$lib/components/PartsTable.svelte';
   import { myVehicles } from '$lib/stores/myVehicles';
@@ -13,23 +14,17 @@
   const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId ?? '');
   const btnr = $derived($page.params.btnr ?? '');
+  const datum = $derived($page.url.searchParams.get('datum') || '');
   const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
   
   const currentVehicle = $derived($myVehicles.find((vehicle) => vehicle.mospId === mospId));
-  const vehicleDatum = $derived(currentVehicle?.datum || $page.url.searchParams.get('datum'));
-  const vehicleInfo = $derived(
-    currentVehicle
-      ? {
-          mospId: currentVehicle.mospId,
-          name: currentVehicle.label,
-          datum: currentVehicle.datum
-        }
-      : {
-          mospId,
-          name: mospId,
-          datum: vehicleDatum || undefined
-        }
-  );
+  const vehicleDatum = $derived(currentVehicle?.datum || datum);
+  const vehicleName = $derived(currentVehicle?.label || mospId);
+  const vehicleInfo = $derived({
+    mospId,
+    name: vehicleName,
+    datum: vehicleDatum || undefined
+  });
 
   let details = $state<DiagramDetails | null>(null);
   let lines = $state<DiagramLine[]>([]);
@@ -70,18 +65,25 @@
   $effect(() => {
     void loadDiagram();
   });
+
+  const diagramName = $derived(details?.name || `Diagram ${btnr}`);
+
+  const crumbs = $derived([
+    { label: brandLabels[brand], href: `/${brand}/${productType}/${catalogScope}/vehicles` },
+    { label: vehicleName, href: basePath },
+    { label: diagramName }
+  ]);
 </script>
 
 <svelte:head>
-  <title>Diagram {btnr} | {brandLabels[brand]} ETKx</title>
+  <title>{diagramName} | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl space-y-6">
   <div>
-    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Diagram Viewer</h1>
-    <p class="mt-1 text-slate-600 dark:text-slate-400">
-      Vehicle: <span class="font-mono">{mospId}</span> · Diagram: <span class="font-mono">{btnr}</span>
-    </p>
+    <Breadcrumb {crumbs} />
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{btnr} {diagramName}</h1>
+    <p class="mt-1 text-slate-600 dark:text-slate-400">{vehicleName}</p>
   </div>
 
   {#if errorMessage}

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
   import { getMainGroups, type MainGroup } from '$lib/api';
+  import Breadcrumb from '$lib/components/Breadcrumb.svelte';
   import GroupCard from '$lib/components/GroupCard.svelte';
+  import { myVehicles } from '$lib/stores/myVehicles';
   import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
@@ -10,7 +12,13 @@
   const productType = $derived($page.params.productType as ProductType);
   const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId);
+  const datum = $derived($page.url.searchParams.get('datum') || '');
+  const datumParam = $derived(datum ? `?datum=${datum}` : '');
   const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
+
+  // Get vehicle name from saved vehicles or fallback to mospId
+  const savedVehicle = $derived($myVehicles.find((v) => v.mospId === mospId));
+  const vehicleName = $derived(savedVehicle?.label || mospId);
 
   let groups = $state<MainGroup[]>([]);
   let loading = $state(false);
@@ -37,6 +45,11 @@
   $effect(() => {
     void loadGroups();
   });
+
+  const crumbs = $derived([
+    { label: brandLabels[brand], href: `/${brand}/${productType}/${catalogScope}/vehicles` },
+    { label: vehicleName }
+  ]);
 </script>
 
 <svelte:head>
@@ -45,10 +58,9 @@
 
 <div class="mx-auto max-w-5xl space-y-6">
   <div>
+    <Breadcrumb {crumbs} />
     <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Parts Catalog</h1>
-    <p class="mt-1 text-slate-600 dark:text-slate-400">
-      Vehicle: <span class="font-mono">{mospId}</span>
-    </p>
+    <p class="mt-1 text-slate-600 dark:text-slate-400">{vehicleName}</p>
   </div>
 
   {#if errorMessage}
@@ -68,7 +80,7 @@
           code={group.hg}
           name={group.name}
           thumbnailId={group.thumbnailId}
-          href={`${basePath}/groups/${group.hg}`}
+          href={`${basePath}/groups/${group.hg}${datumParam}`}
         />
       {/each}
     </div>

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { getSubGroups, type SubGroup } from '$lib/api';
+  import { getSubGroups, getMainGroups, type SubGroup, type MainGroup } from '$lib/api';
+  import Breadcrumb from '$lib/components/Breadcrumb.svelte';
   import SubgroupCard from '$lib/components/SubgroupCard.svelte';
+  import { myVehicles } from '$lib/stores/myVehicles';
   import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
@@ -11,13 +13,20 @@
   const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId);
   const hg = $derived($page.params.hg);
+  const datum = $derived($page.url.searchParams.get('datum') || '');
+  const datumParam = $derived(datum ? `?datum=${datum}` : '');
   const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
 
+  // Get vehicle name from saved vehicles
+  const savedVehicle = $derived($myVehicles.find((v) => v.mospId === mospId));
+  const vehicleName = $derived(savedVehicle?.label || mospId);
+
   let subgroups = $state<SubGroup[]>([]);
+  let mainGroup = $state<MainGroup | null>(null);
   let loading = $state(false);
   let errorMessage = $state<string | null>(null);
 
-  const loadSubgroups = async () => {
+  const loadData = async () => {
     if (!mospId || !hg) {
       subgroups = [];
       return;
@@ -25,7 +34,12 @@
     loading = true;
     errorMessage = null;
     try {
-      subgroups = await getSubGroups(mospId, hg, DEFAULT_ISO);
+      const [subgroupsData, mainGroups] = await Promise.all([
+        getSubGroups(mospId, hg, DEFAULT_ISO),
+        getMainGroups(mospId, DEFAULT_ISO)
+      ]);
+      subgroups = subgroupsData;
+      mainGroup = mainGroups.find((g) => g.hg === hg) || null;
     } catch (e) {
       console.error('Failed to load subgroups:', e);
       errorMessage = 'Failed to load subgroups.';
@@ -36,18 +50,27 @@
   };
 
   $effect(() => {
-    void loadSubgroups();
+    void loadData();
   });
+
+  const groupName = $derived(mainGroup?.name || `Group ${hg}`);
+
+  const crumbs = $derived([
+    { label: brandLabels[brand], href: `/${brand}/${productType}/${catalogScope}/vehicles` },
+    { label: vehicleName, href: basePath },
+    { label: `${hg} ${groupName}` }
+  ]);
 </script>
 
 <svelte:head>
-  <title>Groups | {brandLabels[brand]} ETKx</title>
+  <title>{groupName} | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl space-y-6">
-  <div class="space-y-1">
-    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Main group {hg}</h1>
-    <p class="text-slate-600 dark:text-slate-400">Vehicle: <span class="font-mono">{mospId}</span></p>
+  <div>
+    <Breadcrumb {crumbs} />
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{hg} {groupName}</h1>
+    <p class="mt-1 text-slate-600 dark:text-slate-400">{vehicleName}</p>
   </div>
 
   {#if errorMessage}
@@ -67,7 +90,7 @@
           code={subgroup.fg}
           name={subgroup.name}
           thumbnailId={subgroup.thumbnailId}
-          href={`${basePath}/groups/${hg}/subgroups/${subgroup.fg}`}
+          href={`${basePath}/groups/${hg}/subgroups/${subgroup.fg}${datumParam}`}
         />
       {/each}
     </div>
