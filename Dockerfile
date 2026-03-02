@@ -5,7 +5,7 @@ WORKDIR /app
 # Copy gradle wrapper and config
 COPY gradlew ./
 COPY gradle ./gradle
-COPY settings.gradle ./
+COPY settings.gradle gradle.properties ./
 COPY service/build.gradle ./service/
 
 # Make gradlew executable
