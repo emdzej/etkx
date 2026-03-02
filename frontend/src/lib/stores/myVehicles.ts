@@ -68,11 +68,60 @@ const clear = () => {
   store.set([]);
 };
 
+const exportData = (): string => {
+  let data: MyVehicle[] = [];
+  store.subscribe((v) => (data = v))();
+  return JSON.stringify(data, null, 2);
+};
+
+const importData = (json: string, replace: boolean = false): { success: boolean; count: number; error?: string } => {
+  try {
+    const parsed = JSON.parse(json) as MyVehicle[];
+    if (!Array.isArray(parsed)) {
+      return { success: false, count: 0, error: 'Invalid format: expected array' };
+    }
+    
+    const validVehicles = parsed.filter(
+      (v) => v.mospId && v.label && typeof v.mospId === 'string'
+    ).map((v) => ({
+      ...v,
+      datum: v.datum || '9999-12-31',
+      brand: v.brand || 'bmw',
+      productType: v.productType || 'car',
+      catalogScope: v.catalogScope || 'current',
+      addedAt: v.addedAt || Date.now()
+    }));
+
+    if (replace) {
+      store.set(validVehicles);
+    } else {
+      store.update((existing) => {
+        const merged = [...existing];
+        for (const vehicle of validVehicles) {
+          const idx = merged.findIndex((v) => v.mospId === vehicle.mospId);
+          if (idx >= 0) {
+            merged[idx] = vehicle;
+          } else {
+            merged.push(vehicle);
+          }
+        }
+        return merged.sort((a, b) => b.addedAt - a.addedAt);
+      });
+    }
+
+    return { success: true, count: validVehicles.length };
+  } catch (e) {
+    return { success: false, count: 0, error: e instanceof Error ? e.message : 'Parse error' };
+  }
+};
+
 export const myVehicles = {
   subscribe: store.subscribe,
   set: store.set,
   update: store.update,
   add,
   remove,
-  clear
+  clear,
+  exportData,
+  importData
 };
