@@ -1,11 +1,18 @@
 <script lang="ts">
   import { availableLanguages, language, theme } from '$lib/stores';
+  import { myVehicles } from '$lib/stores/myVehicles';
 
-  export let open = false;
+  interface Props {
+    open: boolean;
+  }
 
-  const getLanguageKey = (lang: { iso: string; regiso: string }) => `${lang.iso}-${lang.regiso}`;
+  let { open = $bindable(false) }: Props = $props();
+  let fileInput: HTMLInputElement | null = $state(null);
+  let importMessage = $state<{ type: 'success' | 'error'; text: string } | null>(null);
 
-  $: selectedLanguage = getLanguageKey($language);
+  const selectedLanguage = $derived(
+    `${$language.iso}-${$language.regiso}`
+  );
 
   const close = () => {
     open = false;
@@ -13,7 +20,7 @@
 
   const handleLanguageChange = (event: Event) => {
     const value = (event.currentTarget as HTMLSelectElement).value;
-    const nextLanguage = availableLanguages.find((lang) => getLanguageKey(lang) === value);
+    const nextLanguage = availableLanguages.find((lang) => `${lang.iso}-${lang.regiso}` === value);
 
     if (nextLanguage) {
       language.set(nextLanguage);
@@ -23,6 +30,46 @@
   const handleThemeToggle = (event: Event) => {
     const checked = (event.currentTarget as HTMLInputElement).checked;
     theme.set(checked ? 'dark' : 'light');
+  };
+
+  const handleExport = () => {
+    const data = myVehicles.exportData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `etkx-vehicles-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleImport = async (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    try {
+      const text = await file.text();
+      const result = myVehicles.importData(text, false);
+      if (result.success) {
+        importMessage = { type: 'success', text: `Imported ${result.count} vehicle(s)` };
+      } else {
+        importMessage = { type: 'error', text: result.error || 'Import failed' };
+      }
+    } catch {
+      importMessage = { type: 'error', text: 'Failed to read file' };
+    }
+
+    input.value = '';
+    setTimeout(() => { importMessage = null; }, 3000);
+  };
+
+  const handleClearAll = () => {
+    if (confirm('Remove all saved vehicles? This cannot be undone.')) {
+      myVehicles.clear();
+      importMessage = { type: 'success', text: 'All vehicles removed' };
+      setTimeout(() => { importMessage = null; }, 3000);
+    }
   };
 </script>
 
@@ -72,6 +119,59 @@
         checked={$theme === 'dark'}
         onchange={handleThemeToggle}
       />
+    </div>
+
+    <!-- My Vehicles -->
+    <div class="border-t border-slate-200 pt-4 dark:border-slate-700">
+      <h3 class="mb-3 text-sm font-medium text-slate-700 dark:text-slate-200">
+        My Vehicles ({$myVehicles.length})
+      </h3>
+      
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
+          onclick={handleExport}
+          disabled={$myVehicles.length === 0}
+        >
+          Export
+        </button>
+
+        <button
+          type="button"
+          class="rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+          onclick={() => fileInput?.click()}
+        >
+          Import
+        </button>
+
+        <button
+          type="button"
+          class="rounded-lg border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:border-red-800 dark:bg-slate-800 dark:text-red-400 dark:hover:bg-red-900/20 disabled:opacity-50"
+          onclick={handleClearAll}
+          disabled={$myVehicles.length === 0}
+        >
+          Clear All
+        </button>
+      </div>
+
+      <input
+        type="file"
+        accept=".json,application/json"
+        class="hidden"
+        bind:this={fileInput}
+        onchange={handleImport}
+      />
+
+      {#if importMessage}
+        <div
+          class="mt-2 rounded-lg px-3 py-1.5 text-xs {importMessage.type === 'success'
+            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+            : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'}"
+        >
+          {importMessage.text}
+        </div>
+      {/if}
     </div>
   </div>
 </div>
