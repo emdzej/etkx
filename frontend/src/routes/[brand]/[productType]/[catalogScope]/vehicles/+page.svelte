@@ -1,18 +1,29 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import VinLookup from '$lib/components/VinLookup.svelte';
   import ManualVehicleSelect from '$lib/components/ManualVehicleSelect.svelte';
+  import {
+    type Brand,
+    type ProductType,
+    type CatalogScope,
+    brandLabels
+  } from '$lib/types/catalog';
+
+  const brand = $derived($page.params.brand as Brand);
+  const productType = $derived($page.params.productType as ProductType);
+  const catalogScope = $derived($page.params.catalogScope as CatalogScope);
 
   let activeTab = $state<'vin' | 'manual'>('vin');
 </script>
 
 <svelte:head>
-  <title>Select Vehicle | BMW ETKx</title>
+  <title>Select Vehicle | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-2xl">
   <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Select Vehicle</h1>
   <p class="mt-1 text-slate-600 dark:text-slate-400">
-    Look up by VIN or manually select your BMW vehicle.
+    Look up by VIN or manually select your vehicle.
   </p>
 
   <!-- Tabs -->
@@ -40,9 +51,9 @@
   <!-- Tab Content -->
   <div class="mt-6">
     {#if activeTab === 'vin'}
-      <VinLookup />
+      <VinLookup {brand} {productType} {catalogScope} />
     {:else}
-      <ManualVehicleSelect />
+      <ManualVehicleSelect {brand} {productType} {catalogScope} />
     {/if}
   </div>
 </div>

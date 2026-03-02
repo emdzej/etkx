@@ -3,6 +3,20 @@
   import { getVehicleByVin } from '$lib/api';
   import type { VehicleIdentification } from '$lib/api/types';
   import { myVehicles } from '$lib/stores/myVehicles';
+  import {
+    type Brand,
+    type ProductType,
+    type CatalogScope,
+    brandLabels
+  } from '$lib/types/catalog';
+
+  interface Props {
+    brand: Brand;
+    productType: ProductType;
+    catalogScope: CatalogScope;
+  }
+
+  const { brand, productType, catalogScope }: Props = $props();
 
   let vin = $state('');
   let loading = $state(false);
@@ -43,7 +57,9 @@
   };
 
   const datum = $derived(result ? normalizeDatum(result.produktionsdatum || '9999-12-31') : '');
-  const catalogUrl = $derived(result ? `/vehicles/${result.modellspalte}?datum=${datum}` : '');
+  const catalogUrl = $derived(
+    result ? `/${brand}/${productType}/${catalogScope}/vehicles/${result.modellspalte}?datum=${datum}` : ''
+  );
   const isSaved = $derived(result ? $myVehicles.some((v) => v.mospId === result.modellspalte) : false);
 
   const openCatalog = () => {
@@ -57,7 +73,10 @@
     myVehicles.add({
       mospId: result.modellspalte,
       datum,
-      label: `${result.baureihe} ${result.modell} ${datum}`.trim(),
+      brand,
+      productType,
+      catalogScope,
+      label: `${brandLabels[brand]} ${result.baureihe} ${result.modell} ${datum}`.trim(),
       series: result.baureihe,
       model: result.modell,
       region: result.region || 'ECE',

@@ -4,13 +4,19 @@
   import DiagramViewer from '$lib/components/DiagramViewer.svelte';
   import PartsTable from '$lib/components/PartsTable.svelte';
   import { myVehicles } from '$lib/stores/myVehicles';
+  import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
 
+  const brand = $derived($page.params.brand as Brand);
+  const productType = $derived($page.params.productType as ProductType);
+  const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId ?? '');
   const btnr = $derived($page.params.btnr ?? '');
+  const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
+  
   const currentVehicle = $derived($myVehicles.find((vehicle) => vehicle.mospId === mospId));
-  const vehicleDatum = $derived(currentVehicle?.datum);
+  const vehicleDatum = $derived(currentVehicle?.datum || $page.url.searchParams.get('datum'));
   const vehicleInfo = $derived(
     currentVehicle
       ? {
@@ -18,7 +24,11 @@
           name: currentVehicle.label,
           datum: currentVehicle.datum
         }
-      : undefined
+      : {
+          mospId,
+          name: mospId,
+          datum: vehicleDatum || undefined
+        }
   );
 
   let details = $state<DiagramDetails | null>(null);
@@ -39,7 +49,7 @@
     try {
       const [diagramDetails, diagramLines] = await Promise.all([
         getDiagramDetails(btnr),
-        getDiagramLines(btnr, mospId, DEFAULT_ISO, vehicleDatum)
+        getDiagramLines(btnr, mospId, DEFAULT_ISO, vehicleDatum || undefined)
       ]);
       details = diagramDetails;
       lines = diagramLines.vehicleLines;
@@ -63,7 +73,7 @@
 </script>
 
 <svelte:head>
-  <title>Diagram {btnr} | BMW ETKx</title>
+  <title>Diagram {btnr} | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl space-y-6">

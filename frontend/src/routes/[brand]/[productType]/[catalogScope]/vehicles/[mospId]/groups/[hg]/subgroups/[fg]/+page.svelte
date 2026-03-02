@@ -2,12 +2,17 @@
   import { page } from '$app/stores';
   import { getDiagrams, type DiagramSummary } from '$lib/api';
   import SubgroupCard from '$lib/components/SubgroupCard.svelte';
+  import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
 
+  const brand = $derived($page.params.brand as Brand);
+  const productType = $derived($page.params.productType as ProductType);
+  const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId);
   const hg = $derived($page.params.hg);
   const fg = $derived($page.params.fg);
+  const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
 
   let diagrams = $state<DiagramSummary[]>([]);
   let loading = $state(false);
@@ -37,7 +42,7 @@
 </script>
 
 <svelte:head>
-  <title>Diagrams | BMW ETKx</title>
+  <title>Diagrams | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl space-y-6">
@@ -63,7 +68,7 @@
           code={diagram.btnr}
           name={diagram.name}
           thumbnailId={diagram.grafikId}
-          href={`/vehicles/${mospId}/diagrams/${diagram.btnr}`}
+          href={`${basePath}/diagrams/${diagram.btnr}`}
         />
       {/each}
     </div>

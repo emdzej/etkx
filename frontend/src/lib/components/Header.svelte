@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CatalogSelector from './CatalogSelector.svelte';
   import SearchInput from './SearchInput.svelte';
   import SettingsPanel from './SettingsPanel.svelte';
   import VehicleDropdown from './VehicleDropdown.svelte';
@@ -23,8 +24,10 @@
       href="/"
       class="text-lg font-semibold text-slate-900 transition hover:text-blue-600 dark:text-white dark:hover:text-blue-400"
     >
-      BMW ETKx
+      ETKx
     </a>
+
+    <CatalogSelector />
 
     <nav class="flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
       {#if itemCount > 0}

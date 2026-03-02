@@ -12,15 +12,35 @@
     resolveMospId
   } from '$lib/api';
   import { myVehicles } from '$lib/stores/myVehicles';
+  import {
+    type Brand,
+    type ProductType,
+    type CatalogScope,
+    brandToApi,
+    productTypeToApi,
+    catalogScopeToApi,
+    brandLabels
+  } from '$lib/types/catalog';
   import CascadingSelect from './CascadingSelect.svelte';
 
-  const DEFAULT_BRAND = 'BMW';
-  const DEFAULT_SCOPE = 'BE';
+  interface Props {
+    brand: Brand;
+    productType: ProductType;
+    catalogScope: CatalogScope;
+  }
+
+  const { brand, productType, catalogScope }: Props = $props();
+
   const DEFAULT_REGIONS = ['ECE'];
   const DEFAULT_ISO = 'EN';
   const DEFAULT_REGISO = 'US';
 
-  let product = $state('P');
+  // Derived API values
+  const apiMarke = $derived(brandToApi[brand]);
+  const apiProduktart = $derived(productTypeToApi[productType]);
+  const apiKatalogumfang = $derived(catalogScopeToApi[catalogScope]);
+  const isMotorcycle = $derived(productType === 'motorcycle');
+
   let series = $state('');
   let body = $state('');
   let model = $state('');
@@ -52,10 +72,28 @@
 
   let errorMessage = $state<string | null>(null);
 
-  const isMotorcycle = () => product === 'M';
-
   const getLabel = (options: { value: string; label: string }[], value: string) =>
     options.find((opt) => opt.value === value)?.label || value;
+
+  const resetAll = () => {
+    series = '';
+    body = '';
+    model = '';
+    region = '';
+    steering = '';
+    transmission = '';
+    year = '';
+    month = '';
+    mospId = '';
+    seriesOptions = [];
+    bodyOptions = [];
+    modelOptions = [];
+    regionOptions = [];
+    steeringOptions = [];
+    transmissionOptions = [];
+    yearOptions = [];
+    monthOptions = [];
+  };
 
   const resetAfterSeries = () => {
     body = '';
@@ -146,9 +184,9 @@
     errorMessage = null;
     try {
       const result = await getSeries({
-        marke: DEFAULT_BRAND,
-        produktart: product,
-        katalogumfang: DEFAULT_SCOPE,
+        marke: apiMarke,
+        produktart: apiProduktart,
+        katalogumfang: apiKatalogumfang,
         regionen: DEFAULT_REGIONS,
         iso: DEFAULT_ISO,
         regiso: DEFAULT_REGISO
@@ -167,14 +205,14 @@
   };
 
   const loadBodies = async () => {
-    if (!series || isMotorcycle()) {
+    if (!series || isMotorcycle) {
       bodyOptions = [];
       return;
     }
     loadingBody = true;
     errorMessage = null;
     try {
-      const result = await getBodies(series, DEFAULT_SCOPE, DEFAULT_REGIONS, DEFAULT_ISO, DEFAULT_REGISO);
+      const result = await getBodies(series, apiKatalogumfang, DEFAULT_REGIONS, DEFAULT_ISO, DEFAULT_REGISO);
       bodyOptions = result.map((entry) => ({
         value: entry.karosserie,
         label: entry.extKarosserie || entry.karosserie
@@ -189,14 +227,14 @@
   };
 
   const loadModels = async () => {
-    if (!series || (!isMotorcycle() && !body)) {
+    if (!series || (!isMotorcycle && !body)) {
       modelOptions = [];
       return;
     }
     loadingModel = true;
     errorMessage = null;
     try {
-      const result = await getModels(series, DEFAULT_SCOPE, DEFAULT_REGIONS, isMotorcycle() ? undefined : body);
+      const result = await getModels(series, apiKatalogumfang, DEFAULT_REGIONS, isMotorcycle ? undefined : body);
       modelOptions = result.map((entry) => ({
         value: entry.modell,
         label: entry.modell
@@ -220,10 +258,10 @@
     try {
       const result = await getRegions(
         series,
-        DEFAULT_SCOPE,
+        apiKatalogumfang,
         model,
         DEFAULT_REGIONS,
-        isMotorcycle() ? undefined : body
+        isMotorcycle ? undefined : body
       );
       regionOptions = result.map((entry) => ({
         value: entry.region,
@@ -239,14 +277,14 @@
   };
 
   const loadSteerings = async () => {
-    if (isMotorcycle() || !series || !body || !model || !region) {
+    if (isMotorcycle || !series || !body || !model || !region) {
       steeringOptions = [];
       return;
     }
     loadingSteering = true;
     errorMessage = null;
     try {
-      const result = await getSteerings(series, DEFAULT_SCOPE, body, model, region, DEFAULT_ISO, DEFAULT_REGISO);
+      const result = await getSteerings(series, apiKatalogumfang, body, model, region, DEFAULT_ISO, DEFAULT_REGISO);
       steeringOptions = result.map((entry) => ({
         value: entry.lenkung,
         label: entry.extLenkung || entry.lenkung
@@ -261,7 +299,7 @@
   };
 
   const loadTransmissions = async () => {
-    if (isMotorcycle() || !series || !body || !model || !region) {
+    if (isMotorcycle || !series || !body || !model || !region) {
       transmissionOptions = [];
       return;
     }
@@ -270,7 +308,7 @@
     try {
       const result = await getTransmissions(
         series,
-        DEFAULT_SCOPE,
+        apiKatalogumfang,
         body,
         model,
         region,
@@ -301,12 +339,12 @@
     try {
       const result = await getYears(
         series,
-        DEFAULT_SCOPE,
+        apiKatalogumfang,
         model,
         region,
-        isMotorcycle() ? undefined : body,
-        isMotorcycle() ? undefined : steering || undefined,
-        isMotorcycle() ? undefined : transmission || undefined
+        isMotorcycle ? undefined : body,
+        isMotorcycle ? undefined : steering || undefined,
+        isMotorcycle ? undefined : transmission || undefined
       );
       yearOptions = result.map((entry) => ({
         value: entry.baujahr,
@@ -331,15 +369,15 @@
     try {
       const result = await getMonths(
         series,
-        DEFAULT_SCOPE,
+        apiKatalogumfang,
         model,
         region,
         year,
         DEFAULT_ISO,
         DEFAULT_REGISO,
-        isMotorcycle() ? undefined : body,
-        isMotorcycle() ? undefined : steering || undefined,
-        isMotorcycle() ? undefined : transmission || undefined
+        isMotorcycle ? undefined : body,
+        isMotorcycle ? undefined : steering || undefined,
+        isMotorcycle ? undefined : transmission || undefined
       );
       monthOptions = result.map((entry) => ({
         value: entry.zulassungsmonat,
@@ -366,8 +404,8 @@
         series,
         model,
         region,
-        isMotorcycle() ? undefined : body,
-        product
+        isMotorcycle ? undefined : body,
+        apiProduktart
       );
       mospId = result[0]?.mospId ?? '';
     } catch (e) {
@@ -379,18 +417,10 @@
     }
   };
 
-  const handleProductChange = (value: string) => {
-    product = value;
-    series = '';
-    seriesOptions = [];
-    resetAfterSeries();
-    loadSeries();
-  };
-
   const handleSeriesChange = (value: string) => {
     series = value;
     resetAfterSeries();
-    if (isMotorcycle()) {
+    if (isMotorcycle) {
       loadModels();
     } else {
       loadBodies();
@@ -412,7 +442,7 @@
   const handleRegionChange = (value: string) => {
     region = value;
     resetAfterRegion();
-    if (isMotorcycle()) {
+    if (isMotorcycle) {
       loadYears();
     } else {
       loadSteerings();
@@ -443,13 +473,17 @@
     loadMospId();
   };
 
+  // Load series when props change
   $effect(() => {
+    resetAll();
     loadSeries();
   });
 
   const datum = $derived(year && month ? `${year}-${month.padStart(2, '0')}-01` : '');
 
-  const catalogUrl = $derived(mospId && datum ? `/vehicles/${mospId}?datum=${datum}` : '');
+  const catalogUrl = $derived(
+    mospId && datum ? `/${brand}/${productType}/${catalogScope}/vehicles/${mospId}?datum=${datum}` : ''
+  );
 
   const openCatalog = () => {
     if (!catalogUrl) return;
@@ -463,11 +497,14 @@
     const modelLabel = getLabel(modelOptions, model);
     const regionLabel = getLabel(regionOptions, region);
 
-    const labelParts = [DEFAULT_BRAND, seriesLabel, modelLabel, regionLabel, `${year}-${month}`];
+    const labelParts = [brandLabels[brand], seriesLabel, modelLabel, regionLabel, `${year}-${month}`];
 
     myVehicles.add({
       mospId,
       datum,
+      brand,
+      productType,
+      catalogScope,
       label: labelParts.filter(Boolean).join(' '),
       series,
       model: modelLabel,
@@ -482,16 +519,6 @@
 <div class="space-y-4">
   <div class="grid gap-4 sm:grid-cols-2">
     <CascadingSelect
-      label="Product"
-      options={[
-        { value: 'P', label: 'Car' },
-        { value: 'M', label: 'Motorcycle' }
-      ]}
-      bind:value={product}
-      onchange={handleProductChange}
-    />
-
-    <CascadingSelect
       label="Series"
       options={seriesOptions}
       bind:value={series}
@@ -501,7 +528,7 @@
       onchange={handleSeriesChange}
     />
 
-    {#if !isMotorcycle()}
+    {#if !isMotorcycle}
       <CascadingSelect
         label="Body"
         options={bodyOptions}
@@ -518,7 +545,7 @@
       options={modelOptions}
       bind:value={model}
       loading={loadingModel}
-      disabled={!series || (!isMotorcycle() && !body) || loadingModel}
+      disabled={!series || (!isMotorcycle && !body) || loadingModel}
       placeholder="Select model..."
       onchange={handleModelChange}
     />
@@ -533,7 +560,7 @@
       onchange={handleRegionChange}
     />
 
-    {#if !isMotorcycle()}
+    {#if !isMotorcycle}
       <CascadingSelect
         label="Steering"
         options={steeringOptions}
@@ -560,7 +587,7 @@
       options={yearOptions}
       bind:value={year}
       loading={loadingYear}
-      disabled={(!isMotorcycle() && !transmission) || (!region && isMotorcycle()) || loadingYear}
+      disabled={(!isMotorcycle && !transmission) || (isMotorcycle && !region) || loadingYear}
       placeholder="Select year..."
       onchange={handleYearChange}
     />

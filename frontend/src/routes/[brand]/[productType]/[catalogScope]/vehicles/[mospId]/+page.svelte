@@ -2,10 +2,15 @@
   import { page } from '$app/stores';
   import { getMainGroups, type MainGroup } from '$lib/api';
   import GroupCard from '$lib/components/GroupCard.svelte';
+  import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
 
+  const brand = $derived($page.params.brand as Brand);
+  const productType = $derived($page.params.productType as ProductType);
+  const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId);
+  const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
 
   let groups = $state<MainGroup[]>([]);
   let loading = $state(false);
@@ -35,7 +40,7 @@
 </script>
 
 <svelte:head>
-  <title>Catalog | BMW ETKx</title>
+  <title>Catalog | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl space-y-6">
@@ -63,7 +68,7 @@
           code={group.hg}
           name={group.name}
           thumbnailId={group.thumbnailId}
-          href={`/vehicles/${mospId}/groups/${group.hg}`}
+          href={`${basePath}/groups/${group.hg}`}
         />
       {/each}
     </div>

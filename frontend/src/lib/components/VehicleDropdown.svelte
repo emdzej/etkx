@@ -1,7 +1,20 @@
 <script lang="ts">
+  import { page } from '$app/stores';
   import { myVehicles } from '$lib/stores/myVehicles';
+  import { isValidBrand, isValidProductType, isValidCatalogScope } from '$lib/types/catalog';
 
   let isOpen = $state(false);
+
+  // Get current context from URL or default
+  const currentBrand = $derived(
+    isValidBrand($page.params.brand) ? $page.params.brand : 'bmw'
+  );
+  const currentProductType = $derived(
+    isValidProductType($page.params.productType) ? $page.params.productType : 'car'
+  );
+  const currentCatalogScope = $derived(
+    isValidCatalogScope($page.params.catalogScope) ? $page.params.catalogScope : 'current'
+  );
 
   const toggle = () => {
     isOpen = !isOpen;
@@ -13,6 +26,14 @@
 
   const handleRemove = (mospId: string) => {
     myVehicles.remove(mospId);
+  };
+
+  const getVehicleUrl = (vehicle: typeof $myVehicles[0]) => {
+    const brand = vehicle.brand || 'bmw';
+    const productType = vehicle.productType || 'car';
+    const catalogScope = vehicle.catalogScope || 'current';
+    const datumParam = vehicle.datum ? `?datum=${vehicle.datum}` : '';
+    return `/${brand}/${productType}/${catalogScope}/vehicles/${vehicle.mospId}${datumParam}`;
   };
 </script>
 
@@ -47,7 +68,7 @@
           {#each $myVehicles as vehicle (vehicle.mospId)}
             <li class="flex items-center justify-between gap-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
               <a
-                href="/vehicles/{vehicle.mospId}{vehicle.datum ? `?datum=${vehicle.datum}` : ''}"
+                href={getVehicleUrl(vehicle)}
                 class="flex-1 truncate px-3 py-2 text-sm text-slate-700 dark:text-slate-100"
                 title={vehicle.label}
                 onclick={close}
@@ -68,7 +89,7 @@
       {/if}
       <div class="mt-2 border-t border-slate-200 pt-2 dark:border-slate-700">
         <a
-          href="/vehicles"
+          href="/{currentBrand}/{currentProductType}/{currentCatalogScope}/vehicles"
           class="block rounded-lg px-3 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-slate-800"
           onclick={close}
         >

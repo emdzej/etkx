@@ -2,11 +2,16 @@
   import { page } from '$app/stores';
   import { getSubGroups, type SubGroup } from '$lib/api';
   import SubgroupCard from '$lib/components/SubgroupCard.svelte';
+  import { type Brand, type ProductType, type CatalogScope, brandLabels } from '$lib/types/catalog';
 
   const DEFAULT_ISO = 'EN';
 
+  const brand = $derived($page.params.brand as Brand);
+  const productType = $derived($page.params.productType as ProductType);
+  const catalogScope = $derived($page.params.catalogScope as CatalogScope);
   const mospId = $derived($page.params.mospId);
   const hg = $derived($page.params.hg);
+  const basePath = $derived(`/${brand}/${productType}/${catalogScope}/vehicles/${mospId}`);
 
   let subgroups = $state<SubGroup[]>([]);
   let loading = $state(false);
@@ -36,7 +41,7 @@
 </script>
 
 <svelte:head>
-  <title>Groups | BMW ETKx</title>
+  <title>Groups | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-5xl space-y-6">
@@ -62,7 +67,7 @@
           code={subgroup.fg}
           name={subgroup.name}
           thumbnailId={subgroup.thumbnailId}
-          href={`/vehicles/${mospId}/groups/${hg}/subgroups/${subgroup.fg}`}
+          href={`${basePath}/groups/${hg}/subgroups/${subgroup.fg}`}
         />
       {/each}
     </div>

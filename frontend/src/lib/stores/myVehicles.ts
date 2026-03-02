@@ -1,9 +1,13 @@
 import { browser } from '$app/environment';
 import { writable } from 'svelte/store';
+import type { Brand, ProductType, CatalogScope } from '$lib/types/catalog';
 
 export type MyVehicle = {
   mospId: string;
   datum: string;
+  brand?: Brand;
+  productType?: ProductType;
+  catalogScope?: CatalogScope;
   label: string;
   series: string;
   model: string;
@@ -27,7 +31,11 @@ const readInitial = (): MyVehicle[] => {
     const parsed = JSON.parse(raw) as MyVehicle[];
     return parsed.map((vehicle) => ({
       ...vehicle,
-      datum: vehicle.datum || '99991231'
+      datum: vehicle.datum || '9999-12-31',
+      // Default to BMW/car/current for old entries
+      brand: vehicle.brand || 'bmw',
+      productType: vehicle.productType || 'car',
+      catalogScope: vehicle.catalogScope || 'current'
     }));
   } catch {
     return [];
