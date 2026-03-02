@@ -449,7 +449,14 @@
 
   const datum = $derived(year && month ? `${year}-${month.padStart(2, '0')}-01` : '');
 
-  const saveAndNavigate = () => {
+  const catalogUrl = $derived(mospId && datum ? `/vehicles/${mospId}?datum=${datum}` : '');
+
+  const openCatalog = () => {
+    if (!catalogUrl) return;
+    goto(catalogUrl);
+  };
+
+  const saveVehicle = () => {
     if (!mospId || !datum) return;
 
     const seriesLabel = getLabel(seriesOptions, series);
@@ -467,9 +474,9 @@
       region: regionLabel,
       addedAt: Date.now()
     });
-
-    goto(`/vehicles/${mospId}?datum=${datum}`);
   };
+
+  const isSaved = $derived(mospId ? $myVehicles.some((v) => v.mospId === mospId) : false);
 </script>
 
 <div class="space-y-4">
@@ -586,12 +593,21 @@
         <dt class="text-slate-500 dark:text-slate-400">Production Date</dt>
         <dd class="font-medium text-slate-900 dark:text-white">{datum}</dd>
       </dl>
-      <button
-        onclick={saveAndNavigate}
-        class="mt-4 w-full rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700"
-      >
-        Save & Open Catalog
-      </button>
+      <div class="mt-4 flex gap-2">
+        <button
+          onclick={openCatalog}
+          class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
+        >
+          Open Catalog
+        </button>
+        <button
+          onclick={saveVehicle}
+          disabled={isSaved}
+          class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+        >
+          {isSaved ? '✓ Saved' : 'Save'}
+        </button>
+      </div>
     </div>
   {/if}
 </div>

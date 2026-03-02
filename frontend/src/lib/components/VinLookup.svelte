@@ -34,14 +34,25 @@
     }
   };
 
-  const saveAndNavigate = () => {
+  // Normalize datum from YYYYMMDD to YYYY-MM-DD
+  const normalizeDatum = (raw: string): string => {
+    if (raw.length === 8) {
+      return `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;
+    }
+    return raw;
+  };
+
+  const datum = $derived(result ? normalizeDatum(result.produktionsdatum || '9999-12-31') : '');
+  const catalogUrl = $derived(result ? `/vehicles/${result.modellspalte}?datum=${datum}` : '');
+  const isSaved = $derived(result ? $myVehicles.some((v) => v.mospId === result.modellspalte) : false);
+
+  const openCatalog = () => {
+    if (!catalogUrl) return;
+    goto(catalogUrl);
+  };
+
+  const saveVehicle = () => {
     if (!result) return;
-    
-    // Normalize datum from YYYYMMDD to YYYY-MM-DD
-    const rawDatum = result.produktionsdatum || '99991231';
-    const datum = rawDatum.length === 8 
-      ? `${rawDatum.slice(0, 4)}-${rawDatum.slice(4, 6)}-${rawDatum.slice(6, 8)}`
-      : rawDatum;
 
     myVehicles.add({
       mospId: result.modellspalte,
@@ -52,8 +63,6 @@
       region: result.region || 'ECE',
       addedAt: Date.now()
     });
-
-    goto(`/vehicles/${result.modellspalte}?datum=${datum}`);
   };
 </script>
 
@@ -89,21 +98,30 @@
         <dd class="text-slate-900 dark:text-white">{result.baureihe}</dd>
         <dt class="text-slate-500 dark:text-slate-400">Model</dt>
         <dd class="text-slate-900 dark:text-white">{result.modell}</dd>
-        {#if result.produktionsdatum}
+        {#if datum}
           <dt class="text-slate-500 dark:text-slate-400">Production Date</dt>
-          <dd class="text-slate-900 dark:text-white">{result.produktionsdatum}</dd>
+          <dd class="text-slate-900 dark:text-white">{datum}</dd>
         {/if}
         {#if result.region}
           <dt class="text-slate-500 dark:text-slate-400">Region</dt>
           <dd class="text-slate-900 dark:text-white">{result.region}</dd>
         {/if}
       </dl>
-      <button
-        onclick={saveAndNavigate}
-        class="mt-4 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700"
-      >
-        Save & Open Catalog
-      </button>
+      <div class="mt-4 flex gap-2">
+        <button
+          onclick={openCatalog}
+          class="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700"
+        >
+          Open Catalog
+        </button>
+        <button
+          onclick={saveVehicle}
+          disabled={isSaved}
+          class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+        >
+          {isSaved ? '✓ Saved' : 'Save'}
+        </button>
+      </div>
     </div>
   {/if}
 </div>
