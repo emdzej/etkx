@@ -8,10 +8,10 @@
     setActiveList,
     updateItemQuantity,
     updateNotes
-  } from '$lib/stores/partsLists.svelte';
+  } from '$lib/stores/partsLists';
 
   const listId = $derived($page.params.id ?? '');
-  const list = $derived(partsLists.find((item) => item.id === listId));
+  const list = $derived($partsLists.find((item) => item.id === listId));
 
   let notesDraft = $state('');
   let notesSaving = $state(false);

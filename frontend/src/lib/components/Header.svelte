@@ -2,10 +2,14 @@
   import SearchInput from './SearchInput.svelte';
   import SettingsPanel from './SettingsPanel.svelte';
   import VehicleDropdown from './VehicleDropdown.svelte';
-  import * as partsLists from '$lib/stores/partsLists.svelte';
+  import { partsLists, activeListId } from '$lib/stores/partsLists';
 
-  const activeList = $derived(partsLists.getActiveList());
-  const itemCount = $derived(partsLists.getItemCount());
+  const activeList = $derived(
+    $activeListId ? $partsLists.find((list) => list.id === $activeListId) : undefined
+  );
+  const itemCount = $derived(
+    activeList ? activeList.items.reduce((total, item) => total + item.quantity, 0) : 0
+  );
   const listHref = $derived(activeList ? `/lists/${activeList.id}` : '/lists');
 
   let settingsOpen = false;

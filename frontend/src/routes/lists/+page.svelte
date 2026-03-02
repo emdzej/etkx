@@ -8,7 +8,7 @@
     partsLists,
     setActiveList,
     updateNotes
-  } from '$lib/stores/partsLists.svelte';
+  } from '$lib/stores/partsLists';
 
   let isCreating = $state(false);
   let newListName = $state('');
@@ -111,7 +111,7 @@
         throw new Error('Invalid format');
       }
 
-      const duplicateList = partsLists.find(
+      const duplicateList = $partsLists.find(
         (list) => list.id === data.list?.id || list.name.toLowerCase() === data.list?.name?.toLowerCase()
       );
 
@@ -275,7 +275,7 @@
     </div>
   {/if}
 
-  {#if partsLists.length === 0}
+  {#if $partsLists.length === 0}
     <div
       class="mt-8 rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-300"
     >
@@ -284,10 +284,10 @@
     </div>
   {:else}
     <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {#each partsLists as list (list.id)}
+      {#each $partsLists as list (list.id)}
         <button
           type="button"
-          class="group flex h-full w-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-blue-500/40 {activeListId === list.id
+          class="group flex h-full w-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-blue-500/40 {$activeListId === list.id
             ? 'ring-2 ring-blue-200 dark:ring-blue-500/40'
             : ''}"
           onclick={() => openList(list.id)}
@@ -299,7 +299,7 @@
                 {list.items.length} {list.items.length === 1 ? 'item' : 'items'}
               </p>
             </div>
-            {#if activeListId === list.id}
+            {#if $activeListId === list.id}
               <span
                 class="rounded-full bg-blue-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-blue-700 dark:bg-blue-500/20 dark:text-blue-200"
               >

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { activeListId, createList, partsLists, setActiveList } from '$lib/stores/partsLists.svelte';
+  import { activeListId, createList, partsLists, setActiveList } from '$lib/stores/partsLists';
 
   interface Props {
     onSelect: (listId: string) => void;
@@ -12,7 +12,7 @@
   let newListName = $state('');
 
   const activeList = $derived(
-    activeListId ? partsLists.find((list) => list.id === activeListId) : null
+    $activeListId ? $partsLists.find((list) => list.id === $activeListId) : null
   );
 
   const toggle = () => {
@@ -96,23 +96,23 @@
     <div
       class="absolute left-0 z-20 mt-2 w-full rounded-xl border border-slate-200 bg-white p-2 shadow-lg dark:border-slate-700 dark:bg-slate-900"
     >
-      {#if partsLists.length === 0}
+      {#if $partsLists.length === 0}
         <div class="px-3 py-2 text-sm text-slate-500 dark:text-slate-400">
           No lists yet.
         </div>
       {:else}
         <ul class="max-h-56 overflow-auto">
-          {#each partsLists as list (list.id)}
+          {#each $partsLists as list (list.id)}
             <li>
               <button
                 type="button"
-                class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium transition hover:bg-slate-100 dark:hover:bg-slate-800 {activeListId === list.id
+                class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium transition hover:bg-slate-100 dark:hover:bg-slate-800 {$activeListId === list.id
                   ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-200'
                   : 'text-slate-700 dark:text-slate-100'}"
                 onclick={() => selectList(list.id)}
               >
                 <span class="truncate">{list.name}</span>
-                {#if activeListId === list.id}
+                {#if $activeListId === list.id}
                   <span class="text-[10px] font-semibold uppercase tracking-wide">Active</span>
                 {/if}
               </button>

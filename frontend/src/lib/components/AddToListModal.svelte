@@ -1,6 +1,6 @@
 <script lang="ts">
   import PartsListDropdown from '$lib/components/PartsListDropdown.svelte';
-  import { activeListId, addItem, partsLists } from '$lib/stores/partsLists.svelte';
+  import { activeListId, addItem, partsLists } from '$lib/stores/partsLists';
   import type { PartsListItem } from '$lib/types/partsList';
 
   interface Props {
@@ -22,7 +22,7 @@
   $effect(() => {
     if (open) {
       quantity = Math.max(1, defaultQuantity ?? 1);
-      selectedListId = activeListId ?? null;
+      selectedListId = $activeListId ?? null;
     }
   });
 
@@ -52,7 +52,7 @@
     onClose();
   };
 
-  const hasLists = $derived(partsLists.length > 0);
+  const hasLists = $derived($partsLists.length > 0);
   const confirmDisabled = $derived(!selectedListId || quantity <= 0);
 </script>
 
