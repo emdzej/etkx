@@ -22,8 +22,8 @@ export const productTypeToApi: Record<ProductType, string> = {
 };
 
 export const catalogScopeToApi: Record<CatalogScope, string> = {
-  'current': 'BE',  // BE shows all (VT + ST)
-  'classic': 'ST'   // ST shows only classic
+  'current': 'VT',  // VT = current vehicles only
+  'classic': 'ST'   // ST = classic vehicles only
 };
 
 // Display labels
