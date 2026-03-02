@@ -1,7 +1,11 @@
 <script lang="ts">
-  import { activeListId, createList, partsLists, setActiveList } from '$lib/stores/partsLists';
+  import { activeListId, createList, partsLists, setActiveList } from '$lib/stores/partsLists.svelte';
 
-  export let onSelect: (listId: string) => void;
+  interface Props {
+    onSelect: (listId: string) => void;
+  }
+
+  const { onSelect }: Props = $props();
 
   let isOpen = $state(false);
   let isCreating = $state(false);

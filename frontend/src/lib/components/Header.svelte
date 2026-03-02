@@ -2,7 +2,7 @@
   import SearchInput from './SearchInput.svelte';
   import SettingsPanel from './SettingsPanel.svelte';
   import VehicleDropdown from './VehicleDropdown.svelte';
-  import * as partsLists from '$lib/stores/partsLists';
+  import * as partsLists from '$lib/stores/partsLists.svelte';
 
   const activeList = $derived(partsLists.getActiveList());
   const itemCount = $derived(partsLists.getItemCount());

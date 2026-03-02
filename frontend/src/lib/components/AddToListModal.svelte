@@ -1,16 +1,20 @@
 <script lang="ts">
   import PartsListDropdown from '$lib/components/PartsListDropdown.svelte';
-  import { activeListId, addItem, partsLists } from '$lib/stores/partsLists';
+  import { activeListId, addItem, partsLists } from '$lib/stores/partsLists.svelte';
   import type { PartsListItem } from '$lib/types/partsList';
 
-  export let open: boolean;
-  export let partNumber: string;
-  export let fullPartNumber: string;
-  export let partName: string;
-  export let defaultQuantity: number;
-  export let vehicle: PartsListItem['vehicle'] = undefined;
-  export let diagramRef: PartsListItem['diagramRef'] = undefined;
-  export let onClose: () => void;
+  interface Props {
+    open: boolean;
+    partNumber: string;
+    fullPartNumber: string;
+    partName: string;
+    defaultQuantity: number;
+    vehicle?: PartsListItem['vehicle'];
+    diagramRef?: PartsListItem['diagramRef'];
+    onClose: () => void;
+  }
+
+  const { open, partNumber, fullPartNumber, partName, defaultQuantity, vehicle, diagramRef, onClose }: Props = $props();
 
   let selectedListId = $state<string | null>(null);
   let quantity = $state<number>(1);

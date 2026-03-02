@@ -8,7 +8,7 @@
     partsLists,
     setActiveList,
     updateNotes
-  } from '$lib/stores/partsLists';
+  } from '$lib/stores/partsLists.svelte';
 
   let isCreating = $state(false);
   let newListName = $state('');

@@ -2,12 +2,16 @@
   import AddToListModal from '$lib/components/AddToListModal.svelte';
   import type { PartsListItem } from '$lib/types/partsList';
 
-  export let partNumber: string;
-  export let fullPartNumber: string;
-  export let partName: string;
-  export let defaultQuantity: number;
-  export let vehicle: PartsListItem['vehicle'] = undefined;
-  export let diagramRef: PartsListItem['diagramRef'] = undefined;
+  interface Props {
+    partNumber: string;
+    fullPartNumber: string;
+    partName: string;
+    defaultQuantity: number;
+    vehicle?: PartsListItem['vehicle'];
+    diagramRef?: PartsListItem['diagramRef'];
+  }
+
+  const { partNumber, fullPartNumber, partName, defaultQuantity, vehicle, diagramRef }: Props = $props();
 
   let isOpen = $state(false);
 
