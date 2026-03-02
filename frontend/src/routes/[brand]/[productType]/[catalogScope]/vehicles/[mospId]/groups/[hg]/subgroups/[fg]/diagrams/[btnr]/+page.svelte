@@ -3,10 +3,12 @@
   import {
     getDiagramDetails,
     getDiagramLines,
+    getDiagrams,
     getMainGroups,
     getSubGroups,
     type DiagramDetails,
     type DiagramLine,
+    type DiagramSummary,
     type MainGroup,
     type SubGroup
   } from '$lib/api';
@@ -41,6 +43,7 @@
   let lines = $state<DiagramLine[]>([]);
   let mainGroup = $state<MainGroup | null>(null);
   let subGroup = $state<SubGroup | null>(null);
+  let diagram = $state<DiagramSummary | null>(null);
   let highlightedNr = $state<string | null>(null);
   let loading = $state(false);
   let errorMessage = $state<string | null>(null);
@@ -55,16 +58,18 @@
     loading = true;
     errorMessage = null;
     try {
-      const [diagramDetails, diagramLines, mainGroups, subGroups] = await Promise.all([
+      const [diagramDetails, diagramLines, mainGroups, subGroups, diagrams] = await Promise.all([
         getDiagramDetails(btnr),
         getDiagramLines(btnr, mospId, DEFAULT_ISO, vehicleDatum || undefined),
         getMainGroups(mospId, DEFAULT_ISO),
-        getSubGroups(mospId, hg, DEFAULT_ISO)
+        getSubGroups(mospId, hg, DEFAULT_ISO),
+        getDiagrams(mospId, hg, fg, DEFAULT_ISO)
       ]);
       details = diagramDetails;
       lines = diagramLines.vehicleLines;
       mainGroup = mainGroups.find((g) => g.hg === hg) || null;
       subGroup = subGroups.find((s) => s.fg === fg) || null;
+      diagram = diagrams.find((d) => d.btnr === btnr) || null;
     } catch (error) {
       console.error('Failed to load diagram data:', error);
       errorMessage = 'Failed to load diagram data.';
@@ -85,25 +90,25 @@
 
   const groupName = $derived(mainGroup?.name || `Group ${hg}`);
   const subgroupName = $derived(subGroup?.name || `Subgroup ${fg}`);
-  const diagramName = $derived(`Diagram ${btnr}`);
+  const diagramName = $derived(diagram?.name || btnr);
 
   const crumbs = $derived([
     { label: brandLabels[brand], href: `/${brand}/${productType}/${catalogScope}/vehicles` },
     { label: vehicleName, href: basePath },
     { label: `${hg} ${groupName}`, href: `${basePath}/groups/${hg}` },
     { label: `${fg} ${subgroupName}`, href: `${basePath}/groups/${hg}/subgroups/${fg}` },
-    { label: btnr }
+    { label: `${btnr} ${diagramName}` }
   ]);
 </script>
 
 <svelte:head>
-  <title>{btnr} | {brandLabels[brand]} ETKx</title>
+  <title>{diagramName} | {brandLabels[brand]} ETKx</title>
 </svelte:head>
 
 <div class="mx-auto max-w-6xl space-y-6">
   <div>
     <Breadcrumb {crumbs} />
-    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{btnr}</h1>
+    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">{btnr} {diagramName}</h1>
     <p class="mt-1 text-slate-600 dark:text-slate-400">{vehicleName}</p>
   </div>
 
