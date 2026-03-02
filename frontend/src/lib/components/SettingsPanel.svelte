@@ -106,7 +106,7 @@
         onchange={handleLanguageChange}
       >
         {#each availableLanguages as lang}
-          <option value={getLanguageKey(lang)}>{lang.name}</option>
+          <option value={`${lang.iso}-${lang.regiso}`}>{lang.name}</option>
         {/each}
       </select>
     </div>
