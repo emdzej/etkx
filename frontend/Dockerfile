@@ -11,10 +11,6 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
-
-# Build with API base URL as build-time arg (SvelteKit needs it at build)
-ARG PUBLIC_API_BASE_URL=http://localhost:8080
-ENV PUBLIC_API_BASE_URL=$PUBLIC_API_BASE_URL
 RUN pnpm build
 
 # Production stage

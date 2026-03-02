@@ -7,7 +7,8 @@ export default defineConfig({
 		proxy: {
 			'/api': {
 				target: 'http://localhost:8080',
-				changeOrigin: true
+				changeOrigin: true,
+				// Backend has context-path /api, so no rewrite needed
 			}
 		}
 	}
