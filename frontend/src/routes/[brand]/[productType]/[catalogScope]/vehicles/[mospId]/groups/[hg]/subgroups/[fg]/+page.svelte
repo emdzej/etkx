@@ -96,7 +96,7 @@
           code={diagram.btnr}
           name={diagram.name}
           thumbnailId={diagram.grafikId}
-          href={`${basePath}/diagrams/${diagram.btnr}${datumParam}`}
+          href={`${basePath}/groups/${hg}/subgroups/${fg}/diagrams/${diagram.btnr}${datumParam}`}
         />
       {/each}
     </div>
