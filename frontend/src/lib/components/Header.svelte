@@ -12,7 +12,7 @@
   );
   const listHref = $derived(activeList ? `/lists/${activeList.id}` : '/lists');
 
-  let settingsOpen = false;
+  let settingsOpen = $state(false);
 </script>
 
 <header
