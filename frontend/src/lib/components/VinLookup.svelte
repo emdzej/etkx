@@ -37,19 +37,23 @@
   const saveAndNavigate = () => {
     if (!result) return;
     
-    const datum = result.produktionsdatum || '99991231';
+    // Normalize datum from YYYYMMDD to YYYY-MM-DD
+    const rawDatum = result.produktionsdatum || '99991231';
+    const datum = rawDatum.length === 8 
+      ? `${rawDatum.slice(0, 4)}-${rawDatum.slice(4, 6)}-${rawDatum.slice(6, 8)}`
+      : rawDatum;
 
     myVehicles.add({
       mospId: result.modellspalte,
       datum,
-      label: `${result.baureihe} ${result.modell} ${result.produktionsdatum || ''}`.trim(),
+      label: `${result.baureihe} ${result.modell} ${datum}`.trim(),
       series: result.baureihe,
       model: result.modell,
       region: result.region || 'ECE',
       addedAt: Date.now()
     });
 
-    goto(`/vehicles/${result.modellspalte}`);
+    goto(`/vehicles/${result.modellspalte}?datum=${datum}`);
   };
 </script>
 

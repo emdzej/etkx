@@ -447,15 +447,16 @@
     loadSeries();
   });
 
+  const datum = $derived(year && month ? `${year}-${month.padStart(2, '0')}-01` : '');
+
   const saveAndNavigate = () => {
-    if (!mospId || !month) return;
+    if (!mospId || !datum) return;
 
     const seriesLabel = getLabel(seriesOptions, series);
     const modelLabel = getLabel(modelOptions, model);
     const regionLabel = getLabel(regionOptions, region);
 
     const labelParts = [DEFAULT_BRAND, seriesLabel, modelLabel, regionLabel, `${year}-${month}`];
-    const datum = `${year}${month.padStart(2, '0')}01`;
 
     myVehicles.add({
       mospId,
@@ -467,7 +468,7 @@
       addedAt: Date.now()
     });
 
-    goto(`/vehicles/${mospId}`);
+    goto(`/vehicles/${mospId}?datum=${datum}`);
   };
 </script>
 
@@ -572,11 +573,25 @@
     <p class="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>
   {/if}
 
-  <button
-    onclick={saveAndNavigate}
-    class="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-50"
-    disabled={!mospId || !month || loadingMospId}
-  >
-    {loadingMospId ? 'Resolving...' : 'Save & Open Catalog'}
-  </button>
+  {#if mospId && datum}
+    <div class="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/50">
+      <h3 class="text-sm font-semibold text-slate-900 dark:text-white">Selected Vehicle</h3>
+      <dl class="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        <dt class="text-slate-500 dark:text-slate-400">Series</dt>
+        <dd class="font-medium text-slate-900 dark:text-white">{getLabel(seriesOptions, series)}</dd>
+        <dt class="text-slate-500 dark:text-slate-400">Model</dt>
+        <dd class="font-medium text-slate-900 dark:text-white">{getLabel(modelOptions, model)}</dd>
+        <dt class="text-slate-500 dark:text-slate-400">Region</dt>
+        <dd class="font-medium text-slate-900 dark:text-white">{getLabel(regionOptions, region)}</dd>
+        <dt class="text-slate-500 dark:text-slate-400">Production Date</dt>
+        <dd class="font-medium text-slate-900 dark:text-white">{datum}</dd>
+      </dl>
+      <button
+        onclick={saveAndNavigate}
+        class="mt-4 w-full rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-green-700"
+      >
+        Save & Open Catalog
+      </button>
+    </div>
+  {/if}
 </div>

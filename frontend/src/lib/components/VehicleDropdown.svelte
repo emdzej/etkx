@@ -45,11 +45,18 @@
       {:else}
         <ul class="max-h-64 overflow-auto">
           {#each $myVehicles as vehicle (vehicle.mospId)}
-            <li class="flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm text-slate-700 hover:bg-slate-100 dark:text-slate-100 dark:hover:bg-slate-800">
-              <span class="truncate" title={vehicle.label}>{vehicle.label}</span>
+            <li class="flex items-center justify-between gap-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+              <a
+                href="/vehicles/{vehicle.mospId}{vehicle.datum ? `?datum=${vehicle.datum}` : ''}"
+                class="flex-1 truncate px-3 py-2 text-sm text-slate-700 dark:text-slate-100"
+                title={vehicle.label}
+                onclick={close}
+              >
+                {vehicle.label}
+              </a>
               <button
                 type="button"
-                class="inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-200 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+                class="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-200 hover:text-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-100"
                 aria-label={`Remove ${vehicle.label}`}
                 onclick={() => handleRemove(vehicle.mospId)}
               >
