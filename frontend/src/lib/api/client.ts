@@ -27,18 +27,16 @@ import type {
 const DEFAULT_ISO = 'EN';
 const DEFAULT_REGISO = 'US';
 
-// Use /api prefix - proxied by Vite (dev) or oauth2-proxy (prod)
-const API_BASE_URL = '/api';
+// API paths already include /api prefix - proxied by Vite (dev) or VirtualService (prod)
+const API_BASE_URL = '';
 
 type QueryValue = string | number | boolean | null | undefined;
 type QueryParam = QueryValue | QueryValue[];
 
 type QueryParams = Record<string, QueryParam>;
 
-const appendQueryParams = (url: URL, params?: QueryParams) => {
-  if (!params) {
-    return;
-  }
+const buildQueryString = (params: QueryParams): string => {
+  const entries: string[] = [];
   Object.entries(params).forEach(([key, value]) => {
     if (value === undefined || value === null) {
       return;
@@ -48,12 +46,13 @@ const appendQueryParams = (url: URL, params?: QueryParams) => {
         if (entry === undefined || entry === null) {
           return;
         }
-        url.searchParams.append(key, String(entry));
+        entries.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(entry))}`);
       });
       return;
     }
-    url.searchParams.append(key, String(value));
+    entries.push(`${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`);
   });
+  return entries.length > 0 ? `?${entries.join('&')}` : '';
 };
 
 const withLanguage = (params: QueryParams = {}, iso?: string, regiso?: string): QueryParams => ({
@@ -63,10 +62,11 @@ const withLanguage = (params: QueryParams = {}, iso?: string, regiso?: string): 
 });
 
 const request = async <T>(path: string, params?: QueryParams, init?: RequestInit): Promise<T> => {
-  const url = new URL(path, API_BASE_URL);
-  appendQueryParams(url, params);
+  // Build URL with query params
+  const queryString = params ? buildQueryString(params) : '';
+  const url = `${API_BASE_URL}${path}${queryString}`;
 
-  const response = await fetch(url.toString(), {
+  const response = await fetch(url, {
     ...init,
     headers: {
       Accept: 'application/json',
@@ -283,7 +283,7 @@ export const getDiagramLines = (
 ): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso, datum: datumToLong(datum) });
 
 export const getDiagramImageUrl = (btnr: string): string =>
-  new URL(`/api/diagrams/${btnr}/image`, API_BASE_URL).toString();
+  `/api/diagrams/${btnr}/image`;
 
 export const getMainGroups = (
   mospId: string,
