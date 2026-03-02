@@ -55,7 +55,7 @@ jobs:
       - name: Build & push backend
         uses: docker/build-push-action@v6
         with:
-          context: ./service
+          context: ./
           push: true
           tags: ${{ steps.meta_backend.outputs.tags }}
           labels: ${{ steps.meta_backend.outputs.labels }}
