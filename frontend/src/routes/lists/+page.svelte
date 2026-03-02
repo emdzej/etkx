@@ -188,10 +188,6 @@
 
     deleteList(listId);
   };
-
-  const openList = (listId: string) => {
-    goto(`/lists/${listId}`);
-  };
 </script>
 
 <section class="mx-auto w-full max-w-7xl px-4 py-8 md:px-6">
@@ -285,12 +281,10 @@
   {:else}
     <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {#each $partsLists as list (list.id)}
-        <button
-          type="button"
+        <div
           class="group flex h-full w-full flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:border-slate-700 dark:bg-slate-900 dark:hover:border-blue-500/40 {$activeListId === list.id
             ? 'ring-2 ring-blue-200 dark:ring-blue-500/40'
             : ''}"
-          onclick={() => openList(list.id)}
         >
           <div class="flex items-start justify-between gap-4">
             <div>
@@ -315,9 +309,12 @@
           </div>
 
           <div class="mt-auto flex items-center justify-between">
-            <span class="text-xs font-semibold text-blue-600 transition group-hover:text-blue-500 dark:text-blue-400">
+            <a
+              href="/lists/{list.id}"
+              class="text-xs font-semibold text-blue-600 transition hover:text-blue-500 dark:text-blue-400"
+            >
               View list →
-            </span>
+            </a>
             <button
               type="button"
               class="inline-flex items-center gap-1 rounded-lg border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-50 dark:border-red-900/40 dark:text-red-400 dark:hover:bg-red-950/40"
@@ -326,7 +323,7 @@
               Delete
             </button>
           </div>
-        </button>
+        </div>
       {/each}
     </div>
   {/if}
