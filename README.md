@@ -154,4 +154,4 @@ See `docs/original-etk-setup.md` for full setup instructions.
 
 ## License
 
-Private repository — BMW ETK data is proprietary.
+Licensed under PolyForm Noncommercial 1.0.0 — free for personal and educational use, no commercial use permitted.
