@@ -42,7 +42,7 @@ The original ETK uses Transbase. This section describes how to migrate to SQLite
 
 ### Prerequisites
 
-- Windows XP VM with ETK Transbase running (IP: `192.168.101.150`, port: `2024`)
+- Original ETK Transbase running (IP: `192.168.101.150`, port: `2024`)
 - Java 11+ on host machine
 - JDBC drivers:
   - `tbjdbc.jar` (Transbase) — from ETK installation
@@ -138,38 +138,6 @@ etkx/
 | `mospId` | e.g. `47669` | Vehicle model identifier |
 | `datum` | `YYYY-MM-DD` (query param) | Production date for typ resolution |
 
----
-
-## Key Database Tables
-
-| Table | Description | ~Rows |
-|-------|-------------|-------|
-| `w_teil` | Parts master | 553K |
-| `w_bildtaf` | Diagrams | 48K |
-| `w_btzeilen` | Parts in diagrams | 1.7M |
-| `w_grafik` | Images (BLOBs) | ~48K |
-| `w_publben` | Multilingual names | ~2M |
-| `w_fztyp` | Vehicle types | ~10K |
-| `w_mosp` | Model variants | ~200K |
-
----
-
-## Deployment (Kubernetes)
-
-```bash
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/secret.yaml      # Edit placeholders first!
-kubectl apply -f k8s/pvc.yaml
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-kubectl apply -f k8s/ingress.yaml
-kubectl apply -f k8s/oauth2-proxy.yaml
-```
-
-Production URL: https://etkx.bimmerz.app (with OAuth2 proxy)
-
----
 
 ## Original ETK (Java Swing)
 
