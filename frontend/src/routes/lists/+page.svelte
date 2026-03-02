@@ -230,7 +230,7 @@
         accept="application/json,.json"
         class="hidden"
         bind:this={importInput}
-        on:change={importList}
+        onchange={importList}
       />
     </div>
   </header>
