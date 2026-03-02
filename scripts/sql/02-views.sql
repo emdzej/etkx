@@ -1,104 +1,81 @@
--- ETKx Views
+-- ETKx Views (language-neutral)
 -- Order: 02 (run after indexes)
--- These views simplify common query patterns with English names pre-joined
+-- These views pre-join related tables but leave language as parameter
 
--- Series/Baureihe with names
+-- Series/Baureihe base info with textcode for name lookup
 DROP VIEW IF EXISTS v_series;
 CREATE VIEW v_series AS
 SELECT 
-    b.baureihe_baureihe AS baureihe,
-    b.baureihe_produktart AS produktart,
-    b.baureihe_bauart AS bauart,
-    b.baureihe_vbereich AS vbereich,
-    b.baureihe_bereich AS bereich,
-    b.baureihe_marke_tps AS marke,
-    b.baureihe_grafikid AS grafikId,
-    b.baureihe_position AS position,
-    g.ben_text AS name
-FROM w_baureihe b
-LEFT JOIN w_ben_gk g ON (
-    b.baureihe_textcode = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-);
+    baureihe_baureihe AS baureihe,
+    baureihe_produktart AS produktart,
+    baureihe_bauart AS bauart,
+    baureihe_vbereich AS vbereich,
+    baureihe_bereich AS bereich,
+    baureihe_marke_tps AS marke,
+    baureihe_grafikid AS grafikId,
+    baureihe_position AS position,
+    baureihe_textcode AS textcode
+FROM w_baureihe;
 
--- Main groups (fg = '00') with names
+-- Main groups (fg = '00') with textcode
 DROP VIEW IF EXISTS v_main_groups;
 CREATE VIEW v_main_groups AS
 SELECT 
-    h.hgfg_hg AS hg,
-    h.hgfg_produktart AS produktart,
-    h.hgfg_bereich AS bereich,
-    h.hgfg_grafikid AS grafikId,
-    g.ben_text AS name
-FROM w_hgfg h
-LEFT JOIN w_ben_gk g ON (
-    h.hgfg_textcode = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-)
-WHERE h.hgfg_fg = '00';
+    hgfg_hg AS hg,
+    hgfg_produktart AS produktart,
+    hgfg_bereich AS bereich,
+    hgfg_grafikid AS grafikId,
+    hgfg_textcode AS textcode
+FROM w_hgfg
+WHERE hgfg_fg = '00';
 
--- Sub groups (fg != '00') with names
+-- Sub groups (fg != '00') with textcode
 DROP VIEW IF EXISTS v_sub_groups;
 CREATE VIEW v_sub_groups AS
 SELECT 
-    h.hgfg_hg AS hg,
-    h.hgfg_fg AS fg,
-    h.hgfg_produktart AS produktart,
-    h.hgfg_bereich AS bereich,
-    h.hgfg_grafikid AS grafikId,
-    g.ben_text AS name
-FROM w_hgfg h
-LEFT JOIN w_ben_gk g ON (
-    h.hgfg_textcode = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-)
-WHERE h.hgfg_fg != '00';
+    hgfg_hg AS hg,
+    hgfg_fg AS fg,
+    hgfg_produktart AS produktart,
+    hgfg_bereich AS bereich,
+    hgfg_grafikid AS grafikId,
+    hgfg_textcode AS textcode
+FROM w_hgfg
+WHERE hgfg_fg != '00';
 
--- Diagrams with names
+-- Diagrams with textcode
 DROP VIEW IF EXISTS v_diagrams;
 CREATE VIEW v_diagrams AS
 SELECT 
-    b.bildtaf_btnr AS btnr,
-    b.bildtaf_hg AS hg,
-    b.bildtaf_fg AS fg,
-    b.bildtaf_produktart AS produktart,
-    b.bildtaf_vbereich AS vbereich,
-    b.bildtaf_grafikid AS grafikId,
-    b.bildtaf_pos AS pos,
-    b.bildtaf_bereich AS bereich,
-    g.ben_text AS name
-FROM w_bildtaf b
-LEFT JOIN w_ben_gk g ON (
-    b.bildtaf_textc = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-);
+    bildtaf_btnr AS btnr,
+    bildtaf_hg AS hg,
+    bildtaf_fg AS fg,
+    bildtaf_produktart AS produktart,
+    bildtaf_vbereich AS vbereich,
+    bildtaf_grafikid AS grafikId,
+    bildtaf_pos AS pos,
+    bildtaf_bereich AS bereich,
+    bildtaf_lkz AS lkz,
+    bildtaf_textc AS textcode
+FROM w_bildtaf;
 
--- Parts with names (basic info for search/display)
+-- Parts with textcode (basic info)
 DROP VIEW IF EXISTS v_parts;
 CREATE VIEW v_parts AS
 SELECT 
-    t.teil_sachnr AS sachnr,
-    t.teil_hauptgr AS hauptgr,
-    t.teil_untergrup AS untergrup,
-    t.teil_benennzus AS zusatz,
-    t.teil_art AS art,
-    t.teil_mengeeinh AS mengeeinh,
-    t.teil_einsatz AS einsatz,
-    t.teil_entfall_dat AS entfall_dat,
-    t.teil_produktart AS produktart,
-    g.ben_text AS name
-FROM w_teil t
-LEFT JOIN w_ben_gk g ON (
-    t.teil_textcode = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-);
+    teil_sachnr AS sachnr,
+    teil_hauptgr AS hauptgr,
+    teil_untergrup AS untergrup,
+    teil_benennzus AS zusatz,
+    teil_art AS art,
+    teil_mengeeinh AS mengeeinh,
+    teil_einsatz AS einsatz,
+    teil_entfall_dat AS entfall_dat,
+    teil_produktart AS produktart,
+    teil_textcode AS textcode,
+    teil_textcode_kom AS textcode_kom
+FROM w_teil;
 
--- Vehicle types with series info
+-- Vehicle types with series info (joined)
 DROP VIEW IF EXISTS v_vehicle_types;
 CREATE VIEW v_vehicle_types AS
 SELECT 
@@ -109,40 +86,52 @@ SELECT
     f.fztyp_karosserie AS karosserie,
     f.fztyp_getriebe AS getriebe,
     f.fztyp_lenkung AS lenkung,
+    f.fztyp_vbereich AS vbereich,
+    f.fztyp_ktlgausf AS ktlgausf,
     f.fztyp_einsatz AS einsatz,
+    f.fztyp_sichtschutz AS sichtschutz,
     b.baureihe_marke_tps AS marke,
     b.baureihe_produktart AS produktart,
-    g.ben_text AS series_name
+    b.baureihe_textcode AS series_textcode
 FROM w_fztyp f
-LEFT JOIN w_baureihe b ON f.fztyp_baureihe = b.baureihe_baureihe
-LEFT JOIN w_ben_gk g ON (
-    b.baureihe_textcode = g.ben_textcode 
-    AND g.ben_iso = 'en' 
-    AND TRIM(g.ben_regiso) = ''
-);
+INNER JOIN w_baureihe b ON f.fztyp_baureihe = b.baureihe_baureihe;
 
--- Part replacements with both part names
-DROP VIEW IF EXISTS v_replacements;
-CREATE VIEW v_replacements AS
+-- Groups per vehicle (mosp) - commonly used join
+DROP VIEW IF EXISTS v_vehicle_groups;
+CREATE VIEW v_vehicle_groups AS
 SELECT 
-    r.ts_sachnr AS old_sachnr,
-    r.ts_hg AS hg,
-    r.ts_mospid AS mospid,
-    r.ts_lenkung AS lenkung,
-    old_p.ben_text AS old_name,
-    new_t.teil_sachnr AS new_sachnr,
-    new_p.ben_text AS new_name
-FROM w_teileersetzung r
-LEFT JOIN w_teil old_t ON r.ts_sachnr = old_t.teil_sachnr
-LEFT JOIN w_ben_gk old_p ON (
-    old_t.teil_textcode = old_p.ben_textcode 
-    AND old_p.ben_iso = 'en' 
-    AND TRIM(old_p.ben_regiso) = ''
-)
-LEFT JOIN w_teileersetzung_neu n ON r.ts_sachnr = n.tsn_sachnr
-LEFT JOIN w_teil new_t ON n.tsn_neusachnr = new_t.teil_sachnr
-LEFT JOIN w_ben_gk new_p ON (
-    new_t.teil_textcode = new_p.ben_textcode 
-    AND new_p.ben_iso = 'en' 
-    AND TRIM(new_p.ben_regiso) = ''
-);
+    m.hgfgm_mospid AS mospid,
+    m.hgfgm_hg AS hg,
+    m.hgfgm_fg AS fg,
+    m.hgfgm_produktart AS produktart,
+    h.hgfg_textcode AS textcode,
+    h.hgfg_grafikid AS grafikId
+FROM w_hgfg_mosp m
+INNER JOIN w_hgfg h ON (m.hgfgm_hg = h.hgfg_hg AND m.hgfgm_fg = h.hgfg_fg);
+
+-- Diagram lines base (btzeilen + verbauung) - heavy join simplified
+DROP VIEW IF EXISTS v_diagram_lines;
+CREATE VIEW v_diagram_lines AS
+SELECT 
+    v.btzeilenv_mospid AS mospid,
+    v.btzeilenv_btnr AS btnr,
+    v.btzeilenv_pos AS pos,
+    v.btzeilenv_vmenge AS menge,
+    v.btzeilenv_sachnr AS sachnr,
+    v.btzeilenv_alter_kz AS alter_kz,
+    b.btzeilen_bildposnr AS bildposnr,
+    b.btzeilen_hg AS hg,
+    b.btzeilen_kat AS kat,
+    b.btzeilen_automatik AS automatik,
+    b.btzeilen_lenkg AS lenkung,
+    b.btzeilen_eins AS einsatz,
+    b.btzeilen_auslf AS auslauf,
+    b.btzeilen_bedkez AS bedkez,
+    b.btzeilen_regelnr AS regelnr,
+    b.btzeilen_kommbt AS kommbt,
+    b.btzeilen_kommvor AS kommvor,
+    b.btzeilen_kommnach AS kommnach,
+    b.btzeilen_gruppeid AS gruppeid,
+    b.btzeilen_blocknr AS blocknr
+FROM w_btzeilen_verbauung v
+INNER JOIN w_btzeilen b ON (v.btzeilenv_btnr = b.btzeilen_btnr AND v.btzeilenv_pos = b.btzeilen_pos);
