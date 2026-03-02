@@ -1,103 +1,146 @@
-# etkx
+# ETKx
 
-BMW ETK (Electronic Parts Catalog) data extraction and analysis tools.
+BMW ETK (Electronic Parts Catalog) web viewer — modern SvelteKit frontend with Spring Boot backend.
 
-## Docker
-
-### Build and run
-```bash
-# Place your etk.sqlite in ./data/
-docker-compose up --build
-```
-
-Frontend: http://localhost:3000
-Backend API: http://localhost:8080
-
-### Environment Variables
-- `PUBLIC_API_BASE_URL` - Backend API URL (build-time for frontend)
-- `SPRING_DATASOURCE_URL` - SQLite database path
-
-## Deployment
-
-### Kubernetes (production)
-
-```bash
-kubectl apply -f k8s/namespace.yaml
-kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/secret.yaml
-kubectl apply -f k8s/pvc.yaml
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-kubectl apply -f k8s/ingress.yaml
-kubectl apply -f k8s/oauth2-proxy.yaml
-```
-
-Notes:
-- Replace placeholders in `k8s/secret.yaml` before applying.
-- Ingress is configured for `etkx.bimmerz.app` with cert-manager TLS.
-
-## Database Access
-
-### Credentials
-- **User:** `tbadmin`
-- **Password:** `altabe`
-- **Port:** 2024
-- **Databases:** `etk_publ`, `etk_nutzer`, `etk_preise`
-
-### Remote Connection
-ETK Transbase on Windows XP must be running. Default IP: `192.168.101.150`
-
-## Export Tools
+## Quick Start (Local Development)
 
 ### Prerequisites
-- Java 11+ (OpenJDK)
-- Transbase JDBC driver (`lib/tbjdbc.jar`)
 
-### Quick Start
+- Java 21+ (backend)
+- Node.js 20+ with pnpm (frontend)
+- SQLite database file (`etk.sqlite`)
+
+### 1. Start Backend
 
 ```bash
-cd /tmp/etk-export
+cd service
 
-# Compile
-/usr/local/opt/openjdk/bin/javac -cp tbjdbc.jar EtkExport.java
+# Set database path
+export SPRING_DATASOURCE_URL=jdbc:sqlite:/path/to/etk.sqlite
 
-# Run export (foreground)
-/usr/local/opt/openjdk/bin/java -Xmx1g -cp .:tbjdbc.jar EtkExport ./etk_data
-
-# Run export (background)
-nohup /usr/local/opt/openjdk/bin/java -Xmx1g -cp .:tbjdbc.jar EtkExport ./etk_data > export.log 2>&1 &
-
-# Monitor progress
-tail -f export.log
+# Run
+./gradlew bootRun
 ```
 
-### Output Structure
+Backend API: http://localhost:8080
+
+### 2. Start Frontend
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
 ```
-etk_data/
-├── csv/                    # All tables as CSV
-│   ├── etk_publ_w_teil.csv
-│   ├── etk_publ_w_bildtaf.csv
-│   └── ...
-└── blobs/                  # Binary data (images from w_grafik)
-    ├── w_grafik_GRAFIK_0.bin
-    └── ...
+
+Frontend: http://localhost:5173 (proxies API to :8080)
+
+---
+
+## Database Migration (Transbase → SQLite)
+
+The original ETK uses Transbase. This section describes how to migrate to SQLite.
+
+### Prerequisites
+
+- Windows XP VM with ETK Transbase running (IP: `192.168.101.150`, port: `2024`)
+- Java 11+ on host machine
+- JDBC drivers:
+  - `tbjdbc.jar` (Transbase) — from ETK installation
+  - `sqlite-jdbc-3.x.jar` — [download](https://github.com/xerial/sqlite-jdbc/releases)
+
+### Migration Script
+
+```bash
+cd scripts
+
+# Download SQLite JDBC if not present
+curl -LO https://github.com/xerial/sqlite-jdbc/releases/download/3.45.1.0/sqlite-jdbc-3.45.1.0.jar
+
+# Compile migration tool
+javac -cp tbjdbc.jar:sqlite-jdbc-3.45.1.0.jar TransbaseToSqlite.java
+
+# Run migration (takes ~30-60 minutes for full DB)
+java -Xmx2g -cp .:tbjdbc.jar:sqlite-jdbc-3.45.1.0.jar TransbaseToSqlite etk.sqlite
 ```
 
 ### Configuration
 
-Edit `scripts/export.java` to change:
+Edit `TransbaseToSqlite.java` to change connection settings:
+
 ```java
-static String URL = "jdbc:transbase://192.168.101.150:2024/";  // ETK host
-static String USER = "tbadmin";
-static String PASS = "altabe";
+static final String TB_URL = "jdbc:transbase://192.168.101.150:2024/etk_publ";
+static final String TB_USER = "tbadmin";
+static final String TB_PASS = "altabe";
 ```
 
-## Documentation
+### Output
 
-- `docs/SCHEMA.md` - Database schema (116 tables)
-- `src/decompiled/` - Decompiled Java sources with SQL queries
+- `etk.sqlite` — ~5GB SQLite database with all ETK data
+- Tables: 116 tables including parts, diagrams, images, translations
 
-## Key Tables
+---
+
+## Docker
+
+### Build and Run
+
+```bash
+# Place etk.sqlite in ./data/
+docker-compose up --build
+```
+
+- Frontend: http://localhost:3000
+- Backend: http://localhost:8080
+
+### Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `PUBLIC_API_BASE_URL` | Backend URL (frontend build-time) | `http://localhost:8080` |
+| `SPRING_DATASOURCE_URL` | SQLite path | `jdbc:sqlite:./etk.sqlite` |
+
+---
+
+## Project Structure
+
+```
+etkx/
+├── frontend/          # SvelteKit + Tailwind CSS
+│   ├── src/
+│   │   ├── lib/       # Components, API client, stores
+│   │   └── routes/    # Pages (/{brand}/{productType}/{scope}/...)
+│   └── package.json
+├── service/           # Spring Boot backend
+│   ├── src/main/java/pl/emdzej/etkx/
+│   │   ├── api/       # REST controllers
+│   │   └── dal/       # Data access layer
+│   └── build.gradle
+├── scripts/           # Migration and utility scripts
+│   ├── TransbaseToSqlite.java
+│   └── start-etk-original.sh
+├── k8s/               # Kubernetes manifests
+└── docs/              # Documentation
+```
+
+---
+
+## URL Structure
+
+```
+/{brand}/{productType}/{catalogScope}/vehicles/{mospId}/groups/{hg}/subgroups/{fg}/diagrams/{btnr}
+```
+
+| Param | Values | Description |
+|-------|--------|-------------|
+| `brand` | `bmw`, `mini`, `rolls-royce` | Vehicle brand |
+| `productType` | `car`, `motorcycle` | Product type |
+| `catalogScope` | `current`, `classic` | Catalog scope (VT/ST) |
+| `mospId` | e.g. `47669` | Vehicle model identifier |
+| `datum` | `YYYY-MM-DD` (query param) | Production date for typ resolution |
+
+---
+
+## Key Database Tables
 
 | Table | Description | ~Rows |
 |-------|-------------|-------|
@@ -107,7 +150,40 @@ static String PASS = "altabe";
 | `w_grafik` | Images (BLOBs) | ~48K |
 | `w_publben` | Multilingual names | ~2M |
 | `w_fztyp` | Vehicle types | ~10K |
+| `w_mosp` | Model variants | ~200K |
+
+---
+
+## Deployment (Kubernetes)
+
+```bash
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/secret.yaml      # Edit placeholders first!
+kubectl apply -f k8s/pvc.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl apply -f k8s/ingress.yaml
+kubectl apply -f k8s/oauth2-proxy.yaml
+```
+
+Production URL: https://etkx.bimmerz.app (with OAuth2 proxy)
+
+---
+
+## Original ETK (Java Swing)
+
+To run the original BMW ETK application on macOS:
+
+```bash
+# Requires Java 8 and running Transbase
+./scripts/start-etk-original.sh
+```
+
+See `docs/original-etk-setup.md` for full setup instructions.
+
+---
 
 ## License
 
-Private repository - BMW ETK data is proprietary.
+Private repository — BMW ETK data is proprietary.
