@@ -269,12 +269,21 @@ export const getPartDiagrams = (
 export const getDiagramDetails = (btnr: string): Promise<DiagramDetails> =>
   request(`/api/diagrams/${btnr}`);
 
+// Convert datum from "YYYY-MM-DD" to YYYYMMDD number for API
+const datumToLong = (datum?: string): number | undefined => {
+  if (!datum) return undefined;
+  // Handle "YYYY-MM-DD" format
+  const clean = datum.replace(/-/g, '');
+  const num = parseInt(clean, 10);
+  return isNaN(num) ? undefined : num;
+};
+
 export const getDiagramLines = (
   btnr: string,
   mospId: string,
   iso: string = DEFAULT_ISO,
   datum?: string
-): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso, datum });
+): Promise<DiagramLines> => request(`/api/diagrams/${btnr}/lines`, { mospId, iso, datum: datumToLong(datum) });
 
 export const getDiagramImageUrl = (btnr: string): string =>
   new URL(`/api/diagrams/${btnr}/image`, API_BASE_URL).toString();
