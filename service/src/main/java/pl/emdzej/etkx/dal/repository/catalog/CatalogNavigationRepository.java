@@ -17,78 +17,50 @@ import pl.emdzej.etkx.dal.dto.catalog.SubGroupDto;
 @RequiredArgsConstructor
 public class CatalogNavigationRepository {
     private static final String RETRIEVE_MAIN_GROUPS = """
-        select hgfgm_hg Hg,
+        select vg.hg Hg,
             MIN(ben_text) Name,
             MIN(hgthb_grafikid) ThumbnailId
-        from w_hgfg_mosp m
-        inner join w_hgfg on (
-            hgfg_hg = hgfgm_hg
-            and hgfg_fg = '00'
-        )
-        inner join w_ben_gk on (
-            hgfg_textcode = ben_textcode
-            and ben_iso = :iso
-        )
-        inner join w_fztyp f on (f.fztyp_mospid = m.hgfgm_mospid)
-        inner join w_baureihe b on (f.fztyp_baureihe = b.baureihe_baureihe)
+        from v_vehicle_groups vg
+        inner join w_ben_gk on (vg.textcode = ben_textcode and ben_iso = :iso)
+        inner join v_vehicle_types vt on (vt.mospid = vg.mospid)
         left join w_hg_thumbnail on (
-            hgthb_hg = hgfgm_hg 
-            AND hgthb_produktart = hgfgm_produktart
-            AND hgthb_marke_tps = b.baureihe_marke_tps
+            hgthb_hg = vg.hg 
+            AND hgthb_produktart = vg.produktart
+            AND hgthb_marke_tps = vt.marke
         )
-        where m.hgfgm_mospid = :mospId
-        group by hgfgm_hg
-        order by hgfgm_hg
+        where vg.mospid = :mospId
+          and vg.fg = '00'
+        group by vg.hg
+        order by vg.hg
         """;
 
     private static final String RETRIEVE_SUB_GROUPS = """
-        select hgfgm_hg Hg,
-            hgfgm_fg Fg,
+        select vg.hg Hg,
+            vg.fg Fg,
             MIN(ben_text) Name,
-            (
-                select MIN(bildtaf_grafikid)
-                from w_bildtaf
-                where bildtaf_hg = hgfgm_hg
-                  and bildtaf_fg = hgfgm_fg
-            ) ThumbnailId,
-            bt.btnr Btnr
-        from w_hgfg_mosp
-        inner join w_hgfg on (
-            hgfg_hg = hgfgm_hg
-            and hgfg_fg = hgfgm_fg
-        )
-        inner join w_ben_gk on (
-            hgfg_textcode = ben_textcode
-            and ben_iso = :iso
-        )
-        left join (
-            select bildtaf_hg, bildtaf_fg, min(bildtaf_btnr) as btnr
-            from w_bildtaf
-            group by bildtaf_hg, bildtaf_fg
-        ) bt on (
-            bt.bildtaf_hg = hgfgm_hg
-            and bt.bildtaf_fg = hgfgm_fg
-        )
-        where hgfgm_mospid = :mospId
-          and hgfgm_hg = :hg
-        group by hgfgm_hg, hgfgm_fg
-        order by hgfgm_fg
+            MIN(vg.grafikId) ThumbnailId,
+            MIN(d.btnr) Btnr
+        from v_vehicle_groups vg
+        inner join w_ben_gk on (vg.textcode = ben_textcode and ben_iso = :iso)
+        left join v_diagrams d on (d.hg = vg.hg and d.fg = vg.fg)
+        where vg.mospid = :mospId
+          and vg.hg = :hg
+          and vg.fg != '00'
+        group by vg.hg, vg.fg
+        order by vg.fg
         """;
 
     private static final String RETRIEVE_DIAGRAMS = """
-        select distinct b.bildtaf_btnr Btnr,
-            b.bildtaf_grafikid GrafikId,
+        select distinct d.btnr Btnr,
+            d.grafikId GrafikId,
             ben_text Name
         from w_btzeilen_verbauung v
-        inner join w_bildtaf b on (v.btzeilenv_btnr = b.bildtaf_btnr)
-        left join w_ben_gk on (
-            b.bildtaf_textc = ben_textcode
-            and ben_iso = :iso and TRIM(ben_regiso) = ''
-        )
+        inner join v_diagrams d on (v.btzeilenv_btnr = d.btnr)
+        left join w_ben_gk on (d.textcode = ben_textcode and ben_iso = :iso and TRIM(ben_regiso) = '')
         where v.btzeilenv_mospid = :mospId
-          and b.bildtaf_hg = :hg
-          and b.bildtaf_fg = :fg
-        order by b.bildtaf_btnr
+          and d.hg = :hg
+          and d.fg = :fg
+        order by d.btnr
         """;
 
     private static final RowMapper<MainGroupDto> MAIN_GROUP_MAPPER = (rs, rowNum) ->

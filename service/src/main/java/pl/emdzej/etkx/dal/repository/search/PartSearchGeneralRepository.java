@@ -16,29 +16,29 @@ import pl.emdzej.etkx.dal.dto.search.PartByNumberDto;
 @RequiredArgsConstructor
 public class PartSearchGeneralRepository {
     private static final String LOAD_MARKET_DESCRIPTION = """
-        select lj11.ben_text MarktBen
-        from w_bildtaf t1
-        left join w_markt_etk lj1 on (lj1.marktetk_lkz = t1.bildtaf_lkz)
-        left join w_ben_gk lj11 on (
-            lj1.marktetk_textcode = lj11.ben_textcode
-            and lj11.ben_iso = :iso
-            and lj11.ben_regiso = :regiso
+        select ben_text MarktBen
+        from v_diagrams d
+        left join w_markt_etk on (marktetk_lkz = d.lkz)
+        left join w_ben_gk on (
+            marktetk_textcode = ben_textcode
+            and ben_iso = :iso
+            and ben_regiso = :regiso
         )
-        where t1.bildtaf_btnr = :btnr
-          and t1.bildtaf_produktart = :produktart
+        where d.btnr = :btnr
+          and d.produktart = :produktart
         """;
 
     private static final String SEARCH_PARTS_BY_NUMBER = """
-        select distinct t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr as sachnr,
-               t2.ben_text as benennung,
-               t1.teil_benennzus as zusatz,
-               t1.teil_hauptgr as hauptgr,
-               t1.teil_untergrup as untergrup
-        from w_teil t1
-        left join w_ben_gk t2 on (t1.teil_textcode = t2.ben_textcode and t2.ben_iso = :iso)
-        where t1.teil_hauptgr || t1.teil_untergrup || t1.teil_sachnr like :pattern
-           or t1.teil_sachnr like :pattern
-        order by t1.teil_hauptgr, t1.teil_untergrup, t1.teil_sachnr
+        select distinct p.hauptgr || p.untergrup || p.sachnr as sachnr,
+               ben_text as benennung,
+               p.zusatz,
+               p.hauptgr,
+               p.untergrup
+        from v_parts p
+        left join w_ben_gk on (p.textcode = ben_textcode and ben_iso = :iso)
+        where p.hauptgr || p.untergrup || p.sachnr like :pattern
+           or p.sachnr like :pattern
+        order by p.hauptgr, p.untergrup, p.sachnr
         limit 100
         """;
 
