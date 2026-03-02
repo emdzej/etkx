@@ -2,11 +2,14 @@
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /app
 
-# Copy gradle files
+# Copy gradle wrapper and config
 COPY gradlew ./
 COPY gradle ./gradle
-COPY build.gradle.kts settings.gradle.kts ./
-COPY service/build.gradle.kts ./service/
+COPY settings.gradle ./
+COPY service/build.gradle ./service/
+
+# Make gradlew executable
+RUN chmod +x gradlew
 
 # Download dependencies (cache layer)
 RUN ./gradlew dependencies --no-daemon || true
@@ -15,7 +18,7 @@ RUN ./gradlew dependencies --no-daemon || true
 COPY service/src ./service/src
 
 # Build
-RUN ./gradlew :service:bootJar --no-daemon
+RUN ./gradlew :service:bootJar --no-daemon -x test
 
 # Runtime stage
 FROM eclipse-temurin:21-jre
