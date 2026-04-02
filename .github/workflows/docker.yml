@@ -67,3 +67,13 @@ jobs:
           push: true
           tags: ${{ steps.meta_frontend.outputs.tags }}
           labels: ${{ steps.meta_frontend.outputs.labels }}
+
+      - name: Make packages public
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for pkg in etkx-backend etkx-frontend; do
+            gh api --method PATCH \
+              /user/packages/container/$pkg/visibility \
+              -f visibility=public || echo "Could not set $pkg public (may need manual action)"
+          done
