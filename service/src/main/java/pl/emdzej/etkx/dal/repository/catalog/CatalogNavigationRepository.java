@@ -29,7 +29,6 @@ public class CatalogNavigationRepository {
             AND hgthb_marke_tps = vt.marke
         )
         where vg.mospid = :mospId
-          and vg.fg = '00'
         group by vg.hg
         order by vg.hg
         """;
@@ -45,7 +44,6 @@ public class CatalogNavigationRepository {
         left join v_diagrams d on (d.hg = vg.hg and d.fg = vg.fg)
         where vg.mospid = :mospId
           and vg.hg = :hg
-          and vg.fg != '00'
         group by vg.hg, vg.fg
         order by vg.fg
         """;
