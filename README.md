@@ -164,6 +164,10 @@ These projects exist to preserve access to technical knowledge and ensure that o
 
 ---
 
+## Support
+
+If you find this project useful, consider [buying me a coffee](https://buymeacoffee.com/emdzej) ☕ or [sponsoring on GitHub](https://github.com/sponsors/emdzej).
+
 ## License
 
 Licensed under PolyForm Noncommercial 1.0.0 — free for personal and educational use, no commercial use permitted.
